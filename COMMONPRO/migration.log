@@ -343,3 +343,24 @@
  ---=== Start Migration of project commonpro ===---
  * Task [Update Operator MigrationTask] : Applied successfully
  * Task [ChangeMappingFileMigrationTask] : Applied successfully
+ * Task [Fix a problem of project resources linked to items] : Applied successfully
+ * Task [ChangeLogLevel4tRedshiftInput] : Applied successfully
+ * Task [ChangeDefaultValueForCassandra3Version] : Applied successfully
+ * Task [NewGenericWizardMigrationTask] : Nothing to do
+ * Task [NewSalesforceMigrationTask] : Nothing to do
+ * Task [Add XMI Id for context item] : Applied successfully
+ * Task [UpdateUrlForRedShiftMigrationTask] : Nothing to do
+ * Task [SubstituteRemovedMDMOperatorMigrationTask] : Applied successfully
+ * Task [Salesforce620Migration] : Applied successfully
+ * Task [Salesforce620WizardMigration] : Nothing to do
+ * Task [ChangeHadoopConfJarNameMigrationTask] : Nothing to do
+ * Task [Update parameter "Matching Algorithm" value for MR tMatchgroup] : Applied successfully
+ * Task [Update tMelissaDataAddress to add a GeoCodeResult column and an advanced parameter] : Applied successfully
+ * Task [AddDefaultVersionValueForElasticsearchLookupInput] : Applied successfully
+ * Task [UpdatetNaivebayseModelSparkVersionTask] : Applied successfully
+ * Task [UpdatetPredictSparkVersionTask] : Applied successfully
+ * Task [Change MSSQL DBVersion] : Nothing to do
+ * Task [UpdateTMatchGroupOutPutSchemaTask] : Applied successfully
+ * Task [ChangeTypeMappingForRedshift] : Applied successfully
+ * Task [AutoUpdateRelationsMigrationTask] : Applied successfully
+ ---=== End of migration ===---
