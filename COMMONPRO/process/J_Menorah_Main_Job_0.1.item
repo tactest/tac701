@@ -57,7 +57,7 @@
     <elementParameter field="CHECK" name="ON_METERCATCHER_FLAG" value="false"/>
     <elementParameter field="CHECK" name="ON_CONSOLE_FLAG" value="false" show="false"/>
     <elementParameter field="CHECK" name="ON_FILES_FLAG" value="false" show="false"/>
-    <elementParameter field="DIRECTORY" name="FILE_PATH" value="&quot;D:/Talend/products_data/631/Talend-Studio-20161216_1026-V6.3.1/Menorah_workspace/.metadata&quot;" show="false"/>
+    <elementParameter field="DIRECTORY" name="FILE_PATH" value="&quot;D:/product/0905/Talend-Studio-20160902_0206-V6.1.2SNAPSHOT/workspace/.metadata&quot;" show="false"/>
     <elementParameter field="TEXT" name="FILENAME_STATS" value="&quot;stats_file.txt&quot;" show="false"/>
     <elementParameter field="TEXT" name="FILENAME_LOGS" value="&quot;logs_file.txt&quot;" show="false"/>
     <elementParameter field="TEXT" name="FILENAME_METTER" value="&quot;meter_file.txt&quot;" show="false"/>
@@ -106,6 +106,11 @@
     <routinesParameter id="_HGotUF_WEee-1vvXvAh-oQ" name="TalendDate"/>
     <routinesParameter id="_HIUIUF_WEee-1vvXvAh-oQ" name="TalendString"/>
     <routinesParameter id="_K4Wx0F_eEeeVL9BubGwM4w" name="MDM"/>
+    <routinesParameter id="_0HofIHMkEea2QtDRiJ4O5A" name="DQTechnical"/>
+    <routinesParameter id="_9oc4YNDjEeepM_F_FQISgQ" name="DataMasking"/>
+    <routinesParameter id="_0HkNsHMkEea2QtDRiJ4O5A" name="DataQualityDependencies"/>
+    <routinesParameter id="_0HiYgHMkEea2QtDRiJ4O5A" name="DataQuality"/>
+    <routinesParameter id="_0Hmp8HMkEea2QtDRiJ4O5A" name="DqStringHandling"/>
   </parameters>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="96" posY="128">
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="tJava_1" show="false"/>
@@ -199,9 +204,9 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="tRunJob_4" show="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" value="" show="false"/>
-    <elementParameter field="PROCESS_TYPE" name="PROCESS" value="subjob1"/>
+    <elementParameter field="PROCESS_TYPE" name="PROCESS" value="J_REF_menorah_job1"/>
     <elementParameter field="TECHNICAL" name="PROCESS:PROCESS_TYPE_CONTEXT" value="Default"/>
-    <elementParameter field="TECHNICAL" name="PROCESS:PROCESS_TYPE_PROCESS" value="_8hMxYKq3EeafUfIZyqJdrQ"/>
+    <elementParameter field="TECHNICAL" name="PROCESS:PROCESS_TYPE_PROCESS" value="_WxJXAF_ZEeeMq5gFwDRfmw"/>
     <elementParameter field="TECHNICAL" name="PROCESS:PROCESS_TYPE_VERSION" value="Latest"/>
     <elementParameter field="TEXT" name="CONTEXT_NAME" value="Default" show="false"/>
     <elementParameter field="CHECK" name="USE_INDEPENDENT_PROCESS" value="false"/>
