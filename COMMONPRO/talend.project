@@ -1683,4 +1683,5 @@
     <migrationTask xmi:id="__w5Lo9DjEeepM_F_FQISgQ" id="org.talend.repository.model.migration.AutoUpdateRelationsMigrationTask" breaks="5.1.1" version="5.1.2" status="ok"/>
   </TalendProperties:Project>
   <TalendProperties:User xmi:id="_zi5aYnMkEea2QtDRiJ4O5A" login="admin@company.com" firstName="admin" lastName="admin" type="MDM" additionnalData="{}"/>
+  <TalendProperties:User xmi:id="_qvPyMdDtEee21rk5bGkw8A" login="Trigger-Runner" type="MDM"/>
 </xmi:XMI>
