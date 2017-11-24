@@ -1,0 +1,244 @@
+package routines;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class NumberTool {
+
+	  private static final int localCalcLocateEndOfOperand( String pExp ) {
+		  int openCnt = 1;
+		  char curr = ' ';
+		  boolean neg = false;
+		  
+		  pExp = pExp.trim();
+		  if ( pExp.length() == 0 )
+			  throw new IllegalArgumentException( "Calc. argument empty!!!" );
+		  neg = (pExp.charAt(0) == '-');
+		  int firstOpen = pExp.indexOf( '(' );
+		  String checkFktName = (firstOpen == -1) ? null : pExp.substring( neg ? 1 : 0, firstOpen).toUpperCase(); 
+		  if ( (firstOpen > -1) && (checkFktName.length() == StringTool.keepAllowed( checkFktName, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ).length()) ) {
+			  for (int i = firstOpen + 1; i < pExp.length() && (openCnt > 0); i++) {
+				  curr = pExp.charAt(i);
+				  if ( curr == '(' )
+					  openCnt++;
+				  if ( curr == ')' )
+					  openCnt--;
+				  if ( openCnt == 0 )
+					  return i; 
+			  }
+			  throw new IllegalArgumentException( "Unbalanced brackets, missing ')': '" + pExp + "'..." );
+		  } //else if ( pExp.indexOf( ')') != -1 )
+			//  throw new IllegalArgumentException( "Unbalanced brackets, missing '(': '" + pExp + "'..." );
+		  else {
+			  for ( int i = 1; i < pExp.length(); i++ )
+				  if ( "0123456789.".indexOf( pExp.charAt(i) ) == -1 )
+					  return i-1;
+			  return pExp.length() - 1 ;
+		  }
+	  }
+
+	  /**
+	   * Local calculate implementation - execute a function (name already upper-cased) with a dynamic number of args (depending on
+	   * function, zero args allowed).
+	   * Currently implemented are the typical functions of BigDecimal (in brackets the number of arguments expected, DIV and all ROUND
+	   * functions expect the scale as argument default ROUNDING is HALF_ROUND_UP)
+	   * DIV(3), ROUND(2), ROUNDHALFUP(2), ROUNDHALFEVEN(2), ROUNDHALFDOWN(2), ROUNDUP(2), ROUNDDOWN(2), ROUNDCEILING(2), ROUNDFLOOR(2)
+	   * POW(2), REMAINDER(2), MAX(>0), MIN(>0)
+	   * Functions names are case insensitive, allowed only characters, no underscore
+	   * Operators currently implemented are +, -, *, / (rounded! HALF_ROUND_UP)
+	   * * and / are NOT PRIORIZED to + and - !!! Sequentional execution from left to right, based on BigDecimal
+	   * All numbers are expected in English format, with . as decimal symbol and no grouping symbols.
+	   * @param pFunction
+	   * @param pArgs
+	   * @return the result of the executed function.
+	   */
+	  private static final BigDecimal localCalcExecFkt( String pFunction, ArrayList<BigDecimal> pArgs ) {
+		  if ( "DIV".equals( pFunction ) ) {
+			  if ( pArgs.size() != 3 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'DIV', must be 3!" );
+			  return (pArgs.get(0)).divide((pArgs.get(1)), (pArgs.get(2)).intValue(), BigDecimal.ROUND_HALF_UP );
+		  } else if ( "ROUND".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUND', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_HALF_UP );
+		  } else if ( "ROUNDHALFUP".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDHALFUP', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_HALF_UP );
+		  } else if ( "ROUNDHALFEVEN".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDHALFEVEN', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_HALF_EVEN );
+		  } else if ( "ROUNDHALFDOWN".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDHALFDOWN', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_HALF_DOWN );
+		  } else if ( "ROUNDUP".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDUP', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_UP );
+		  } else if ( "ROUNDDOWN".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDDOWN', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_DOWN );
+		  } else if ( "ROUNDCEILING".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDCEILING', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_CEILING );
+		  } else if ( "ROUNDFLOOR".equals( pFunction ) ) {
+			  if ( pArgs.size() != 2 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'ROUNDFLOOR', must be 2!" );
+			  return (pArgs.get(0)).setScale((pArgs.get(1)).intValue(), BigDecimal.ROUND_FLOOR );
+//		  } else if ( "POW".equals( pFunction ) ) {
+//			  if ( pArgs.size() != 2 )
+//				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'POW', must be 2!" );
+//			  return ((BigDecimal)pArgs.get(0)).pow(((BigDecimal)pArgs.get(1)).intValue() );
+//		  } else if ( "REMAINDER".equals( pFunction ) ) {
+//			  if ( pArgs.size() != 2 )
+//				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'REMAINDER', must be 2!" );
+//			  return ((BigDecimal)pArgs.get(0)).remainder(((BigDecimal)pArgs.get(1)) );
+		  } else if ( "MAX".equals( pFunction ) ) {
+			  if ( pArgs.size() == 0 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'MAX', must be > 0!" );
+			  BigDecimal res = pArgs.get(0);
+			  BigDecimal other = null;
+			  for ( int i = 1; i < pArgs.size(); i++ ) {
+				  other = pArgs.get(i);
+				  if ( other.compareTo(res) > 0 )
+					  res = other;
+			  }
+			  return res;
+		  } else if ( "MIN".equals( pFunction ) ) {
+			  if ( pArgs.size() == 0 )
+				  throw new IllegalArgumentException( "Illegal number of " + pArgs.size() + " arguments for function 'MIN', must be > 0!" );
+			  BigDecimal res = pArgs.get(0);
+			  BigDecimal other = null;
+			  for ( int i = 1; i < pArgs.size(); i++ ) {
+				  other = pArgs.get(i);
+				  if ( other.compareTo(res) < 0 )
+					  res = other;
+			  }
+			  return res;
+		  } else
+			  throw new IllegalArgumentException( "Unknown function, not yet implemented: '" + pFunction + "'..." );
+			  
+	  }
+
+	  /**
+	   * Evalueate an operand, may be an expression in brackets, a function call or a positive number. 
+	   * @param pExp
+	   * @return
+	   */
+	  private static final BigDecimal localCalcGetOperand( String pExp ) {
+		  int mOpenPos = pExp.indexOf( '(' );
+		  
+		  if ( mOpenPos == -1 )
+			  return new BigDecimal( pExp );
+		  // we have just bracket or a function call - by all means the brackets are balanced (already checked)
+		  String mSubExp = pExp.substring(mOpenPos + 1, pExp.length() - 1).trim();
+		  Object mSubExpRes = null;
+		  if ( (mSubExp.length() == 0) && (mOpenPos == 0) )
+			  throw new IllegalArgumentException( "Empty expression: '" + pExp + "'..." );
+		  if ( mSubExp.length() > 0 ) // empty only allowed on parameterless functions
+			  mSubExpRes = localCalc( null, ' ', mSubExp );
+		  if ( mOpenPos > 0 ) {
+			  ArrayList mArgs = (mSubExpRes instanceof ArrayList) ? (ArrayList)mSubExpRes : new ArrayList(2);
+			  if ( mSubExpRes instanceof BigDecimal )
+				  mArgs.add( mSubExpRes );
+			  mSubExpRes = localCalcExecFkt( pExp.substring(0, mOpenPos).trim().toUpperCase(), mArgs );
+		  }
+		  if ( !(mSubExpRes instanceof BigDecimal) )
+			  throw new IllegalArgumentException( "List expression only allowed for function arguments: '" + pExp + "'..." );
+		  return (BigDecimal)mSubExpRes;
+	  }
+	  
+	  /**
+	   * Evaluate the first operation of an expression (with respect to the first operands presign/negation).
+	   * / and * are NOT priorized to + and - !!! 
+	   * @param pExp
+	   * @return the result of the expression, may be a value list, only allowed as argument lists of functions.
+	   */
+	  private static final Object localCalc( Object pCurr, char pOp, String pExp ) {
+		  int mNextOpEnd = localCalcLocateEndOfOperand( pExp );
+		  boolean neg = pExp.charAt(0) == '-';
+		  String mNextOp = pExp.substring(neg ? 1 : 0, mNextOpEnd + 1 ).trim();
+		  String mRemain = pExp.substring( mNextOpEnd + 1 ).trim();
+		  char mNext = (mRemain.length() > 0) ? mRemain.charAt( 0 ) : ' ';
+		  String mExpMore = (mNext == ' ') ? null : mRemain.substring(1).trim();
+		  if ( mNextOp.length() == 0 )
+			  throw new IllegalArgumentException( "Missing next opperand: '" + pExp + "'..." );
+		  BigDecimal op2 = localCalcGetOperand( mNextOp );
+		  if ( neg )
+			  op2 = op2.negate();
+		  BigDecimal op1 = (pCurr instanceof ArrayList) ?  (BigDecimal)((ArrayList)pCurr).remove( ((ArrayList)pCurr).size() - 1 ) : (BigDecimal)pCurr;
+		  Object tRes = op2;
+		  switch ( pOp ) {
+		  	case '+': tRes = op1.add( op2 ); break; 
+		  	case '-': tRes = op1.subtract( op2 ); break; 
+		  	case '*': tRes = op1.multiply( op2 ); break; 
+		  	case '/': tRes = op1.divide(op2, 0, BigDecimal.ROUND_FLOOR); break;
+		  	case ',': if ( pCurr instanceof BigDecimal ) pCurr = new ArrayList(2); ((ArrayList)pCurr).add( op1 );
+		  	case ' ': break;
+		  	default: throw new IllegalArgumentException( "Invalid operator: '" + pOp + "'..." );
+		  }
+		  if ( pCurr instanceof ArrayList ) {
+			  ((ArrayList)pCurr).add( tRes );
+			  tRes = pCurr;
+		  }
+		  return (mNext == ' ') ? tRes : localCalc( tRes, mNext, mExpMore );
+	  }
+	  
+	  /**
+	   * Calculate a numeric expression based on BigDecimal - for more detailed description see localCalcExecFkt.
+	   * @param pExp
+	   * @return
+	   * @see NumberTool.localCalcExecFkt(...)
+	   */
+	  public static final BigDecimal calculate( String pExp ) {
+		  pExp = StringTool.trimEmptyToNull( pExp );
+		  if ( pExp == null )
+			  return null;
+		  Object mRes = localCalc( null, ' ', pExp );
+		  if ( mRes instanceof BigDecimal )
+			  return (BigDecimal)mRes;
+		  throw new IllegalArgumentException( "Illegal expression, result not a single number, e.g. a value list: '" + pExp +"'..." );
+	  }
+
+	    /**
+	     * Check, if a String contains a pure number (precision zero)
+	     * @param pVal
+	     * @return
+	     */
+	    public static boolean isNumber( String pVal ) {
+	        if (pVal == null)
+	            return true;
+	        if ( pVal.startsWith( "-" ) ) {
+	            pVal = pVal.substring(1);
+	            if ( pVal.length() == 0 )
+	                return false;
+	        }
+	        for (int i = 0; i < pVal.length(); i++)
+	            if ( !Character.isDigit( pVal.charAt( i ) ) )
+	                return false;
+	        return true;
+	    }
+	  
+}

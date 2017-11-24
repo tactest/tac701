@@ -1,0 +1,4305 @@
+package routines;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ * 
+ **
+ *
+ * Class for encapsulating Templates.
+ * <PRE>
+ * <B><U>Beschrteibung der Formatierungsfunktionen:</U></B>
+ * &nbsp;
+ * <B>BNF fuer Template-Platzhalter (&lt;atom&gt;):</B>
+ * &nbsp;
+ * &lt;atom&gt;            ::= [[&lt;string&gt;[.&lt;function&gt;]]]
+ * &nbsp;
+ * &lt;dir&gt;             ::= L || R
+ * &nbsp;
+ * &lt;sign&gt;            ::= + || -
+ * &nbsp;
+ * &lt;num&gt;             ::= (* ganzzahliger Wert *)
+ * &nbsp;
+ * &lt;lnum&gt;            ::= [ LEN &lt;sign&gt; ] &lt;num&gt; || LEN
+ * &nbsp;
+ * &lt;rnum&gt;            ::= [ &lt;sign&gt; ] &lt;lnum&gt;
+ * &nbsp;
+ * &lt;function&gt;        ::= &lt;function&gt;.&lt;function&gt;                       ||
+ *  DEPRECATED:          copy( [ &lt;lnum&gt;[, &lt;lnum&gt; ] ] )               ||
+ *  DEPRECATED:          num( &lt;rnum&gt;[, &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot; ] ] )  ||   (DEPRECATED: ersetzt durch formatNumber)
+ *  DEPRECATED:          prec( &lt;rnum&gt;[, &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot; ] ] ) ||   (DEPRECATED: ersetzt durch formatNumber)
+ *  DEPRECATED:          format( &lt;rnum&gt;[, &quot;&lt;string&gt;&quot;[, &lt;dir&gt; ] ] )   ||
+ *  DEPRECATED:          replace( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot; ] )        ||
+ *  temp N/A:            escape( &quot;&lt;string&gt;&quot; )        ||
+ *                       trim( [&lt;dir&gt;] )                             ||
+ *                       upper()                                     ||
+ *                       lower()                                     ||
+ *  DEPRECATED:          formatnum([&quot;&lt;string&gt;&quot;])                     ||     (DEPRECATED: ersetzt durch formatNumber)
+ *                       clear([&quot;&lt;string&gt;&quot;[,...]])                   ||
+ *                       embed( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;] )           ||
+ *                       embedT( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;] )          ||
+ *                       lpad( &lt;num&gt;[, &quot;&lt;string&gt;&quot;] )          ||
+ *                       rpad( &lt;num&gt;[, &quot;&lt;string&gt;&quot;] )          ||
+ *                       default( &quot;&lt;string&gt;&quot; )           ||
+ *                       defaultT( &quot;&lt;string&gt;&quot; )           ||
+ *                       assign( [&quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;]] )        ||
+ *                       cassign( [&quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;]] )       ||
+ *  temp N/A:            encrypt( [ &lt;lnum&gt;[, &lt;lnum&gt; ] ] )            ||
+ *  temp N/A:            code()                                      ||
+ *                       encodeBase64( [ &lt;num&gt;] )                    ||
+ *                       decodeBase64()                              ||
+ *                       inc( [&lt;lnum&gt;[, &quot;&lt;string&gt;&quot;]] )               ||
+ *                       dec( [&lt;lnum&gt;[, &quot;&lt;string&gt;&quot;]] )               ||
+ *                       formatDate( [&quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;]]] )       ||
+ *                       formatNumber( [&quot;&lt;string&gt;&quot;, [&quot;&lt;string&gt;&quot;]] )  ||
+ *                       switch( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;[,...]] ) ||
+ *                       switchT( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;[,...]] ) ||
+ *                       replaceStr( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;[,...]] ) ||
+ *                       replaceStrT( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;[,...]] ) ||
+ *                       copyStr( [ &lt;lnum&gt;[, &lt;lnum&gt; ] ] )               ||
+ *                       subStr( [ &lt;lnum&gt;[, &lt;lnum&gt; ] ] )               ||     (Alias for copyStr)
+ *                       keep( &quot;&lt;string&gt;&quot; ) ||
+ *                       keepT( &quot;&lt;string&gt;&quot; ) ||
+ *                       filter( &quot;&lt;string&gt;&quot; ) ||
+ *                       filterT( &quot;&lt;string&gt;&quot; ) ||
+ *                       multiExpand( &quot;&lt;string&gt;&quot;[, [&quot;&lt;string&gt;&quot;[, [&quot;&lt;string&gt;&quot;[, [&quot;&lt;string&gt;&quot;...]]]] ) ||
+ *                       calc() ||
+ *                       lookup()                                    ||
+ *                       split( &quot;&lt;string&gt;&quot;, &lt;num&gt; ) ||
+ *                       splitT( &quot;&lt;string&gt;&quot;, &lt;num&gt; ) ||
+ *                       check( &quot;&lt;operator&gt;&quot;, &quot;&lt;string&gt;&quot; ) ||
+ *                       and( &quot;&lt;string&gt;&quot;[, &quot;&lt;operator&gt;&quot;, &quot;&lt;string&gt;&quot;] ) ||
+ *                       or( &quot;&lt;string&gt;&quot;[, &quot;&lt;operator&gt;&quot;, &quot;&lt;string&gt;&quot;] ) ||
+ *                       not()
+ * 
+ * &nbsp;
+ * <B>Ein paar Beispiele vorweg:</B>
+ * &nbsp;
+ * [VAL]                          =&gt;  &quot;  Hallo Welt  &quot;
+ * [VAL.trim()]                   =&gt;  &quot;Hallo Welt&quot;
+ * [VAL.trim(L)]                  =&gt;  &quot;Hallo Welt  &quot;
+ * [VAL.trim().format(15,&quot; &quot;,L)]  =&gt;  &quot;Hallo Welt     &quot;
+ * [VAL.copy(4)]                  =&gt;  &quot;lo Welt  &quot;
+ * &nbsp;
+ * <B>Beschreibung der Funktionen:</B>
+ * &nbsp;
+ * 
+ * &lt;lnum&gt;:
+ *    Kann nur aus einer 'Zahl', LEN,  LEN+'Zahl' oder
+ *    LEN-'Zahl' bestehen. LEN ist hierbei ein Platzhalter für
+ *    die aktuelle Länge des Wertes des atomaren Platzhalters
+ *    nach Anwendung der vor der aktuellen Funktion aufgeführten
+ *    Funktionen.
+ *    LEN wird aktuell zuverlässig nur auf initalen Platzhaltern unterstützt.
+ *    Aufgrund innerer Migrationen nutzen viele Funktioen eine Konstante Abbildung,
+ *    die NUM auf 1 setzt (insbesondere *format* funtionen. Daher in komplexeren Szenarien
+ *    bitte zunächst testen, ob die LEN-"Funktion" verfügbar ist. Die Beschränkungen sind noch
+ *    folgen der alten Zielsprchen-Replacer, die inzwischen nicht mehr unterstützt werden. Bei
+ *    einer Reimplementierung der Template-Klasse würde das zu erheblichen Vereinfachungen führen
+ *    Als 'Zahl' sind nur positive Zahlen zulässig.
+ * &nbsp;
+ * 
+ * &lt;rnum&gt;:
+ *    Gegenüber der &lt;lnum&gt; kann &lt;rnum&gt; ein positives oder negatives
+ *    Vorzeichen besitzen. &lt;rnum&gt; bezeichnet immer eine Länge.
+ *    Ohne Vorzeichen bezeichnet es eine exakte Länge, mit negativem
+ *    Vorzeichen eine Maximallänge, mit positivem Vorzeichen eine
+ *    Minimallänge.
+ * &nbsp;
+ * 
+ * copyStr( [ &lt;lnum&gt;[, &lt;lnum&gt; ] ] ): (Alias: substr)
+ *    Kopiert aus dem aktuellen Wert (Zeichenkette) die von der mit dem
+ *    ersten Parameter angegebenen Position (inklusive) bis zur im zweiten
+ *    Parameter angegebenen letzten Position (exklusive) und verwirft den
+ *    restlichen Wert. Default fuer den zweiten Parameter is full length of the string.
+ *    Folgende Werte sind identisch:
+ * &nbsp;
+ *    [VAL]  [VAL.copy(0)]  [VAL.copy(0,LEN)]  [VAL.copy(0,LEN+0)]  [VAL.copy(0,LEN-0)]
+ * &nbsp;
+ *    Beispiele:
+ * &nbsp;
+ * 
+ * escape( &quot;&lt;string&gt;&quot; ):
+ *    Escapt den aktuellen Wert f&uuml;r die spezifizierte Zielsprache. Z.Z. unterst&uuml;tzte
+ *    "ESCAPE"s sind: URL, SQL, HTML, HTML_NOT_LF, JS, XML. Das Ergebnis wird als Konstante
+ *    (also als ein Zeichen) zur&uuml;ckgekiefert.
+ * &nbsp;
+ * [VAL] [VAL.escape(&quot;HTML&quot;)] [VAL.escape(&quot;URL&quot;)]
+ * &nbsp;
+ * 
+ * trim( [&lt;dir&gt;] ):
+ *    Soweit &lt;dir&gt; angegeben wurde werden entweder auf der linken Seite (L)
+ *    oder der rechten Seite (R) alle Leerzeichen abgeschnitten. Ist &lt;dir&gt;
+ *    nicht angegeben werden die Leerzeichen beidseitig abgeschnitten:
+ * &nbsp;
+ *    [VAL]    [VAL.trim()]    [VAL.trim(L)]  [VAL.trim(R)]
+ *    &quot;  XY &quot;  &quot;XY&quot;            &quot;XY &quot;          &quot;  XY&quot;
+ * &nbsp;
+ * 
+ * upper():
+ *    Konvertiert alle Zeichen in Großbuchstaben.
+ * &nbsp;
+ * 
+ * lower():
+ *    Konvertiert alle Zeichen in Kleinbuchstaben.
+ * &nbsp;
+ * 
+ * clear( [&quot;&lt;string&gt;&quot;[,...]] ):
+ *    L&ouml;schen von bestimmten Werten.
+ * &nbsp;
+ *    [VAL]    [VAL.clear("XY","YY")]
+ *    "XXYY"   "XXYY"
+ *    "XY"     ""
+ *    "YY"     ""
+ * &nbsp;
+ * 
+ * embed( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;] ):
+ *    Fügt den ersten (konstanten) String vor dem, den zweiten (konstanten) String hinter
+ *    dem aktuellen Wert ein. Ist nur der erste String angegeben, wird der aktuelle String
+ *    nur durch den neuen String ersetzt.Die Strings werden jeweils als ein Zeichen betrachtet
+ *    (und nur wirklich eingesetzt, wenn sie nicht leer sind). Die Länge
+ *    vergrößert sich also um 0, 1 oder 2.
+ *    Sinnvoll läßt sich die Funktion verwenden, wenn ganze Blöcke ausgeblendet werden
+ *    sollen, sobald ein Wert nicht gesetzt ist. Während das TeX-Template
+ *    Mobil: & [MOBILE] \\\\
+ *    auf jeden Fall eine Ausgabe erzeugt (wobei dann die zweite Spalte
+ *    ggf. leer ist), wird bei
+ *    [MOBILE.embed( &quot;Mobil: &&quot;, &quot;\\\\&quot;)]
+ *    keine Ausgabe-Zeile erzeugt, wenn MOBILE nicht gesetzt worden ist.
+ * &nbsp;
+ *    [VAL]  [VAL.embed( &quot;a&quot; )]  [VAL.embed( &quot;&quot;, &quot;b&quot; )]  [VAL.embed( &quot;a&quot;, &quot;b&quot; )]
+ *    &quot;xy&quot;   &quot;a&quot;                 &quot;xyb&quot;                   &quot;axyb&quot;
+ * &nbsp;
+ * 
+ * embedT( &quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;] ):
+ *    Fügt den ersten String vor dem, den zweiten String hinter dem aktuellen
+ *    Wert ein. Ist nur der erste String angegeben, wird der aktuelle String
+ *    nur durch den neuen String ersetzt. Die Strings werden jeweils als Template-String
+ *    betrachtet (und nur wirklich eingesetzt, wenn sie nicht leer sind).
+ *    Sinnvoll läßt sich die Funktion verwenden, wenn ganze Blöcke ausgeblendet werden
+ *    sollen, soweit ein Wert nicht gesetzt ist. embedT(...) verhält sich identisch zu embed(...),
+ *    nur das der Prefix und Postfix nicht als Konstanten, sondern als Template-Strings eingesetzt
+ *    und somit ebenfalls expandiert werden. Im Beispiel sei [A] als 1 und [B] als 2 definiert:
+ * &nbsp;
+ *    [VAL]  [VAL.embedT( &quot;a&quot; )]  [VAL.embedT( &quot;&quot;, &quot;b&quot; )]  [VAL.embedT( &quot;[A][B]&quot;, &quot;[B]&quot; )]
+ *    &quot;xy&quot;   &quot;a&quot;                 &quot;xyb&quot;                   &quot;12xy2&quot;
+ * &nbsp;
+ * 
+ * default( &quot;&lt;string&gt;&quot; ):
+ *    Setzt als aktuellen (konstanten) String den als Parameter angegebenen String ein, soweit der aktuelle String leer ist.
+ * &nbsp;
+ *    [VAL]  [VAL.default( &quot;0&quot; )]
+ * &nbsp;
+ * 
+ * defaultT( &quot;&lt;string&gt;&quot; ):
+ *    Setzt als aktuellen (Template-)String den als Parameter angegebenen String ein, soweit der aktuelle String leer ist.
+ * &nbsp;
+ *    [VAL]  [VAL.defaultT( &quot;[VAL2.lower()]&quot; )]
+ * &nbsp;
+ * 
+ * lpad( &lt;num&gt;, &quot;&lt;string&gt;&quot; ):
+ *    Soweit der aktuelle String nicht leer ist und die L&auml;nge des Strings kleiner der als ersten Parameter angegebenen L&auml;ge ist,
+ *    wird der als zweite Parameter angegebene (konstante) String (als Representant für ein Zeichen) entsprechend oft LINKSSEITIG eingesetzt.
+ * &nbsp;
+ *    [VAL]  [VAL.lpad( &quot;0&quot; )]
+ * &nbsp;
+ * 
+ * rpad( &lt;num&gt;, &quot;&lt;string&gt;&quot; ):
+ *    Soweit der aktuelle String nicht leer ist und die L&auml;nge des Strings kleiner der als ersten Parameter angegebenen L&auml;ge ist,
+ *    wird der als zweite Parameter angegebene (konstante) String (als Representant für ein Zeichen) entsprechend oft RECHTSSEITIG eingesetzt.
+ * &nbsp;
+ *    [VAL]  [VAL.lpad( &quot;0&quot; )]
+ * &nbsp;
+ * 
+ * assign( [&quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;]] ):
+ *    Weist den aktuellen bzw. ersten String dem aktuellen bzw. über den zweiten String
+ *    spezifizierten Template zu.
+ *    Ist der aktuelle String leer, wird das spezifizierte Template gel&ouml;scht.
+ *    Rückgabewert: &quot;&quot;
+ * &nbsp;
+ *    [VAL]  [VAL.assign( &quot;abc&quot; )]  [VAL.assign( &quot;abc&quot;, &quot;VV&quot; )]  [VAL.assign()]
+ *    &quot;xy&quot;   &quot;&quot;                     &quot;&quot;                           &quot;&quot;
+ * &nbsp;
+ * 
+ * cassign( [&quot;&lt;string&gt;&quot;[, &quot;&lt;string&gt;&quot;]] ):
+ *    Weist den aktuellen bzw. ersten String dem aktuellen bzw. über den zweiten String
+ *    spezifizierten Template zu, soweit der aktuelle String nicht leer ist.
+ *    Ist der erste String leer, wird das spezifizierte Template gel&ouml;scht (soweit
+ *    der aktuelle String nicht leer ist).
+ *    Rückgabewert: &quot;&quot;
+ * &nbsp;
+ *    [VAL]  [VAL.cassign( &quot;abc&quot; )]  [VAL.cassign( &quot;abc&quot;, &quot;VV&quot; )]  [VAL.cassign()]
+ *    &quot;xy&quot;    &quot;&quot;                       &quot;&quot;                              &quot;&quot;
+ * &nbsp;
+ * 
+ * encrypt( [ &lt;lnum&gt;[, &lt;lnum&gt; ] ] ):
+ *    Verschl&uuml;sselt den aktuellen Wert (Zeichenkette) und schneidet den angegebenen
+ *    Bereich aus dem Schl&uuml;ssel aus (siehe auch copy(...)). Das Ergebnis wird als "1 Zeichen"
+ *    gewertet.
+ * &nbsp;
+ * 
+ * code():
+ *    Codiert/Decodiert den aktuellen Wert (Zeichenkette) um einen einfachen (Sicht)schutz für Passwörter zu erhalten. 
+ * &nbsp;
+ * 
+ * encodeBase64( [ &lt;num&gt; ] ):
+ *    Codiert den aktuellen Wert (Zeichenkette) mit Base64. Optional kann die Zahl der Zeichen angegeben werden, nach dem jeweils
+ *    ein LF einzufügen ist (default: keine LF)
+ * &nbsp;
+ * 
+ * decodeBase64():
+ *    Decodiert den aktuellen Wert (Zeichenkette) mit Base64. 
+ * &nbsp;
+ * 
+ * inc( [&lt;lnum&gt;[, &quot;&lt;string&gt;&quot;]] ):
+ *    Inkrementiert den Wert des aktuellen bzw. über den String spezifizierten
+ *    Templates um &lt;lnum&gt; (default: 1).
+ *    Rückgabewert: &quot;&quot;
+ * &nbsp;
+ *    [VAL]  [VAL.inc()]  [VAL.inc( 5 )]  [VAL.inc( LEN, &quot;COUNTER&quot;)]
+ *    &quot;0&quot;    &quot;&quot;           &quot;&quot;              &quot;&quot;
+ * &nbsp;
+ * 
+ * dec( [&lt;lnum&gt;[, &quot;&lt;string&gt;&quot;]] ):
+ *    Dekrementiert den Wert des aktuellen bzw. über den String spezifizierten
+ *    Templates um &lt;lnum&gt; (default: 1).
+ *    Rückgabewert: &quot;&quot;
+ * &nbsp;
+ *    [VAL]  [VAL.dec()]  [VAL.dec( 5 )]  [VAL.dec( LEN, &quot;COUNTER&quot;)]
+ *    &quot;0&quot;    &quot;&quot;           &quot;&quot;              &quot;&quot;
+ * &nbsp;
+ * 
+ * formatDate( [&quot;&lt;string&gt;&quot;][, [&quot;&lt;string&gt;&quot;][, &quot;&lt;string&gt;&quot;]]] )
+ *    Parst ein Datum mit Hilfe von java.text.DateFormat mit dem als ersten Parameter angegebenen String
+ *    (ist dieser nicht angegeben, wird das Datum ohne Formatter erzeugt, notigwendiges Format: YYYY-MM-DD hh:mm:ss.p ODER YYYY-MM-DD),
+ *    modifiziert das Datum über den als dritten Parameter angegebenen String (Modifier, soweit angegeben) und formatiert
+ *    anschließend das Datum wieder mit Hilfe von DateFormat under Verwendung des als zweiten Parameter angegebenen Strings
+ *    als FormatString (soweit nicht angegeben, wird ein .toString() verwendet, Ergebnisformat: YYYY-MM-DD hh:mm:ss.p).
+ *    Der Modifier ist eine Kette atomarer Modifizierungen der Form (+|-)&lt;number&gt;(y|M|w|d|H|m|s|S). Die Buschstaben
+ *    haben hierbei folgende Bedeutung (siehe auch Dokumentation von java.text.SimpleDateFormat):
+ *      y - years
+ *      M - months
+ *      w - weeks
+ *      d - days
+ *      H - hours
+ *      m - minutes
+ *      s - seconds
+ *      S - milliseconds
+ *   Wird als erster Parameter (Parse-String) "~" angegeben, so wird als Timestamp die aktuelle Zeit des Systems verwendet.
+ * &nbsp;
+ * 
+ * formatNumber( [&quot;&lt;string&gt;&quot;][, &quot;&lt;string&gt;&quot;] ):
+ *    Formatiere eine Zahl mit einem BigDecimalFormater, Formatstring: siehe java.text.DecimalFormat[Symbols].
+ *    Die Zahl wird mit Hilfe des ersten Strings in ein BigDecimal geparst. Wurde der erste String nicht angegeben, so wird
+ *    versucht, direkt einen BigDecimal von dem String zu erzeugen (erforderliches Format z.B. 1232 oder -1244.99). Anschließend
+ *    wird der BigDecimal mit hilfe des zweiten Strings formatiert. Wurde der zweite String nicht spezifiziert, so wird der
+ *    BigDecimal mit toString() wieder in eine Zeichenkette umgewandelt. Am Anfang kann eines jeden Strings kann im toString-Format
+ *    von Locales die jeweils fürs parsen und formatieren zu verwendende Locale spezifiziert werden (z.b. de_DE oder en_US) abgetrennt
+ *    mit einem Doppelpunkt. Hierbei MÜSSEN die Sprache UND das LAnd angegeben werden! Prefixes/Suffixes, Exponenten und Subpatterns
+ *    werden nicht unterstützt, dafür aber variable Nachkommastellen und verlustfreies parsen von BigDecimals.
+ * &nbsp;
+ *    [VAL]       [VAL.formatNumber( &quot;de_DE: ,###.##&quot;, &quot;en_US: 0.000##&quot; )]
+ *    12.200,99   12200.990
+ * &nbsp;
+ * 
+ * switch( &quot;&lt;string1&gt;&quot;[, &quot;&lt;string2&gt;&quot;[...]] ):
+ *    Ersetzt den aktuellen String durch den Inhalt des durch den ersten String spezifizierten
+ *    Templates-Platzhalters (eingeschlossen in eckigen Klammern) bzw. Text. Wird ein zweiter
+ *    String angegeben, findet die Ersetzung nur statt, soweit der im zweiten Parameter spezifizierte
+ *    String dem aktuellen String entspricht. Es k&ouml;nnen beliebig viele Wertepaare angegeben
+ *    werden. Der Vergleich wird für die Wertepaare fortgesetzt, solange noch kein passender Eintrag
+ *    gefunden wurde. Ist für den letzten Eintrag keine Bedingung angegeben, findet die Ersetzung nur statt,
+ *    soweit der aktuelle String nicht leer ist (und nat&uuml;rlich auch keine vorhergehende Spezifikation
+ *    zutraf). Wird kein "erster Parameter" (string1, Template-Platzhalter oder Text) angegeben, so wird
+ *    der aktuelle Text durch diesen Eintrag gesch&uuml;tzt (bleibt also unver&auml;ndert), soweit der zweite
+ *    String (string2, Bedingung) dem aktuellen entspricht. Sollte als erster String ein Text angegeben werden,
+ *    sind in diesem die Klammern für Templateplatzhalter (sowie das Escape-Zeichen) zu escapen (BACKSLASH).
+ *    Werden mit einem Template-Platzhalter Funktionen mit String-Parametern angegeben, sind die
+ *    Anführungsstriche zu escapen.
+ * &nbsp;
+ *    [VAL]  [VAL2]  [VAL3]  [VAL.switch( &quot;[VAL2]&quot; )]  [VAL.switch( &quot;[VAL2]&quot;, &quot;xy&quot;, &quot;[VAL3]&quot; )] [VAL.switch( &quot;TEST&quot;, &quot;xx&quot;, &quot;[VAL2]&quot;, &quot;yy&quot;, &quot;[VAL3.clear(\&quot;NULL\&quot;)]&quot; )]
+ *    &quot;xy&quot;   &quot;ab&quot;    &quot;11&quot;    &quot;ab&quot;                        &quot;ab&quot;                                       &quot;11&quot;
+ * &nbsp;
+ * 
+ * switchT( &quot;&lt;string1&gt;&quot;[, &quot;&lt;string2&gt;&quot;[...]] ):
+ *    Wie switch(...), allerdings wird der zweite Parameter ebenfalls als Template betrachtet. 
+ * &nbsp;
+ *    [VAL]  [VAL2]  [VAL3]  [VAL.switchT( &quot;[VAL2]&quot; )] [VAL.switchT( &quot;[VAL2]&quot;, &quot;[VAL4]&quot;, &quot;[VAL3]&quot; )] [VAL.switchT( &quot;TEST&quot;, &quot;xx&quot;, &quot;[VAL2]&quot;, &quot;[VAL4]&quot;, &quot;[VAL3.clear(\&quot;NULL\&quot;)]&quot; )]
+ *    &quot;xy&quot;   &quot;ab&quot;    &quot;11&quot;    &quot;ab&quot;                        &quot;ab&quot;                                       &quot;11&quot;
+ * &nbsp;
+ * 
+ * replaceStr( &quot;&lt;string1&gt;&quot;[, &quot;&lt;string2&gt;&quot;[...]] ):
+ *    replaces any occurrenc of a first parameter as substring (constant) by the second parameter as replacement string (constant).
+ * &nbsp;
+ *    [VAL]  [VAL.replaceStr( &quot;x&quot;, &quot;a&quot;, &quot;y&quot;, &quot;b&quot; )]
+ *    &quot;sxyt&quot; &quot;sabt&quot;
+ * &nbsp;
+ *    
+ * replaceStrT( &quot;&lt;string1&gt;&quot;[, &quot;&lt;string2&gt;&quot;[...]] ):
+ *    replaces any occurrenc of a first parameter template as substring (template) by the second parameter template as replacement string (template).
+ * &nbsp;
+ *    [VAL]  [V1]  [V2]  [VAL.replaceStrT( &quot;[V1]&quot;, &quot;[V2]&quot;, &quot;y&quot;, &quot;b&quot; )]
+ *    &quot;sxyt&quot; &quot;a&quot;   &quot;x&quot;   &quot;sabt&quot;
+ * &nbsp;
+ *    
+ * keep( &quot;&lt;string1&gt;&quot; ):
+ *    keep only characters occuring at the first string (constant).
+ * &nbsp;
+ *    [VAL]  [VAL.keep( &quot;x&quot; )]
+ *    &quot;sxyt&quot; &quot;x&quot;
+ * &nbsp;
+ *    
+ * keepT( &quot;&lt;string1&gt;&quot; ):
+ *    keep only characters occuring at the first string (template).
+ * &nbsp;
+ *    [VAL]  [V1]  [VAL.keepT( &quot;[V1]&quot; )]
+ *    &quot;sxyt&quot; &quot;x&quot;   &quot;x&quot;
+ * &nbsp;
+ *    
+ * filter( &quot;&lt;string1&gt;&quot; ):
+ *    filter all characters occuring at the first string (constant).
+ * &nbsp;
+ *    [VAL]  [VAL.filter( &quot;x&quot; )]
+ *    &quot;sxyt&quot; &quot;syt&quot;
+ * &nbsp;
+ *    
+ * filterT( &quot;&lt;string1&gt;&quot; ):
+ *    filter all characters occuring at the first string (template).
+ * &nbsp;
+ *    [VAL]  [V1]  [VAL.filterT( &quot;[V1]&quot; )]
+ *    &quot;sxyt&quot; &quot;syt&quot;   &quot;x&quot;
+ * &nbsp;
+ *    
+ * split( &quot;&lt;string1&gt;&quot;,&lt;num&gt; ):
+ *    Splittet den aktuellen String anhand der angegebenen Zeichenkette (string1, konstant) und liefert das angegebene
+ *    Fragment (num) zur&uuml;ck (Indizierung beginnend mit 0).
+ * &nbsp;
+ *    [VAL]   [VAL.split( &quot;&colon;&quot;, 1 )]
+ *    &quot;xy&colon;ab&quot; &quot;ab&quot;
+ * &nbsp;
+ * 
+ * splitT( &quot;&lt;string1&gt;&quot;,&lt;num&gt; ):
+ *    Splittet den aktuellen String anhand des angegebenen Templates (string1) und liefert das angegebene
+ *    Fragment (num) zur&uuml;ck (Indizierung beginnend mit 0).
+ * &nbsp;
+ *    [VAL]   [VAL2] [VAL.splitT( &quot;[VAL2]&quot;, 1 )]
+ *    &quot;xy&colon;ab&quot; &quot;&colon;&quot;    &quot;ab&quot;
+ * &nbsp;
+ * 
+ * multiExpand( &quot;&lt;string&gt;&quot;[, [&quot;&lt;string&gt;&quot;[, [&quot;&lt;string&gt;&quot;[, [&quot;&lt;string&gt;&quot;...]]]] )
+ *   Expands the template specified as first string based on the current value/object as array, once for each element.
+ *   The Array may be any ArrayList, Object[], String[] or String (elements received by splitting the string using the delimiter
+ *   specified as second String, default is | - for use with TemplateTestPage only) concatenating each expansion with the 3rd string
+ *   as concatenator between. Additional variables to be interpreted as Arrays may be specified as 4th, 5th, etc. parameter, to be looped/iterated
+ *   synchronously with the current Array. Any other variables are available to, but constant, not iterated. If the template parameter starts with
+ *   ^ (not ^^), it's first expanded in the local environment, then the prefix behind the ^ up to the colon : is interpreted as resource spec to get
+ *   an external template from (currently supported only CFG: as resource spec. - full parameter spec. - to load a template from the ConfigMap), and
+ *   start the expansions for each array element on it, example: "^CFG:report.tooltiprow.[DESTLANG]" to ref a template for a tooltip row spec. at the
+ *   CfgMap. ^^ at the start of the first (template) parameter reduces to ^ disabling the external template lookup feature.
+ *   NEW: Multiple character delimiters now allowed/supported! NEW: If the delimiter string starts with &lt;* and ends with *&gt;, each character
+ *   in between represents an alternate delimiter character. Multiple empty aray elements are omitted then (multiple delimiter characters are
+ *   interpreted as one delimiter character, no empty leading/trailing element)
+ * &nbsp;
+ *   [LIKE_EXPR.multiExpand("    ( t2.name   [LIKE_NOT.switch(\"NOT\",\"-\",\"   \",\"+\",\"\")] LIKE    '[LIKE_EXPR]%'  )",," OR ","LIKE_NOT").embed("  ( ","    )")]
+ *   (     ( t2.name       LIKE    'BAY%'  ) OR
+ *         ( t2.name   NOT LIKE    'SCHE%' ) OR
+ *         ( t2.name       LIKE    'BMS%'  ) OR
+ *         ( t2.name   NOT LIKE    'LAN%'  )    ) AND
+ *   [LIKE_NOT] is an Array of "+" and "-" Strings, [LIKE_EXPR] is an Array of Prefix-Strings "BAY","SCHE",....
+ * &nbsp;
+ * 
+ * calc():
+ *    calc a math expresion from the current value using NumberTool.calculate().
+ * &nbsp;
+ *    [V1]  [V1.calc()]
+ *    &quot;7 * 2 + 5&quot; &quot;19&quot;
+ * &nbsp;
+ *    
+ * lookup():
+ *    Looks up the current value as variable name and replaces the name as current value by the variables value specified by.
+ * &nbsp;
+ *    [VAL]   [VAL2]  [VAL.lookup()]
+ *    "VAL2"  "XY"    "XY"
+ * &nbsp;
+ * 
+ * check( &lt;operator&gt;, &lt;string&gt; ):
+ *    Check prüft ist (wie auch and(), or() und not()) einem bool'schen Ausdruck nachempfunden. Diese Ausdrücke gelten als "falsch",
+ *    wenn sie leer sind und als "wahr" wenn sie nicht leer sind (analog zum Verhalten existenter Funktionen, wie z.B. embed() und cassign().
+ *    check() prüft den aktuellen Wert gegen eine zweiten Wert (konstant oder Template-Platzhalter mit Funktionsanhang) mit Hilfe des als
+ *    ersten Wert angegebnen Bedingungsoperators.
+ *    Operatoren sind: ==, !=, &lt;, &gt;, &lt;=, &gt;= und aus kompatiebilitätsgründen auch noch = und &lt;&gt;.
+ *    Die Funktion liefert als aktuellen Wert true (also "x") zurück, wenn die Bedingung erfüllt ist, ansonsten false (also "");
+ * &nbsp;
+ *    [VAL.check( &quot;==&quot;, &quot;5&quot; )]   [VAL.check( &quot;!=&quot;, &quot;[VAL2.trim()]&quot; )]
+ *
+ * and( &lt;string&gt;[, &lt;operator&gt;, &lt;string&gt;] ):
+ *    and() ist sehr ähnlich der check() Funktion. Sie prüft einen als ersten Wert angegebenen konstanten String oder Template-Platzhalter
+ *    mit Funktionsanhang gegen einen als dritten Wert angebenen entsprechenden String mit einem als zweiten Wert angegebenen Bedingungsoperator,
+ *    Ist die Bedingung erfüllt UND auch der aktuelle Wert nicht leer, wird true (also "x") zurückgegeben.
+ *    Soweit nur der erste Wert (String) als Parameter angegeben wird, beschränkt sich die Prüfung darauf, ob der aktuelle Wert UND der als
+ *    Parameter angegebene Wert (Ausdruck) beide nicht leer sind
+ * &nbsp;
+ *    [VAL.and( &quot;[VAL2]&quot;, &quot;==&quot;, &quot;5&quot; )]   [VAL.and( &quot;[VAL3]&quot;, &quot;!=&quot;, &quot;[VAL2.trim()]&quot; )]
+ * 
+ * or( &lt;string&gt;[, &lt;operator&gt;, &lt;string&gt;] ):
+ *    Verhält sich äquvalent zu and() - es gibt true zurück wenn der aktuelle Wert nicht leer (true) ist ODER die angegebnene Bedingung erfüllt ist.
+ * &nbsp;
+ *    [VAL.or( &quot;[VAL2]&quot;, &quot;==&quot;, &quot;5&quot; )]   [VAL.or( &quot;[VAL3]&quot;, &quot;!=&quot;, &quot;[VAL2.trim()]&quot; )]
+ *
+ * not():
+ *    not() negiert einen aktuellen Ausdruck, gibt also true ("x") zurück, wenn der aktuelle Wert leer ist und false (""), soweit er nicht leer ist.
+ * &nbsp;
+ *    [VAL.not()]
+ * &nbsp;
+ * </PRE>
+ */
+
+public class Template {
+
+	  /** max count for recoursive loops */
+	  public static int  MAXLP      = 10;
+
+	  // FIXME: workaround - this is just a dirty, temporary workaround!
+	  public static boolean expandDirty  = false;
+	  public        boolean thisNotDirty = false;
+	  /** Constants for parsing conditioned Definitions. */
+	  protected static final String D_IF = "IF";
+	  protected static final String D_TH = "THEN";
+	  protected static final String D_OW = "OTHERWISE";
+	  protected static final int    L_IF = D_IF.length();
+	  protected static final int    L_TH = D_TH.length();
+	  protected static final int    L_OW = D_OW.length();
+	  protected static final String KNOWNCOMP = "$<$<=$==$>=$>$!=$";
+
+
+	  /*
+	  public static void main( String args[] ) {
+	    String filename = null;
+	    String template;
+	    String result;
+	    Hashtable debug_templs;
+	    Template temp;
+	    byte [] input = null;
+
+	    Parameters.defineArguments( args );
+	    Template.parseConditionedDefinition( "{[VALUE.xxx(\"\\{yyy\\}\")]}" );
+	    Template.parseConditionedDefinition( "if ( [NAME] == \"Frank\" ) { Hallo } otherwise {}" );
+	    Template.parseConditionedDefinition( "if ( [NAME] <= \"Frank\" ) { Hallo } if ( [NAME] != \"Bernd\" ) { Hi! } otherwise {}" );
+	    filename = Parameters.getFilename("file");
+	    Dbg.get().println( Dbg.INFO, Template.class, null, "filename '"+filename+"'");
+	    if  ( filename != null )  {
+	      try {
+		Dbg.get.()println( Dbg.INFO, Template.class, null, "Suche Datei '"+filename+"'");
+		input = IOTools.readFile ( filename );
+	      }
+	      catch ( java.io.IOException e ) {
+		Dbg.get().println( Dbg.EXCEPTION, Template.class, null, "Kann  Datei '"+filename+"'nicht lesen");
+		Dbg.get().printException( Template.class, null, e );
+		System.exit(1);
+	      }
+	      debug_templs = new Hashtable();
+	      debug_templs.put("EINS","0123456789,abcdefghij");
+	      debug_templs.put("ZWEI","0123456789");
+	      debug_templs.put("DREI","   DREI   ");
+	      debug_templs.put("VIER","expanded_VIER");
+	      debug_templs.put("FUENF","AABBCC");
+	      debug_templs.put("EMPTY","");
+
+	      Vector testV = new Vector();
+	      
+	      Hashtable h_multi_test1 = new Hashtable ();
+	      h_multi_test1.put("COL1","Elem_1");
+	      h_multi_test1.put("COL2","Elem_2");
+	      h_multi_test1.put("COL3","Elem_3");
+	      
+	      Hashtable h_multi_test2 = new Hashtable ();
+	      h_multi_test2.put("COL1","Elem_4");
+	      h_multi_test2.put("COL2","Elem_5");
+	      h_multi_test2.put("COL3","Elem_6");
+	      
+	      Hashtable h_multi_test3 = new Hashtable ();
+	      h_multi_test3.put("COL1","Elem_7");
+	      h_multi_test3.put("COL2","Elem_8");
+	      h_multi_test3.put("COL3","Elem_9");
+	      
+	      testV.addElement(h_multi_test1);
+	      testV.addElement(h_multi_test2);
+	      testV.addElement(h_multi_test3);
+	      
+	      VectorEIterator testEIterator = new VectorEIterator( testV );
+	      
+	      MultiTemplate multi = new MultiTemplate ("[COL1][COL2][COL3][EMPTY][ZWEI]",testEIterator );
+	      
+	      debug_templs.put("MULTI",multi );
+
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "lese  Datei '"+filename+"'");
+	      template = new String ( input );
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "Datei '"+filename+"' ist fertiger String");
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "Erzeuge Template...");
+	      temp = new Template( template , debug_templs, new TemplateStringReplacer(), null );
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "Template fertig...");
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "Start Expansion...");
+	      result = temp.expand ( new TemplateStringReplacer() );
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "Ende Expansion:");
+	      //      Dbg.get().println( Dbg.BIGINFO, Template.class, null, Debug.toString( temp.expDef ) );
+	      String output  = Parameters.getFilename("output");
+	      if ( output != null )
+		Dbg.get().println( Dbg.BIGINFO, Template.class, null,"Ergebnis : \n"+result );
+	    } else 
+	      Dbg.get().println( Dbg.INFO, Template.class, null, "Keine Argumente gefunden !");
+	  }
+	*/
+	  /**
+	   * internal Variables
+	   */
+
+	  /** Ref to the Talend contexts. */
+	  protected Properties cContext = null;
+	  
+	  /** Ref to the Talend global variables. */
+	  protected Map<String, Object> cGloVars = null;
+	  
+
+	  /** Marker for to use for expansions causing a RuntimeException. */
+	  //public static String RUNTIMEEX=null;
+
+	  /** The Definition to be expanded. */
+	  protected String[] definition;
+
+	  /** The Definition used on Expanding (expandToArray()-synchronized access). */
+	//  protected String[] expDef;
+
+	  /** The Templates defined. */
+	  protected Hashtable templates;
+
+	  /**  static: Locale-dependant stuff for Number-Formating only. */
+	  protected static DecimalFormatSymbols decFormSymb = null;
+	  protected static char dSep;
+	  protected static char tSep;
+	  protected static Locale locale = null;
+
+	  /** Legal Characters for Filenames. */
+	  public static String legalFilenameChars  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+
+	  /** Replace-Character for illegal Characters in Filenames. */
+	  public static char   filenameReplaceChar = '_';
+
+	  /** Character for starting a Template-Specification. */
+	  public static final char   tso = '[';
+
+	  /** Character for ending a Template-Specification. */
+	  public static final char   tsc = ']';
+
+	  /** Character for enabling a synch. MultiTemplate-Expansion. */
+	  public static final char   smt = '*';
+
+	  /** Character for starting a function within a Template-Specification. */
+	  public static final char   tsf = '.';
+
+	  /** Character for starting a Parameter-List of a Function. */
+	  public static final char   fpo = '(';
+
+	  /** Character for ending a Parameter-List of a Function. */
+	  public static final char   fpc = ')';
+
+	  /** Character for separating Parameters of a Parameter-List. */
+	  public static final char   fps = ',';
+
+	  /** Character for enclosing Strings as Parameter. */
+	  public static final char   sec = '"';
+
+	  /** Esc-Character (next Character not interpreted. */
+	  public static final char   esc = '\\';
+	  
+	  /** Keyword for Length , recgognized uppercase / lowercase */
+	  public static final String len = "LEN";
+	    
+	  /** the server resolving TemplateElementRequests. */
+	  protected TemplateElementRequest requestServer = null;
+
+	  /** the general data required by the request-server for resolving the requests. */
+	  protected Object                 requestData   = null;
+
+	  /** the Locale to be used when formatting values. */
+	  public Locale formatterLocale = null;
+
+
+
+	  /**
+	   * Fast and easy-to-use Template-Expansion using static replacements.
+	   * further description: see class definition.
+	   * Example:<PRE>
+	   * Template.expand( '[DATE] - [TIME]   Customer No. [NO] (Name: [NAME]) deleted \[unrecoverable\]',
+	   *                  new Object[] { new IoSDate(), new IoSTime(), customer.getNumber(), customer.getShortname() },
+	   *                  new String[] { 'DATE',        'TIME',        'NO',                 'NAME'                  }  );
+	   * </PRE>
+	   * @param definition the Definition-String for the Template.
+	   * @param pReplacements optional key/value list of individual replacements, using the propper KeyVal instances/subclasses of KeyVal for required destination escapings, may be null.
+	   * @return the expanded definition.
+	   */
+	  public static String expand( String definition, KeyVal[] replacements ) {
+	    return expand( definition, replacements, null, null, null, null );
+	  }
+
+
+	  /**
+	   * Fast and easy-to-use Template-Expansion for context based expansions.
+	   * further description: see class definition.
+	   * Example:<PRE>
+	   * Template.expand( '[DATE] - [TIME]   Customer No. [NO] (Name: [NAME]) deleted \[unrecoverable\]',
+	   *                  new Object[] { new IoSDate(), new IoSTime(), customer.getNumber(), customer.getShortname() },
+	   *                  new String[] { 'DATE',        'TIME',        'NO',                 'NAME'                  }  );
+	   * </PRE>
+	   * @param definition the Definition-String for the Template.
+	   * @parma pContext optional reference to contexts (dynamic access), may be null.
+	   * @return the expanded definition.
+	   */
+	  public static String expand( String definition, Properties pContext ) {
+	    return expand( definition, null, pContext, null, null, null );
+	  }
+
+
+	  /**
+	   * Fast and easy-to-use Template-Expansion using static replacements as well as contexts.
+	   * further description: see class definition.
+	   * Example:<PRE>
+	   * Template.expand( '[DATE] - [TIME]   Customer No. [NO] (Name: [NAME]) deleted \[unrecoverable\]',
+	   *                  new Object[] { new IoSDate(), new IoSTime(), customer.getNumber(), customer.getShortname() },
+	   *                  new String[] { 'DATE',        'TIME',        'NO',                 'NAME'                  }  );
+	   * </PRE>
+	   * @param definition the Definition-String for the Template.
+	   * @param pReplacements optional key/value list of individual replacements, using the propper KeyVal instances/subclasses of KeyVal for required destination escapings, may be null.
+	   * @parma pContext optional reference to contexts (dynamic access), may be null.
+	   * @return the expanded definition.
+	   */
+	  public static String expand( String definition, KeyVal[] replacements, Properties pContext ) {
+	    return expand( definition, replacements, pContext, null, null, null );
+	  }
+
+
+	  /**
+	   * Full featured expand-method, with access to static replacement definitions, contexts, global variables and optionally a lookup TemplateElementRequest.
+	   * further description: see class definition.
+	   * Example:<PRE>
+	   * Template.expand( '[DATE] - [TIME]   Customer No. [NO] (Name: [NAME]) deleted \[unrecoverable\]',
+	   *                  new Object[] { new IoSDate(), new IoSTime(), customer.getNumber(), customer.getShortname() },
+	   *                  new String[] { 'DATE',        'TIME',        'NO',                 'NAME'                  }  );
+	   * </PRE>
+	   * @param pDefinition the template definition to expand.
+	   * @param pReplacements optional key/value list of individual replacements, using the propper KeyVal instances/subclasses of KeyVal for required destination escapings, may be null.
+	   * @parma pContext optional reference to contexts (dynamic access), may be null.
+	   * @param pGloVars optional access to global variables, may be null.
+	   * @param pReq optional implementation of dynamic lookups, implementing an TemplateElementRequest instance, may be null.
+	   * @param pReqData optional additional controll/access data to be passed to your individual TemplateElementRequest instance, may be null.
+	   * @return an expanded definition string.
+	   */
+	  public static String expand( String pDefinition, KeyVal[] pReplacements, Properties pContext, Map<String, Object> pGloVars, TemplateElementRequest pReq, Object pReqData ) {
+		  return expandInt(pDefinition, pReplacements, pContext, pGloVars, pReq, pReqData);
+	  }
+	  
+	  
+	  /**
+	   * Protected internal Constructor.
+	   * @param pDef The template definition String to expand
+	   * @param pTempls Hashtable of static template variables.
+	   * @parma pContext optional reference to contexts (dynamic access), may be null.
+	   * @param pGloVars optional access to global variables, may be null.
+	   */
+	  protected Template( String pDef, Hashtable pTempls, Properties pContext, Map<String, Object>pGloVars ) {
+	    this( pDef );
+	    cContext = pContext;
+	    cGloVars = pGloVars;
+	    setTemplates( pTempls );
+	  }
+
+	  
+	  /**
+	   * Protected internal Constructor.
+	   * @param pDef The template definition String to expand
+	   */
+	  protected Template( String pDef ) {
+	    if (pDef == null)
+	      pDef = "";
+	    definition  = toStringArray( pDef );
+	    setTemplates( null );
+	    if ( decFormSymb == null ) {  // Late initialization due to possibly changed Default-Locale...
+	      decFormSymb = (locale == null) ? new DecimalFormatSymbols() : new DecimalFormatSymbols( locale );
+	      dSep = decFormSymb.getDecimalSeparator();
+	      tSep = decFormSymb.getGroupingSeparator();
+	    }
+	  }
+
+	  
+	  /**
+	   * Protected internal constructor.
+	   * @param wrkCopy
+	   * @param templs
+	   */
+	  protected Template( String[] wrkCopy, Hashtable templs ) {
+	    definition = wrkCopy;
+	    setTemplates( templs );
+	  }
+	// *                       formatrange([&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;]]]]])                     ||
+	// * &nbsp;
+	// * formatrange([&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;,[&quot;&lt;string&gt;&quot;]]]]])                     ||
+	// *    Formatiere einen Zahlenbereich mit BigDecimalFormater(n), Formatstrings: siehe DecimalFormat.
+	// *    Parameter: Werte-Formatstring, Faktoren-Formatstring, 3 Separatoren fuer Werteaufz&auml;hlung (;), Wertebereiche (-) und Faktoren (x).
+	// * &nbsp;
+	// *    (Beispiel z.Z. nicht verf&uuml;gbar)
+
+
+	  /**
+	   * Fast and easy method to get a replacement Hashtable from a String array of keys and an Object array of values.
+	   */
+	  private static Hashtable<String, Object> getReplacementHashtable( KeyVal[] replacements ) {
+		  Hashtable<String, Object> ht = new Hashtable<String, Object>( (replacements == null) ? 1 : replacements.length+1 );
+		  Object o;
+
+		  if (replacements != null) {
+			  for (int i=0; i<replacements.length; i++) {
+				  o = replacements[i].getValEscaped();
+				  if (o != null) {
+					  if ( o instanceof String[] ) { // reserved for internal representation (internal interface), so move to Object[]
+						  Object[] o2 = new Object[((String[])o).length];
+						  System.arraycopy((String[])o, 0, o2, 0, o2.length);
+						  o = o2;
+					  } else if ((o instanceof StringBuffer) || (o instanceof String)) {
+						  o = prepareForAtomicValue( o.toString() );
+					  }
+					  ht.put( replacements[i].getKey(), o );
+				  }
+			  }
+		  }
+		  return ht;
+	  }
+
+	  
+	  /**
+	   * internal expand-method.
+	   * @param pDefinition the template definition to expand.
+	   * @param pReplacements optional key/value list of individual replacements, using the propper KeyVal instances/subclasses of KeyVal for required destination escapings, may be null.
+	   * @parma pContext optional reference to contexts (dynamic access), may be null.
+	   * @param pGloVars optional access to global variables, may be null.
+	   * @param pReq optional implementation of dynamic lookups, implementing an TemplateElementRequest instance, may be null.
+	   * @param pReqData optional additional controll/access data to be passed to your individual TemplateElementRequest instance, may be null.
+	   * @return an expanded definition string.
+	   */
+	  static String expandInt( String pDefinition, KeyVal[] pReplacements, Properties pContext, Map<String, Object> pGloVars, TemplateElementRequest pReq, Object pReqData ) {
+	    return new Template( pDefinition, getReplacementHashtable( pReplacements ), pContext, pGloVars )
+	      .setRequestServer(pReq, pReqData)
+	      .expand();
+	  }
+	  
+	  
+	  /**
+	   * Expand as String.
+	   * @param pValueHash, key-value pairs, KEYS MUST BE UPPER CASE (autoconversion only on STATIC simple use convinience methods)
+	   * @param pEscapeReplacer
+	   * @return
+	   */
+	  /* currently not required
+	  private String expand( Hashtable pValueHash) { // synchronized
+	  	setTemplates( pValueHash );
+	  	return expand();
+	  }
+	  */
+	  	
+	  /**
+	   * Expand as String, no static replacements, only lookups by TER-Plugin / config injections/macros.
+	   */
+	  private String expand() {
+	    String res;
+	    String[] expDef = new String[ definition.length ];
+	    System.arraycopy( definition, 0, expDef, 0, definition.length );
+	    expDef = expandAsArrayN( expDef, true );
+	    res = replaceEscapes( expDef );
+	    expDef = null;
+	    return res;
+	  }
+
+	  
+	  /**
+	   * Internally check a condition.
+	   */
+	  protected boolean internalCheck( String v, String op, String v2, String func ) {
+	  	if ( "==".equals( op ) ) {
+	  		return v.equals( v2 );
+	  	} else if ( "!=".equals( op ) ) {
+	  		return !v.equals( v2 );
+	  	} else if ( "<".equals( op ) ) {
+	  		return ( v.compareTo( v2 ) < 0 );
+	  	} else if ( ">".equals( op ) ) {
+	  		return ( v.compareTo( v2 ) > 0 );
+	  	} else if ( "<=".equals( op ) ) {
+	  		return ( v.compareTo( v2 ) <= 0 );
+	  	} else if ( ">=".equals( op ) ) {
+	  		return ( v.compareTo( v2 ) >= 0 );
+	  	} else if ( "=".equals( op ) ) {
+	  		return v.equals( v2 );
+	  	} else if ( "<>".equals( op ) ) {
+	  		return !v.equals( v2 );
+	  	}
+	  	throw new TemplateSyntaxException( "Operator unknown/undefined in '" + func + "': '" + op +"'" );
+	  }
+	  
+	  /**
+	   * Internaly calculate a function-expression on a template name.
+	   */
+	  protected String[] internalExecTemplFunctions( String templExprV, Vector<String> activeTs, String func ) {
+	    templExprV = templExprV.substring(1, templExprV.length()-1);
+	    String[] templExpr = toStringArray( templExprV );
+	    int    nextPoint   = locateNextFunction( templExpr, 0, -1 ); // We support already functions even though the parser might not support them yet - but this should also come soon...
+	    String templName   = getString( templExpr, 0, nextPoint );
+	    if ( isSyncMT( templName ) ) {
+	      throw new TemplateSyntaxException( "Illegal argument in '" + func + "', Sync-Template-Spec not allowed as argument!" );
+	    }
+	    return expandTemplateSpec( templExpr, nextPoint, -1, templName, activeTs, true, false, null, null );
+	  }
+	  
+	  /** 
+	   * call ASSIGN-Method on template
+	   * ASSIGN assigns a value to a Template.
+	   */
+	  private final String[] execAssign( String templName, String[] value, Vector params ) {
+	    // parm 1 : String to be assigned (if undef, value is used).
+	    // parm 2 : Template to assign the value to (optional).
+	    int parmCount = params.size();
+	    String v = null;
+	    String e = null;
+
+	    if ( parmCount > 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'ASSIGN'");
+	    try {
+	      if ( parmCount > 0 )
+	        v = (String)params.elementAt(0);
+	      if ( parmCount > 1 )
+	        templName = ((String)params.elementAt(1)).toUpperCase();
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'ASSIGN'", c );
+	    }
+	    e = getString( value, 0, -1 );
+	    if (templName != null)
+	      if ( (StringTool.emptyToNull(v) == null) && (e.length() == 0) )
+	        templates.remove( templName );
+	      else
+	        templates.put( templName, (v != null) ? prepareForAtomicValue(v) : e );
+	    return new String[] { "" };
+	  }
+	  /** 
+	   * call CASSIGN-Method on template
+	   * CASSIGN assigns a value to a Template, if the current value is not empty.
+	   */
+	  private final String[] execCAssign( String templName, String[] value, Vector params ) {
+	    // parm 1 : String to be assigned (if undef, value is used).
+	    // parm 2 : Template to assign the value to (optional).
+	    int parmCount = params.size();
+	    String v = null;
+	    String e = null;
+
+	    if ( parmCount > 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'CASSIGN'");
+	    try {
+	      if ( parmCount > 0 )
+	        v = (String)params.elementAt(0);
+	      if ( parmCount > 1 )
+	        templName = ((String)params.elementAt(1)).toUpperCase();
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'CASSIGN'", c );
+	    }
+	    e = getString( value, 0, -1 );
+	    if ((templName != null) && (e.length() > 0))
+	      if ((v != null) && (v.length() == 0))
+	        templates.remove( templName );
+	      else
+	        templates.put(    templName, (v != null) ? prepareForAtomicValue(v) : e );
+	    return new String[] { "" };
+	  }
+	  /** 
+	   * call SWITCH-Method on template
+	   * SWITCH replaces the current string by the expanded content of a template, if the current value is equal to the following CONSTANT condition String (if not empty on no condition specified).
+	   */
+	  private final String[] execSwitch( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : Template to receive the new value from.
+	    // parm 2 : const. condition-value (optinal).
+	    int parmCount = params.size();
+	    String v = null;
+	    String templExprV = null;
+//	    String cond = null;
+	    boolean doAssign = false;
+	    boolean assigned = false;
+	    boolean conditioned = false;
+//	    String[] templResArr = null;
+
+	    if ( parmCount == 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'SWITCH'");
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      doAssign = false;
+	      for ( int i = 0; (i < parmCount) && !assigned; i+=2 ) {
+	        templExprV = (String)params.elementAt( i );
+	        conditioned = ( (i+1) < parmCount );
+	        if ( !conditioned ) {
+	          doAssign = ( v.length() > 0 );
+	        } else {
+	          doAssign = StringTool.nullToEmpty( params.elementAt( i+1 ) ).equals( v );
+	        }
+	        if (doAssign) {
+	          if ( conditioned && (templExprV == null) ) {
+	          	// nothing to do...
+	          } else if ( conditioned && (templExprV.length() == 0) ) {
+	            value = new String[] { "" };
+	          } else { //if (templExprV.startsWith(""+tso) && templExprV.endsWith(""+tsc) && (templExprV.substring(1,templExprV.length()-1).indexOf(tso) == -1)) {
+	            value = expandAsArrayN( toStringArray( templExprV ), true );
+	          //  value = internalExecTemplFunctions( templExprV, activeTs, "SWITCH" );
+	          //} else {
+	          //  value = toStringArray( templExprV );
+	          }
+	          assigned = true;
+	        }
+	      }
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'SWITCH'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call SWITCHT-Method on template
+	   * SWITCHT replaces the current string by the expanded content of a template, if the current value is equal to the following expanded TEMPLATE condition String (if not empty on no condition specified).
+	   * This method supports also Templates ont the conditions, not oly on the replacements.
+	   */
+	  private final String[] execSwitchT( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : Template to receive the new value from.
+	    // parm 2 : Template condition-value (optinal).
+	    // parm 3 : ...
+	    // parm 4 : ...
+	    // ...
+	    int parmCount = params.size();
+	    String v = null;
+	    String templExprV = null;
+//	    String cond = null;
+	    boolean doAssign = false;
+	    boolean assigned = false;
+	    boolean conditioned = false;
+//	    String[] templResArr = null;
+
+	    if ( parmCount == 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'SWITCHT'");
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      doAssign = false;
+	      for ( int i = 0; (i < parmCount) && !assigned; i+=2 ) {
+	        templExprV = (String)params.elementAt( i );
+	        conditioned = ( (i+1) < parmCount );
+	        if ( !conditioned ) {
+	          doAssign = ( v.length() > 0 );
+	        } else {
+	          doAssign = removeEscapes( getString( expandAsArrayN( toStringArray( (String)params.elementAt( i+1 ) ), true ), 0, -1 ) ).equals( v );
+	        }
+	        if (doAssign) {
+	          if ( conditioned && (templExprV == null) ) {
+	          	// nothing to do...
+	          } else if ( conditioned && (templExprV.length() == 0) ) {
+	            value = new String[] { "" };
+	          } else { //if (templExprV.startsWith(""+tso) && templExprV.endsWith(""+tsc) && (templExprV.substring(1,templExprV.length()-1).indexOf(tso) == -1)) {
+	            value = expandAsArrayN( toStringArray( templExprV ), true );
+	          //  value = internalExecTemplFunctions( templExprV, activeTs, "SWITCHT" );
+	          //} else {
+	          //  value = toStringArray( templExprV );
+	          }
+	          assigned = true;
+	        }
+	      }
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'SWITCHT'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call REPLACESTR-Method on template
+	   * REPLACESTR replaces any occurence of a CONSTANT substring by a CONSTANT replacement string.
+	   */
+	  private final String[] execReplaceStr( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm n : substring to replace.
+	    // parm 2 : replacement string.
+	    int parmCount = params.size();
+	    String v = null;
+	    String str1 = null;
+	    String str2 = null;
+
+	    if ( parmCount == 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'REPLACESTR'");
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      for ( int i = 0; (i < parmCount); i+=2 ) {
+	        str1 = StringTool.nullToEmpty( params.elementAt( i ) );
+	        str2 = ( (i+1) < parmCount ) ? StringTool.nullToEmpty( params.elementAt( i+1 ) ) : "";
+	        v = StringTool.replace( v, str1, str2 );
+	      }
+	      v = prepareForAtomicValue(v);
+	      value = toStringArray( v );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'REPLACESTR'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call REPLACESTRT-Method on template
+	   * REPLACESTRT replaces any occurence of a template substring by a template replacement string.
+	   */
+	  private final String[] execReplaceStrT( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm n : substring to replace.
+	    // parm 2 : replacement string.
+	    int parmCount = params.size();
+	    String v = null;
+	    String str1 = null;
+	    String str2 = null;
+
+	    if ( parmCount == 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'REPLACESTRT'");
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      for ( int i = 0; (i < parmCount); i+=2 ) {
+	        str1 = StringTool.nullToEmpty( params.elementAt( i ) );
+	        str2 = ( (i+1) < parmCount ) ? StringTool.nullToEmpty( params.elementAt( i+1 ) ) : "";
+	        v = StringTool.replace( v,
+	        		removeEscapes( getString( expandAsArrayN( toStringArray( str1 ), true ), 0, -1 ) ),
+	        		removeEscapes( getString( expandAsArrayN( toStringArray( str2 ), true ), 0, -1 ) ) );
+	      }
+	      v = prepareForAtomicValue( v );
+	      value = toStringArray( v );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'REPLACESTRT'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call COPYSTR/SUBSTR-Method on template
+	   * COPYSTR/SUBSTR replaces any occurence of a CONSTANT substring by a CONSTANT replacement string.
+	   */
+	  private final String[] execCopyStr( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : start position (as expanded String).
+	    // parm 2 : end position (as expanded String).
+	    int parmCount = params.size();
+	    String v = null;
+	    int po1 = -1;
+	    int po2 = -1;
+	    RNumber p1 = null;
+	    RNumber p2 = null;      
+
+	    if ( ( parmCount == 0 ) || ( parmCount > 2 ) )
+	    	throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'COPYSTR/SUBSTR'");
+	    try {
+	    	p1 = (RNumber)params.elementAt(0);
+	    } catch (ClassCastException c) {
+	    	throw new TemplateSyntaxException( "Illegal first argument in 'COPYSTR/SUBSTR'", c );
+	    }
+	    if ( parmCount == 2 ) {
+	    	try {
+	    		p2 = (RNumber)params.elementAt(1);
+	    	} catch (ClassCastException c) {
+	    		throw new TemplateSyntaxException( "Illegal second argument in 'COPYSTR/SUBSTR'", c );
+	    	}
+	    }
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      po1 = 0;
+	      po2 = v.length();
+	      if (p1 != null)
+	    	  po1 = ((p1.minmax == null) || p1.minmax) ? p1.value : v.length() - p1.value;
+	      if (p2 != null)
+	          po2 = ((p2.minmax == null) || p2.minmax) ? p2.value : v.length() - p2.value;
+	      if ( po1 < 0 )
+	    	  po1 = 0;
+	      if ( po2 < 0 )
+	    	  po2 = 0;
+	      v = StringTool.subString( v, po1, po2 );
+	      v = prepareForAtomicValue(v);
+	      value = toStringArray( v );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'COPYSTR/SUBSTR'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call KEEP-Method on template
+	   * KEEP keeps only the characters specified.
+	   */
+	  private final String[] execKeep( String templName, String[] value, Vector params, Vector activeTs ) {
+	    int parmCount = params.size();
+	    if ( ( parmCount < 1 ) || ( parmCount > 2 ) )
+	      throw new TemplateSyntaxException("Illegal number of parameters("+parmCount+") in 'KEEP'");
+	    try {
+	      value = toStringArray( prepareForAtomicValue( StringTool.keepAllowed(
+	    		  removeEscapes( getString( value, 0, -1 ) ),
+	    		  (String)params.elementAt( 0 ),
+	    		  (parmCount < 2) ? null : (String)params.elementAt( 1 )
+	    				  ) ) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'KEEP'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call KEEPT-Method on template
+	   * KEEPT keeps only the characters specified as template.
+	   */
+	  private final String[] execKeepT( String templName, String[] value, Vector params, Vector activeTs ) {
+	    int parmCount = params.size();
+	    if ( ( parmCount < 1 ) || ( parmCount > 2 ) )
+	      throw new TemplateSyntaxException("Illegal number of parameters("+parmCount+") in 'KEEPT'");
+	    try {
+	      value = toStringArray( prepareForAtomicValue( StringTool.keepAllowed(
+	    		  removeEscapes( getString( value, 0, -1 ) ),
+	    		  removeEscapes( getString( expandAsArrayN( toStringArray( StringTool.nullToEmpty( params.elementAt( 0 ) ) ), true ), 0, -1 ) ),
+	    		  (parmCount < 2) ? null : removeEscapes( getString( expandAsArrayN( toStringArray( StringTool.nullToEmpty( params.elementAt( 1 ) ) ), true ), 0, -1 ) )
+	    		  ) ) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'KEEPT'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call FILTER-Method on template
+	   * FILTER keeps only the characters specified.
+	   */
+	  private final String[] execFilter( String templName, String[] value, Vector params, Vector activeTs ) {
+	    int parmCount = params.size();
+	    if ( ( parmCount < 1 ) || ( parmCount > 2 ) )
+	      throw new TemplateSyntaxException("Illegal number of parameters("+parmCount+") in 'FILTER'");
+	    try {
+	      value = toStringArray( prepareForAtomicValue( StringTool.filterForbidden(
+	    		  removeEscapes( getString( value, 0, -1 ) ),
+	    		  (String)params.elementAt( 0 ),
+	    		  (parmCount < 2) ? null : (String)params.elementAt( 1 )
+	    		  ) ) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'FILTER'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call FILTERT-Method on template
+	   * FILTERT keeps only the characters specified as template.
+	   */
+	  private final String[] execFilterT( String templName, String[] value, Vector params, Vector activeTs ) {
+	    int parmCount = params.size();
+	    if ( ( parmCount < 1 ) || ( parmCount > 2 ) )
+	      throw new TemplateSyntaxException("Illegal number of parameters("+parmCount+") in 'FILTERT'");
+	    try {
+	      value = toStringArray( prepareForAtomicValue( StringTool.filterForbidden(
+	    		  removeEscapes( getString( value, 0, -1 ) ),
+	    		  removeEscapes( getString( expandAsArrayN( toStringArray( StringTool.nullToEmpty( params.elementAt( 0 ) ) ), true ), 0, -1 ) ),
+	    		  (parmCount < 2) ? null : removeEscapes( getString( expandAsArrayN( toStringArray( StringTool.nullToEmpty( params.elementAt( 1 ) ) ), true ), 0, -1 ) )
+	    		  ) ) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'FILTERT'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call CALC-Method on template
+	   * CALC evaluates the specifified parameter (if not specified, the current value) as numeric expression.
+	   */
+	  private final String[] execCalc( String templName, String[] value, Vector params, Vector activeTs ) {
+	    int parmCount = params.size();
+	    if ( parmCount > 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("+parmCount+") in 'CALC'");
+	    try {
+	    	value = toStringArray( prepareForAtomicValue( StringTool.nullToEmpty( NumberTool.calculate( removeEscapes( getString( value, 0, -1 ) ) ) ) ) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'CALC'", c );
+	    }
+	    return value;
+	  }
+
+	  /**
+	   * Call lookup-Method on the current value to be interpreted as name of another variable.
+	   * Looks up the current value as variable name and replaces the name as current value by the variables value specified by.
+	   * example: [VAL]   [VAL2]  [VAL.lookup()]
+	   *          "VAL2"  "XY"    "XY"
+	   * @param templName
+	   * @param value
+	   * @param params
+	   * @param activeTs
+	   * @return
+	   */
+	  private final String[] execLookUp( String templName, String[] value, Vector params, Vector activeTs ) {
+	      int parmCount = params.size();
+	      String v = null;
+	      Object vo = null;
+
+	      if ( parmCount != 0 )
+	        throw new TemplateSyntaxException("Illegal number of parameters("
+	                      +parmCount+") in 'lookup'");
+
+	      try {
+	          v = StringTool.emptyToNull( removeEscapes( getString( value, 0, -1 ) ) );
+	          vo = (v == null) ? null : getTemplateValue( v, null );
+	          value = ( (vo == null) ? new String[] { "" } : ((vo instanceof String[]) ? (String[])vo : toStringArray( toString( vo ) ) ) );
+	      } catch (ClassCastException c) {
+	          throw new TemplateSyntaxException( "Illegal argument/failure in 'lookup'", c );
+	      }
+	      return value;
+	  }
+
+	  /** 
+	   * call multiExpand-Method on a sub template, using certain Arrays / constant parameters by name.
+	   * MULTIEXPAND....
+	   * This method supports also Templates ont the conditions, not oly on the replacements.
+	   */
+	  private final String[] execMultiExpand( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // example: [LIKE_EXPR.multiExpand("    ( t2.name   [LIKE_NOT.switch(\"NOT\",\"-\",\"   \",\"+\",\"\")] LIKE    '[LIKE_EXPR]%'  )",," OR ","LIKE_NOT").embed("  ( ","    )")]
+	    //  (     ( t2.name       LIKE    'BAY%'  ) OR
+	    //        ( t2.name   NOT LIKE    'SCHE%' ) OR
+	    //        ( t2.name       LIKE    'BMS%'  ) OR
+	    //        ( t2.name   NOT LIKE    'LAN%'  )    ) AND
+	    // [LIKE_NOT] is an Array of "+" and "-" Strings, [LIKE_EXPR] is an Array of Prefix-Strings "BAY","SCHE",....
+	    // [LIKE_EXPR] as well as [LIKE_NOT] may be ArrayList(), Object[], String[], "<val>|<val>|..." with pipe as default splitchar <= TemplateTestPage
+	    // parm 1 : Sub-Template to expand (obligatory)
+	    // parm 2 : splitchar (default: |)
+	    // parm 3 : concatenator (default: "")
+	    // parm 4.. : 0-n additional template fields (ArrayList, Object[], String[], String (to be splitted) ONLY, others ignored as synced arrays)
+	    int parmCount = params.size();
+	    String v = null;
+	    String templExprV = null;
+	    String[] templExprVA = null;
+	    int mLoopSize = 0;
+	    Hashtable mOrigMappings = new Hashtable( parmCount + 1, 1.0f );
+	    Hashtable mPrepMappings = new Hashtable( parmCount + 1, 1.0f );
+	    String mSplitDelim = null;
+	    String mSeperator = "";
+	    String[] mSeperatorA = null;
+	    Object mCurrTemplObj = null;
+	    Object key = null;
+	    Object[] valueA = null;
+	    Object valueO = null;
+	    ArrayList resCol = new ArrayList();
+	    boolean mMultiCharDelim = false;
+
+	    if ( parmCount == 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+	                    +parmCount+") in 'multiExpand'");
+	    try {
+	      v = StringTool.emptyToNull( removeEscapes( getString( value, 0, -1 ) ) );
+		  String templNameN = removeEscapes((String)templName).toUpperCase();
+	      if ( StringTool.emptyToNull( templName ) != null ) {
+	          mCurrTemplObj = getTemplateValue( templName, null );
+	          MapTool.addToHT( mOrigMappings, templNameN, mCurrTemplObj );
+	      }
+	      if ( (mCurrTemplObj == null) || "".equals(mCurrTemplObj) ) {
+	          if ( v == null )
+	              return new String[] { "" };
+	          mCurrTemplObj = v;    // FIXME - does it make sense this way???? It's even verry exotic, what does the user really expect in this case?????
+	      }
+	      templExprV = StringTool.nullToEmpty(params.elementAt( 0 ));
+	      if ( templExprV.startsWith( "^" ) ) {
+	          templExprV = templExprV.substring( 1 );
+	          if ( !templExprV.startsWith( "^" ) ) {
+	              templExprV = removeEscapes( getString( expandAsArrayN( toStringArray( templExprV ), true ), 0, -1 ) );
+	              int mSDelIdx = templExprV.indexOf(":");
+	              String mSrc = templExprV.substring( 0, mSDelIdx + 1 );
+	              templExprV = templExprV.substring( mSDelIdx + 1 );
+
+	              if ( "CTX:".equalsIgnoreCase( mSrc ) ) {
+	            	  if (cContext == null) {
+	            		  throw new TemplateSyntaxException("Requested reference to context: '" + templExprV + "' in 'multiExpand', but context not passed to template.");
+	            	  }
+	                  templExprV = StringTool.nullToEmpty( cContext.getProperty(templExprV) );
+	              } else if ( "GLO:".equalsIgnoreCase( mSrc ) ) {
+	            	  if (cGloVars == null) {
+	            		  throw new TemplateSyntaxException("Requested reference to global variables: '" + templExprV + "' in 'multiExpand', but context not passed to template.");
+	            	  }
+	                  templExprV = StringTool.nullToEmpty( StringTool.toString(cGloVars.get(templExprV)) );
+	              } else {
+	                  throw new TemplateSyntaxException("Illegal or missing resource spec for template: '" + mSrc + "' in 'multiExpand'");
+	              }
+	          }
+	      }
+	      templExprVA = toStringArray( templExprV );
+	      mSplitDelim = (parmCount < 2) ? "|" : StringTool.nvl( StringTool.emptyToNull( (String)params.elementAt( 1 ) ), "|" );
+	      mMultiCharDelim = mSplitDelim.length() != 1;
+//	    if ( mSplitDelim.length() != 1 )
+//	        throw new TemplateSyntaxException("Illegal split delimiter, only single character allowed: '" + mSplitDelim + "' in 'multiExpand'");
+	      mSeperator = (parmCount < 3) ? "" : StringTool.nullToEmpty( params.elementAt( 2 ) );
+	      mSeperatorA = expandAsArrayN( toStringArray( mSeperator ), true );
+	      if ( mCurrTemplObj instanceof String ) {
+	// next two lines are dead code: mSplitDelim cannot be null here...  
+//	          if ( mSplitDelim == null )
+//	              throw new TemplateSyntaxException("No split delimiter specified (expand based on String-List) in 'multiExpand'");
+	          if ( mSplitDelim.startsWith("<*") && mSplitDelim.endsWith("*>") && mSplitDelim.length() > 4 ) {
+	        	  String[] mRep = new String[mSplitDelim.length() - 5];
+	        	  String mDelim = mSplitDelim.substring(2,3);
+	        	  Arrays.fill( mRep, mDelim );
+	        	  mCurrTemplObj = StringTool.replace((String)mCurrTemplObj, mSplitDelim.substring(3, mSplitDelim.length() - 2), mRep);
+	        	  while ( ((String)mCurrTemplObj).indexOf(mDelim+mDelim) > -1)
+	        		  mCurrTemplObj = StringTool.replace( (String)mCurrTemplObj, mDelim + mDelim, mDelim );
+	        	  if ( ((String)mCurrTemplObj).startsWith(mDelim) )
+	        		  mCurrTemplObj = ((String)mCurrTemplObj).substring(1);
+	        	  if ( ((String)mCurrTemplObj).endsWith(mDelim) )
+	        		  mCurrTemplObj = ((String)mCurrTemplObj).substring(0, ((String)mCurrTemplObj).length()-1 );
+	        	  mSplitDelim = mDelim;
+	        	  mMultiCharDelim = false;
+	          }
+	          mCurrTemplObj = mMultiCharDelim ? StringTool.splitString( (String)mCurrTemplObj, mSplitDelim ) : StringTool.splitString( (String)mCurrTemplObj, mSplitDelim.charAt(0) );
+	      } else if ( mCurrTemplObj instanceof ArrayList )
+	          mCurrTemplObj = ((ArrayList)mCurrTemplObj).toArray();
+	      if ( !(mCurrTemplObj instanceof Object[]) )
+	          throw new TemplateSyntaxException("Illegal type of driving templatevalue '" + mCurrTemplObj.getClass().getName() + "', allowed only ArrayList, String[], Object[], String - in 'multiExpand'");
+	      mLoopSize = ((Object[]) mCurrTemplObj).length;
+	      MapTool.addToHT( mPrepMappings, templNameN, mCurrTemplObj );
+	      for ( int i = 3; i < parmCount; i++ ) {
+	          key = StringTool.emptyToNull( (String)params.get(i) );
+	          if ( key != null ) {
+	        	  String keyN = removeEscapes((String)key).toUpperCase();
+	              mCurrTemplObj = getTemplateValue( (String)key, null );
+	              MapTool.addToHT( mOrigMappings, keyN, mCurrTemplObj );
+	              if ( (mCurrTemplObj instanceof String) && (mSplitDelim != null) )
+	                  mCurrTemplObj = mMultiCharDelim ? StringTool.splitString( (String)mCurrTemplObj, mSplitDelim ) : StringTool.splitString( (String)mCurrTemplObj, mSplitDelim.charAt(0) );
+	              else if ( mCurrTemplObj instanceof ArrayList )
+	                  mCurrTemplObj = ((ArrayList)mCurrTemplObj).toArray();
+	              if ( mCurrTemplObj instanceof Object[] )
+	                  MapTool.addToHT( mPrepMappings, keyN, mCurrTemplObj );
+	              else
+	                  MapTool.addToHT( mOrigMappings, keyN, null );
+	          }
+	      }
+	      for ( int i = 0; i < mLoopSize ; i++ ) {
+	          Enumeration mKeys = mPrepMappings.keys();
+	          while ( mKeys.hasMoreElements() ) {
+	              key = mKeys.nextElement();
+	              valueA = ((Object[])mPrepMappings.get( key ));
+	              valueO = (i >= valueA.length) ? null : valueA[i];
+	              MapTool.addToHT( templates, key, (valueO instanceof String) ? prepareForAtomicValue( valueO ) : valueO );
+	          }
+	          if ( i > 0 )
+	              resCol.add( mSeperatorA );
+	          resCol.add( expandAsArrayN( templExprVA, true ) );
+	      }
+	      Enumeration mKeys = mPrepMappings.keys();
+	      while ( mKeys.hasMoreElements() ) {
+	          key = mKeys.nextElement(); 
+	          templates.put( key, mOrigMappings.get(key) );
+	      }
+	      int resc = 0;
+	      for ( int i = 0; i < resCol.size(); i++ )
+	          resc += ((String[])resCol.get(i)).length - 1;
+	      value = new String[ resc + 1 ];
+	      value[resc] = "";
+	      resc = 0;
+	      for ( int i = 0; i < resCol.size(); i++ ) {
+	          valueA = (String[])resCol.get(i);
+	          System.arraycopy( valueA, 0, value, resc, valueA.length - 1 );
+	          resc += valueA.length - 1;
+	      }
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'multiExpand'", c );
+	    }
+	    return value;
+	  }
+
+	  
+	  /** 
+	   * call expand-Method on a sub template, using certain Arrays / constant parameters by name.
+	   * EXPAND .....
+	   * This method supports also Templates ont the conditions, not oly on the replacements.
+	   */
+	  private final String[] execExpand( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // example: 
+	    int parmCount = params.size();
+	    String templExprV = null;
+
+	    if ( parmCount > 1 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+	                    +parmCount+") in 'expand'");
+	    try {
+	      if ( ( StringTool.emptyToNull( templName ) == null ) ||
+	              StringTool.emptyToNull( removeEscapes( getString( value, 0, -1 ) ) ) != null ) {
+	    	  templExprV = StringTool.nullToEmpty(
+	    			( parmCount == 0 )
+	    			? removeEscapes( getString( value, 0, -1 ) )
+	    			: params.elementAt( 0 )
+	    	  );
+	          if ( templExprV.startsWith( "^" ) ) {
+	              templExprV = templExprV.substring( 1 );
+	              if ( !templExprV.startsWith( "^" ) ) {
+	                  templExprV = removeEscapes( getString( expandAsArrayN( toStringArray( templExprV ), true ), 0, -1 ) );
+	                  int mSDelIdx = templExprV.indexOf(":");
+	                  String mSrc = templExprV.substring( 0, mSDelIdx + 1 );
+	                  templExprV = templExprV.substring( mSDelIdx + 1 );
+
+	                  if ( "CTX:".equalsIgnoreCase( mSrc ) ) {
+		            	  if (cContext == null) {
+		            		  throw new TemplateSyntaxException("Requested reference to context: '" + templExprV + "' in 'expand', but context not passed to template.");
+		            	  }
+		                  templExprV = StringTool.nullToEmpty( cContext.getProperty(templExprV) );
+		              } else if ( "GLO:".equalsIgnoreCase( mSrc ) ) {
+		            	  if (cGloVars == null) {
+		            		  throw new TemplateSyntaxException("Requested reference to global variables: '" + templExprV + "' in 'expand', but context not passed to template.");
+		            	  }
+		                  templExprV = StringTool.nullToEmpty( StringTool.toString(cGloVars.get(templExprV)) );
+	                  } else
+	                      throw new TemplateSyntaxException("Illegal or missing resource spec for template: '" + mSrc + "' in 'expand'");
+	              }
+	          }
+	          return expandAsArrayN( toStringArray( templExprV ), true );
+	      } else
+	          return new String[] { "" };
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'expand'", c );
+	    }
+	  }
+
+	  
+	  /** 
+	   * call SPLIT-Method on template
+	   * SPLIT splits the current string into a number of fragments using the spec. CONSTANT delimitter string retuning the specified fragment, first index is 0.
+	   */
+	  private final String[] execSplit( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : string to use as delimitter.
+	    // parm 2 : number of the Fragment to return.
+	    int parmCount = params.size();
+	    String	v	= null;
+	    String[]	va	= null;
+	    RNumber	mIdxR	= null;
+	    int		mIdx	= 0;
+//	    String[]	templResArr = null;
+
+	    if ( parmCount != 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'SPLIT'");
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      va = StringTool.splitString( v, (String)params.elementAt( 0 ) );
+	      mIdxR = ((RNumber)params.elementAt( 1 ));
+	      if ( mIdxR != null ) {
+	          mIdx  = (mIdxR == null) ? 0 : mIdxR.value;
+	          if ( ( mIdxR.minmax != null ) && !mIdxR.minmax.booleanValue() )
+	              mIdx = va.length - mIdx;
+	      }
+	      value = ((mIdx >= 0) && (mIdx < va.length)) ? toStringArray( prepareForAtomicValue(va[mIdx]) ) : new String[] { "" };
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'SPLIT'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call SPLITT-Method on template
+	   * SPLITT splits the current string into a number of fragments using the spec. templated delimitter string retuning the specified fragment, first index is 0.
+	   */
+	  private final String[] execSplitT( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : string template to get the value to be used as delimitter.
+	    // parm 2 : number of the Fragment to return.
+	    int parmCount = params.size();
+	    String	v	= null;
+	    String[]	va	= null;
+	    RNumber	mIdxR	= null;
+	    int		mIdx	= 0;
+//	    String[]	templResArr = null;
+
+	    if ( parmCount != 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'SPLITT'");
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      va = StringTool.splitString( v, removeEscapes( getString( expandAsArrayN( toStringArray( (String)params.elementAt( 0 ) ), true ), 0, -1 ) ) );
+	      mIdxR = ((RNumber)params.elementAt( 1 ));
+	      if ( mIdxR != null ) {
+	          mIdx  = (mIdxR == null) ? 0 : mIdxR.value;
+	          if ( ( mIdxR.minmax != null ) && !mIdxR.minmax.booleanValue() )
+	              mIdx = va.length - mIdx;
+	      }
+	      value = ((mIdx >= 0) && (mIdx < va.length)) ? toStringArray( prepareForAtomicValue( va[mIdx] ) ) : new String[] { "" };
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument/failure in 'SPLITT'", c );
+	    }
+	    return value;
+	  }
+
+	  /** 
+	   * call CHECK-Method on template
+	   * CHECK compares the current value with a value specified as second parameter using the operator specified as first parameter.
+	   * The second parameter may be a constant string or a single template name with function specifications.
+	   * If the expression is true, "x" is returned, otherwise "".
+	   */
+	  private final String[] execCheck( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : operator: =, ==, !=, <>, <, >, <=, >=
+	    // parm 2 : condition-value (may be constant or simple template value(with functions).
+	    int parmCount = params.size();
+	    String v = null;
+	    String op = null;
+	    String v2 = null;
+
+	    if ( parmCount != 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'CHECK'");
+	    v = removeEscapes( getString( value, 0, -1 ) );
+	    try {
+	      op = StringTool.nullToEmpty( (String)params.elementAt(0) );
+	      v2 = StringTool.nullToEmpty( (String)params.elementAt(1) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'CHECK'", c );
+	    }
+	    if (v2.startsWith(""+tso) && v2.endsWith(""+tsc) /*&& (v2.substring(1,v2.length()-1).indexOf(tso) == -1)*/) {
+	      v2 = removeEscapes( getString( internalExecTemplFunctions( v2, activeTs, "CHECK" ), 0, -1 ) );
+	    }
+	    return internalCheck( v, op, v2, "CHECK" ) ? new String[] { "x", "" } : new String[] { "" };
+	  }
+	  
+	  /** 
+	   * call AND-Method on template
+	   * AND compares the value of the first parameter with a value specified as third parameter using the operator specified as second parameter.
+	   * The first and the third parameter may each be constant strings or a single template names with function specifications.
+	   * If the expression is true AND the current entry is also not empty (true), "x" is returned, otherwise "".
+	   * If only one parameter is specified, 'X' is returned if the current value AND the result of the expansion of the parameter both are not empty.
+	   */
+	  private final String[] execAnd( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : value to check (may be constant or simple template value(with functions).
+	    // parm 2 : operator: =, ==, !=, <>, <, >, <=, >=
+	    // parm 3 : condition-value (may be constant or simple template value(with functions).
+	    int parmCount = params.size();
+	    String v = null;
+	    String v1 = null;
+	    String op = null;
+	    String v2 = null;
+
+	    if ( (parmCount != 1) && (parmCount != 3) )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'AND'");
+	    v = removeEscapes( getString( value, 0, -1 ) );
+	    try {
+	      v1 = StringTool.nullToEmpty( (String)params.elementAt(0) );
+	      op = (parmCount == 3) ? StringTool.nullToEmpty( (String)params.elementAt(1) ) : "";
+	      v2 = (parmCount == 3) ? StringTool.nullToEmpty( (String)params.elementAt(2) ) : "";
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'AND'", c );
+	    }
+	    if (v1.startsWith(""+tso) && v1.endsWith(""+tsc) /*&& (v1.substring(1,v1.length()-1).indexOf(tso) == -1)*/) {
+	      v1 = removeEscapes( getString( internalExecTemplFunctions( v1, activeTs, "AND" ), 0, -1 ) );
+	    }
+	    if (v2.startsWith(""+tso) && v2.endsWith(""+tsc) /*&& (v2.substring(1,v2.length()-1).indexOf(tso) == -1)*/) {
+	      v2 = removeEscapes( getString( internalExecTemplFunctions( v2, activeTs, "AND" ), 0, -1 ) );
+	    }
+	    if ( parmCount == 1 ) {
+	      return ( ( v.length() > 0 ) && ( v1.length() > 0 ) ) ? new String[] { "x", "" } : new String[] { "" };
+	    } else {
+	      return ( ( v.length() > 0 ) && internalCheck( v1, op, v2, "AND" ) ) ? new String[] { "x", "" } : new String[] { "" };
+	    }
+	  }
+	  
+	  /** 
+	   * call OR-Method on template
+	   * OR compares the value of the first parameter with a value specified as third parameter using the operator specified as second parameter.
+	   * The first and the third parameter may each be constant strings or a single template names with function specifications.
+	   * If the expression is true OR the current entry is also not empty (true), "x" is returned, otherwise "".
+	   * If only one parameter is specified, 'X' is returned if the current value OR the result of the expansion of the parameter (at least one) are not empty.
+	   */
+	  private final String[] execOr( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // parm 1 : value to check (may be constant or simple template value(with functions).
+	    // parm 2 : operator: =, ==, !=, <>, <, >, <=, >=
+	    // parm 3 : condition-value (may be constant or simple template value(with functions).
+	    int parmCount = params.size();
+	    String v = null;
+	    String v1 = null;
+	    String op = null;
+	    String v2 = null;
+
+	    if ( (parmCount != 1) && (parmCount != 3) )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'OR'");
+	    v = removeEscapes( getString( value, 0, -1 ) );
+	    try {
+	      v1 = StringTool.nullToEmpty( (String)params.elementAt(0) );
+	      op = (parmCount == 3) ? StringTool.nullToEmpty( (String)params.elementAt(1) ) : "";
+	      v2 = (parmCount == 3) ? StringTool.nullToEmpty( (String)params.elementAt(2) ) : "";
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'OR'", c );
+	    }
+	    if (v1.startsWith(""+tso) && v1.endsWith(""+tsc) /*&& (v1.substring(1,v1.length()-1).indexOf(tso) == -1)*/) {
+	      v1 = removeEscapes( getString( internalExecTemplFunctions( v1, activeTs, "OR" ), 0, -1 ) );
+	    }
+	    if (v2.startsWith(""+tso) && v2.endsWith(""+tsc) /*&& (v2.substring(1,v2.length()-1).indexOf(tso) == -1)*/) {
+	      v2 = removeEscapes( getString( internalExecTemplFunctions( v2, activeTs, "OR" ), 0, -1 ) );
+	    }
+	    if ( parmCount == 1 ) {
+	      return ( ( v.length() > 0 ) || ( v1.length() > 0 ) ) ? new String[] { "x", "" } : new String[] { "" };
+	    } else {
+	      return ( ( v.length() > 0 ) || internalCheck( v1, op, v2, "OR" ) ) ? new String[] { "x", "" } : new String[] { "" };
+	    }
+	  }
+	  
+	  /** 
+	   * call NOT-Method on template
+	   * NOT inverts a condition (returns "x", if the current value ist empty, otherwise "", if not).
+	   */
+	  private final String[] execNot( String templName, String[] value, Vector params, Vector activeTs ) {
+	    // no parms!
+	    int parmCount = params.size();
+	    String v = null;
+
+	    if ( parmCount > 0 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'NOT'");
+	    v = removeEscapes( getString( value, 0, -1 ) );
+	    return ( v.length() == 0 ) ? new String[] { "x", "" } : new String[] { "" };
+	  }
+	  
+	  /** 
+	   * call FORMATRANGE-Method on template
+	   * FORMATRANGE formats a NumberRange with a BigDecimalFormater using the local Format-Symbols, if no formatter-locale was specified.
+	   */
+	  /*
+	  private final String[] execFormatRange( String[] value, Vector params ) {
+	    // parm 1 : Format-String to be used
+	    int parmCount = params.size();
+	    String valFormat = ",##0.################";
+	    String facFormat = null;
+	    String valueSep  = null;
+	    String rangeSep  = null;
+	    String factorSep = null;
+	    String v;
+
+	    if ( parmCount > 5 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'FORMATRANGE'");
+	    try {
+	      if ( parmCount > 0 )
+		valFormat = (String)params.elementAt(0);
+	      facFormat = (parmCount > 1) ? (String)params.elementAt(1) : valFormat;
+	      if ( parmCount > 2 )
+		valueSep = (String)params.elementAt(2);
+	      if ( parmCount > 3 )
+		rangeSep = (String)params.elementAt(3);
+	      if ( parmCount > 4 )
+		factorSep = (String)params.elementAt(4);
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'FORMATRANGE'", c );
+	    }
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) ).trim();
+	      if (v.length() > 0) {
+		BigDecimalFormat vbdf = new BigDecimalFormat( valFormat );
+		BigDecimalFormat fbdf = new BigDecimalFormat( facFormat );
+		DecimalFormatSymbols sym = new DecimalFormatSymbols( formatterLocale );
+		if (formatterLocale != null) {
+		  vbdf.setDecimalFormatSymbols( sym );
+		  fbdf.setDecimalFormatSymbols( sym );
+		}
+		v = new DecimalRangeFormat( vbdf, fbdf, valueSep, factorSep, rangeSep )
+		  .format( new DecimalRange( v ) );
+	      }
+	    } catch (Exception e) {
+	      throw new TemplateSyntaxException( "Illegal value or format for 'FORMATRANGE'", e );
+	    }
+	    return toStringArray( prepareForAtomicValue( v ) ); // FIXME!!! (no Replacer used!!!)
+	  }
+	  */
+
+
+	  /** 
+	   * call CLEAR-Method on template
+	   * CLEAR deletes the specified Template-Values.
+	   */
+	  private final String[] execClear( String[] value, Vector params ) {
+	    // parms : Strings to be deleted
+	    int parmCount = params.size();
+	    String v;
+
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) );
+	      for ( parmCount--; (parmCount >= 0) && (v != null); parmCount-- )
+	        if ( v.equals( (String)params.elementAt(parmCount) ) )
+		  v = null;
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'CLEAR'", c );
+	    }
+	    return (v == null) ? new String[] { "" } : value;
+	  }
+	  /** formating function.*/
+	  private final String[] execCopy( String[] value, Vector params ) {
+
+	    // parm 1 : lnum
+	    // parm 2 : lnum ( opt )
+	    //Dbg.get().println(Dbg.INFO,this,null, "COPY start...");
+	    String[] result;
+
+	    int parm_count = params.size();
+	    
+	    RNumber p1 = null;
+	    RNumber p2 = null;      
+
+	    int from; 
+	    int to;
+
+	    if ( parm_count > 2 )
+	      throw new TemplateSyntaxException( "Illegal number of parameters in 'COPY': "+parm_count );
+	    if ( parm_count > 0 ) {
+	      try {
+	        p1 = (RNumber)params.elementAt(0);
+	      } catch (ClassCastException c) {
+	        throw new TemplateSyntaxException( "Illegal first argument in 'COPY'", c );
+	      }
+	    }
+	    if ( parm_count == 2 ) {
+	      try {
+		p2 = (RNumber)params.elementAt(1);
+	      } catch (ClassCastException c) {
+		throw new TemplateSyntaxException( "Illegal second argument in 'COPY'", c );
+	      }
+	    }
+	    from = 0;
+	    to   = value.length-1;
+	    if ((p1 != null) && (p1.value > from))
+	      from = p1.value;
+	    if ((p2 != null) && (p2.value < to))
+	      to = p2.value;
+	    
+	    if ( from >= to ) {
+	      result = new String[] { "" };
+	    } else {
+	      result = new String[to-from+1];
+	      System.arraycopy( value, from, result, 0, to-from );
+	      result[result.length-1]="";
+	    }
+	    //Dbg.get().println(Dbg.INFO,this,null, "COPY done.");
+	    return result;
+	  }
+	  /** 
+	   * call DEC-Method on template
+	   * INC increments a numeric value of a Template.
+	   */
+	  private final String[] execDec( String templName, String[] value, Vector params ) {
+	    return execIncDec( "DEC", false, templName, value, params );
+	  }
+	  /** 
+	   * call EMBED-Method on template
+	   * EMBED inserts the template between it´s two arguments
+	   * This is useful if you want to have a whole line only
+	   * if the template is set.
+	   * If only prefix is specified, the value itself is not added to the result.
+	   * FIXME: expand, defining new Template-Strings.
+	   */
+	  private final String[] execEmbed( String[] value, Vector params ) {
+	    // parm 1 : String to prepend before template
+	    // parm 2 : String to append to template ( opt )
+	    int parm_count = params.size();
+
+	    if ( parm_count < 1 || parm_count > 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parm_count+") in 'EMBED'");
+
+	    String prefix = null;
+	    String postfix = null;
+	    String[] retval = null;
+
+	    try {
+	      prefix = extendEscSequence((String)params.elementAt(0));
+	      postfix = ( parm_count == 2 ) ? extendEscSequence((String)params.elementAt(1)) : "";
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'EMBED'", c );
+	    }
+	    int prefixLength  = (prefix .length() > 0 ? 1 : 0);
+	    int postfixLength = (postfix.length() > 0 ? 1 : 0);
+	    if ( removeEscapes( getString( value, 0, -1 ) ).length() == 0 )
+	    //if ( value.length <= 1)
+	      return value;
+	    if ( parm_count < 2 ) {
+	      retval = new String[prefixLength+1];
+	      if ( prefixLength > 0)
+	        retval[0] = prefix;
+	    } else {
+	      retval = new String[prefixLength+value.length+postfixLength];
+	      if ( prefixLength > 0)
+	        retval[0] = prefix;
+	      if ( postfixLength > 0)
+	        retval[retval.length-2] = postfix;
+	      System.arraycopy( value, 0, retval, prefixLength, value.length-1);
+	    }
+	    retval[retval.length-1] = "";
+	    return retval;
+	  }
+	  /** 
+	   * call EMBEDT-Method on template
+	   * EMBED inserts the template between it´s two arguments
+	   * This is useful if you want to have a whole line only
+	   * if the template is set. Prefix and Postfix are Template-Strings.
+	   * If only prefix is specified, the value itself is not added to the result.
+	   */
+	  private final String[] execEmbedT( String[] value, Vector params ) {
+	    // parm 1 : String to prepend before template
+	    // parm 2 : String to append to template ( opt )
+	    int parm_count = params.size();
+
+	    if ( parm_count < 1 || parm_count > 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parm_count+") in 'EMBEDT'");
+
+	    String prefix = null;
+	    String postfix = null;
+	    String[] prefixT = null;
+	    String[] postfixT = null;
+	    String[] retval = null;
+
+	    try {
+	      prefix  = (String)params.elementAt(0);
+	      postfix = ( parm_count == 2 ) ? (String)params.elementAt(1) : "";
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'EMBEDT'", c );
+	    }
+	    if ( removeEscapes( getString( value, 0, -1 ) ).length() == 0 )
+//	    if ( value.length <= 1 )
+	      return value;
+	    prefixT  = expandAsArrayN( toStringArray(prefix), true );
+	    postfixT = expandAsArrayN( toStringArray(postfix), true );
+	    int prefixLength  = prefixT .length-1;
+	    int postfixLength = postfixT.length-1;
+	    if ( parm_count < 2 ) {
+	      retval = new String[prefixLength+1];
+	      System.arraycopy( prefixT,  0, retval, 0,                           prefixLength  );
+	    } else {
+	      retval = new String[prefixLength+value.length+postfixLength];
+	      System.arraycopy( prefixT,  0, retval, 0,                           prefixLength  );
+	      System.arraycopy( value,    0, retval, prefixLength,                value.length-1);
+	      System.arraycopy( postfixT, 0, retval, prefixLength+value.length-1, postfixLength );
+	    }
+	    retval[retval.length-1] = "";
+	    return retval;
+	  }
+	  /** 
+	   * DEFAULT-Method on templates.
+	   * Defines a default-value, if a Template is undefined (inserted as 1 character).
+	   * FIXME: expand, defining a new Template-String.
+	   */
+	  private final String[] execDefault( String[] value, Vector params ) {
+	    // parm 1 : The default-string.
+	    int parm_count = params.size();
+	    String defaultS;
+	    String[] retval;
+
+	    if ( parm_count != 1 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parm_count+") in 'DEFAULT'");
+	    try {
+	      defaultS = extendEscSequence((String)params.elementAt(0));
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'DEFAULT'", c );
+	    }
+	    if ( removeEscapes( getString( value, 0, -1 ) ).length() > 0 )
+//	    if ( value.length > 1)
+	      return value;
+	    retval = new String[2];
+	    retval[0] = defaultS;
+	    retval[1] = "";
+	    return retval;
+	  }
+	  /** 
+	   * DEFAULTT-Method on templates.
+	   * Defines a default-template-string, if a Template is undefined.
+	   */
+	  private final String[] execDefaultT( String[] value, Vector params ) {
+	    // parm 1 : String to prepend before template
+	    // parm 2 : String to append to template ( opt )
+	    int parm_count = params.size();
+
+	    if ( parm_count != 1 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parm_count+") in 'DEFAULTT'");
+
+	    try {
+	      return ( removeEscapes( getString( value, 0, -1 ) ).length() > 0 ) ? value : expandAsArrayN( toStringArray( (String)params.elementAt(0) ), true );
+	      //return ( removeEscapes( getString( value, 0, -1 ) ).length() > 0 ) ? value : toStringArray( (String)params.elementAt(0) );
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'DEFAULTT'", c );
+	    }
+	  }
+	  /** 
+	   * LPAD-Method on templates.
+	   * Defines a constant to add as often as the length of the current string is smaller as
+	   * the specified length AT THE LEFT (ONLY, IF THE CURRENT STRING IS NOT EMPTY!!!).
+	   */
+	  private final String[] execLPad( String[] value, Vector params ) {
+	    // parm 1 : Number of min. length required for the current String.
+	    // parm 2 : String constant (character) to use for padding current String AT THE LEFT (if current String is too small).
+	    int parm_count = params.size();
+
+	    if ( parm_count != 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parm_count+") in 'LPAD'");
+
+		RNumber mLen = null;
+		String pad = null;
+		String[] retval = null;
+		int startpos = 0;
+		
+	    try {
+	    	mLen = (RNumber)params.elementAt(0);
+	    	pad = extendEscSequence((String)params.elementAt(1));
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'LPAD'", c );
+	    }
+	    String v = removeEscapes( getString( value, 0, -1 ) );
+	    if ( ( v.length() == 0 ) || ( v.length() > mLen.value ) )
+//	      if ( ( value.length <= 1 ) || ( value.length > len.value ) )
+	    	return value;
+	    retval = new String[ mLen.value - v.length() + value.length ];
+	    startpos = mLen.value + 1 - value.length;
+	    System.arraycopy( value,  0, retval, startpos, value.length  );
+	    for ( int i = 0; i < startpos; i++ ) {
+	    	retval[i] = pad;
+	    }
+	    return retval;
+	  }
+	  /** 
+	   * RPAD-Method on templates.
+	   * Defines a constant to add as often as the length of the current string is smaller as
+	   * the specified length AT THE RIGHT (ONLY, IF THE CURRENT STRING IS NOT EMPTY!!!).
+	   */
+	  private final String[] execRPad( String[] value, Vector params ) {
+	    // parm 1 : Number of min. length required for the current String.
+	    // parm 2 : String constant (character) to use for padding current String AT THE RIGHT (if current String is too small).
+	    int parm_count = params.size();
+
+	    if ( parm_count != 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parm_count+") in 'RPAD'");
+
+		RNumber mLen = null;
+		String pad = null;
+		String[] retval = null;
+		
+	    try {
+	    	mLen = (RNumber)params.elementAt(0);
+	    	pad = extendEscSequence((String)params.elementAt(1));
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'RPAD'", c );
+	    }
+	    String v = removeEscapes( getString( value, 0, -1 ) );
+	    if ( ( v.length() == 0 ) || ( v.length() > mLen.value ) )
+//	    if ( ( value.length <= 1 ) || ( value.length > len.value ) )
+	    	return value;
+	    retval = new String[ mLen.value - v.length() + value.length ];
+	    System.arraycopy( value,  0, retval, 0, value.length - 1  );
+	    for ( int i = value.length - 1; i < retval.length-1; i++ ) {
+	    	retval[i] = pad;
+	    }
+	    return retval;
+	  }
+
+	  /** encrypt function.*/
+/* FIXME: new encryptions
+	  private final String[] execEncrypt( String[] value, Vector params ) {
+
+	    // parm 1 : lnum ( opt )
+	    // parm 2 : lnum ( opt )
+	    //Dbg.println(Dbg.INFO,this,null,"ENCRYPT start...");
+	    String   v;
+
+	    int parm_count = params.size();
+	    
+	    RNumber p1 = null;
+	    RNumber p2 = null;      
+
+	    int from; 
+	    int to;
+
+	    if ( parm_count > 2 )
+	      throw new TemplateSyntaxException( "Illegal number of parameters in 'ENCRYPT': "+parm_count );
+	    if ( parm_count > 0 ) {
+	      try {
+	        p1 = (RNumber)params.elementAt(0);
+	      } catch (ClassCastException c) {
+	        throw new TemplateSyntaxException( "Illegal first argument in 'ENCRYPT'", c );
+	      }
+	    }
+	    if ( parm_count == 2 ) {
+	      try {
+		p2 = (RNumber)params.elementAt(1);
+	      } catch (ClassCastException c) {
+		throw new TemplateSyntaxException( "Illegal second argument in 'ENCRYPT'", c );
+	      }
+	    }
+	    v = removeEscapes( getString( value, 0, -1 ) );
+	    if (v.length() > 0)
+	      v = StringTool.encrypt( v );
+	    from = 0;
+	    to   = v.length();
+	    if ((p1 != null) && (p1.value > from))
+	      from = p1.value;
+	    if ((p2 != null) && (p2.value < to))
+	      to = p2.value;
+	    return new String[] { extendEscSequence( v.substring(from, to) ), "" };
+	  }
+
+	  /** code function.* /
+
+	  private final String[] execCode( String[] value, Vector params ) {
+	    // no parms
+	    if ( params.size() > 0 )
+	      throw new TemplateSyntaxException ("No arguments allowed for function 'CODE' !"); 
+	    return new String[] { extendEscSequence( StringTool.code( removeEscapes( getString( value, 0, -1 ) ) ) ), "" };
+	  }
+*/
+	  
+	  /** encodeBase64 function.*/
+	  private final String[] execEncodeBase64( String[] value, Vector params ) {
+	    // no parms
+	    int parm_count = params.size();
+	      
+	    RNumber p1 = null;
+
+	    if ( params.size() > 1 )
+	          throw new TemplateSyntaxException ("Max 1 argument allowed for function 'ENCODEBASE64' !"); 
+	    if ( parm_count > 0 ) {
+	        try {
+	          p1 = (RNumber)params.elementAt(0);
+	        } catch (ClassCastException c) {
+	          throw new TemplateSyntaxException( "Illegal first argument in 'ENCODEBASE64'", c );
+	        }
+	    }
+	    return new String[] { extendEscSequence( StringTool.encodeBase64( removeEscapes( getString( value, 0, -1 ) ), (p1 == null) ? 0 : p1.value ) ), "" };
+	  }
+
+	  /** decodeBase64 function.*/
+	  private final String[] execDecodeBase64( String[] value, Vector params ) {
+	    // no parms
+	    if ( params.size() > 0 )
+	      throw new TemplateSyntaxException ("No arguments allowed for function 'DECODEBASE64' !"); 
+	    return new String[] { extendEscSequence( StringTool.decodeBase64( removeEscapes( getString( value, 0, -1 ) ).trim() ) ), "" };
+	  }
+
+	  /** formating function.*/
+	  private final String[] execFormat( String[] value, Vector params ) {
+	    // parm 1 : rnum
+	    // parm 2 : String
+	    // parn 3 : dir ( -> char "L" || "R"
+	    //Dbg.println(Dbg.INFO,this,null,"FORMAT start...");
+	    RNumber p1; 
+	    int parm_count = params.size();
+	    int result_length;
+	    String[] result;
+	    String replacement = null;
+	    Character dir = null;
+	    int offset;
+	    int from, to;
+
+	    if ( ( parm_count > 3 ) ||
+		 ( parm_count == 0 ))
+	      throw new TemplateSyntaxException( "Illegal number of parameters in 'FORMAT': "+ parm_count );
+	    try {
+	      p1 = (RNumber)params.elementAt(0);
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal first argument in 'FORMAT'", c );
+	    }
+	    if ( parm_count > 1 )
+	      for ( int i = 1; i < parm_count; i++ ) {
+		if ( replacement == null ) {
+		  try { 
+		    replacement = extendEscSequence( (String)params.elementAt(i) );
+		    continue;
+		  }
+		  catch (ClassCastException c) {}
+		}
+		if ( dir == null ) {
+		  try {
+		    dir = (Character)params.elementAt(i);
+		    if ( ! ( ( dir.charValue() == 'L' ) || ( dir.charValue() == 'R' )))
+		      throw new TemplateSyntaxException( "Illegal direction argument in 'FORMAT'"+dir);
+		    continue;
+		  }
+		  catch (ClassCastException c){}
+		}
+		throw new TemplateSyntaxException( "Illegal additional argument in 'FORMAT'");
+	      }
+	    if ( replacement == null )
+	      replacement = new String (" ");
+	    if ( dir == null )
+	      dir = new Character('R');
+
+	    if ( p1.minmax != null ) {
+	      if ( p1.minmax.booleanValue() == true ) 
+		result_length = ( value.length - 1 < p1.value ) ? p1.value + 1 : value.length;
+	      else
+		result_length = ( value.length - 1 < p1.value ) ? value.length : p1.value + 1;
+	    }
+	    else
+	      result_length = p1.value + 1;
+
+	    result = new String [ result_length ];
+	    
+	    if ( dir.charValue() == 'L' ) { // add replacement at left
+	      offset = value.length - result.length;
+	      to = 0;
+	      from = to + offset;
+	      while ( to < result.length ) { // copy incl. empty last string
+		if ( from < 0 )
+		  result[ to ] = new String ( replacement );
+		else
+		  result[ to ] = value [ from ];
+		to++;
+		from++;
+	      }
+	    }
+	    else { // add replacement at right
+	      int pos = 0;
+	      while ( pos < result.length - 1 ) {
+		if ( pos > value.length - 2 )
+		  result[ pos ] = new String ( replacement );
+		else 
+		  result[ pos ] = value[pos];
+		pos++;
+	      }
+	      result[ result.length - 1 ] = new String ("");
+	    }
+	    //Dbg.println(Dbg.INFO,this,null,"FORMAT done.");
+	    return result;
+	  }
+	  /**
+	   * params: 0 Sourceformat, 1 Destinationformat, 2 Modifier
+	   */
+	  private final String[] execFormatDate( String[] value, Vector params ) {
+		  String mValue = removeEscapes( getString( value, 0, -1 ) ).trim();
+
+		  String parsePattern  = null;
+		  String formatPattern = null;
+	      String modifier      = null;
+		   
+		  int parmCount = params.size();
+		  if (parmCount > 3)
+		  {
+		      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'FORMATDATE'");
+		  }
+		  
+	      try {
+	        if ( parmCount > 0 )
+	      	  parsePattern = (String)params.elementAt(0);
+	      	if ( parmCount > 1 )
+	      	  formatPattern = (String)params.elementAt(1);
+	      	if ( parmCount > 2 )
+	      	  modifier      = (String)params.elementAt(2);
+	      } catch (ClassCastException c) {
+		      throw new TemplateSyntaxException( "Illegal argument in 'FORMATDATE'", c );
+	      }
+
+	      SimpleDateFormat dateFormat = new SimpleDateFormat();
+	      java.util.Date date = null;
+	      boolean currentTS = ( "~".equals( parsePattern ) || "~".equals( mValue ) );
+	      boolean doExec = currentTS || ( mValue.length() > 0 );
+
+	      if ( doExec ) {
+	        if ( currentTS ) {
+	          date = new java.sql.Timestamp( System.currentTimeMillis() );
+	        } else if ( ".".equals( parsePattern ) ) {
+	          date = new Timestamp( Long.parseLong( mValue ) );
+	        } else if ( (parsePattern != null) && (parsePattern.length() > 0) ) {
+		      dateFormat.applyPattern( parsePattern );
+		      try {
+			    date = dateFormat.parse( mValue );
+		      } catch ( java.text.ParseException pe ) {
+		        throw new TemplateSyntaxException( "Illegal format for 'FORMATDATE'", pe );
+		      }
+	          } else {
+	  	      try {
+	              if ( NumberTool.isNumber( mValue ) ) {
+	                date = new Timestamp( Long.parseLong( mValue ) );
+	              } else if ( mValue.indexOf(' ') == -1 ) {
+			      	date = java.sql.Date.valueOf( mValue );
+		          } else {
+			      	date = java.sql.Timestamp.valueOf( mValue );
+		          }
+		      } catch ( java.lang.IllegalArgumentException iae ) {
+		          throw new TemplateSyntaxException( "Illegal argument value for 'FORMATDATE'. value=" + mValue, iae );
+			  }
+	          }
+
+		    if ( (modifier != null) && (modifier.length() > 0) ) {
+	          modifier = removeEscapes( getString( expandAsArrayN( toStringArray( modifier ), true ), 0, -1 ) );
+	          if ( (modifier != null) && (modifier.length() > 0) ) {
+	            date = modifyDate( date, modifier );
+	          }
+		    }
+	      
+		    if ( (formatPattern != null ) && (formatPattern.length() > 0) ) {
+	          if ( "~".equals( formatPattern ) || ".".equals( formatPattern ) ) {
+	              mValue = "" + date.getTime();
+	          } else {
+	              dateFormat.applyPattern( formatPattern );
+	              mValue = dateFormat.format( date );
+	          }
+		    } else {
+			  mValue = new java.sql.Timestamp(date.getTime()).toString();
+		    }
+		  }
+	 	  return (mValue.length() == 0)
+		  	? new String[] { "" }
+		  	: new String[] { extendEscSequence(mValue), "" };
+	  }
+	  /** 
+	   * call FORMATNUMBER-Method on template
+	   * FORMATNUMBER parses and formats a Number with BigDecimalFormaters using the local Format-Symbols, if no formatter-locale was specified.
+	   */
+	  private final String[] execFormatNumber( String[] value, Vector params ) {
+		  String mValue = removeEscapes( getString( value, 0, -1 ) ).trim();
+
+	      Locale parseLocale   = Locale.getDefault();
+		  String parsePattern  = null;
+	      Locale formatLocale  = Locale.getDefault();
+		  String formatPattern = null;
+		  int    idx           = -1;
+		  String[] locArr      = null;
+		   
+		  int parmCount = params.size();
+		  if (parmCount > 2)
+		  {
+		      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'FORMATNUMBER'");
+		  }
+		  
+	      try {
+	        if ( parmCount > 0 )
+	      	  parsePattern = (String)params.elementAt(0);
+	      	if ( parmCount > 1 )
+	      	  formatPattern = (String)params.elementAt(1);
+	      } catch (ClassCastException c) {
+		      throw new TemplateSyntaxException( "Illegal argument in 'FORMATNUMBER'", c );
+	      }
+	      if ( parsePattern != null ) {
+	        idx = parsePattern.indexOf( ':' );
+	        if ( idx >= 0 ) {
+	      	  locArr = StringTool.splitString( parsePattern.substring( 0, idx )+"_", '_' );
+	      	  parseLocale = new Locale( locArr[0].trim(), locArr[1].trim() ); 
+	      	  parsePattern = parsePattern.substring( idx + 1 ).trim();
+	        }
+	      }
+	      if ( formatPattern != null ) {
+	        idx = formatPattern.indexOf( ':' );
+	        if ( idx >= 0 ) {
+	      	  locArr = StringTool.splitString( formatPattern.substring( 0, idx )+"_", '_' );
+	      	  formatLocale = new Locale( locArr[0].trim(), locArr[1].trim() ); 
+	      	  formatPattern = formatPattern.substring( idx + 1 ).trim();
+	        }
+	      }
+
+		  if ( mValue.length() > 0 )
+		  {
+		  	BigDecimal num = null;
+	        if ( (parsePattern != null) && (parsePattern.length() > 0) )
+	        {
+		      try {
+		    	DecimalFormat df = new DecimalFormat( parsePattern );
+		    	df.setParseBigDecimal(true);
+		    	df.setRoundingMode(RoundingMode.HALF_UP);
+		    	df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(parseLocale));
+			    num = (BigDecimal)df.parse( mValue );
+		      } catch ( java.text.ParseException pe ) {
+		        throw new TemplateSyntaxException( "Illegal format for 'FORMATNUMBER'", pe );
+		      }
+	        } else {
+	          num = new BigDecimal( mValue.trim() );
+	        }
+
+		    if ( (formatPattern != null ) && (formatPattern.length() > 0) )
+		    {
+		    	DecimalFormat df = new DecimalFormat( formatPattern );
+		    	df.setParseBigDecimal(true);
+		    	df.setRoundingMode(RoundingMode.HALF_UP);
+		    	df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(parseLocale));
+		    	mValue = df.format( num );
+		    } else {
+			  mValue = num.toString();
+		    }
+		  }
+	 	  return (mValue.length() == 0)
+		  	? new String[] { "" }
+		  	: new String[] { extendEscSequence(mValue), "" };
+	  }
+
+	  /** 
+	   * call FORMATNUM-Method on template
+	   * FORMATNUM formats a Number with a BigDecimalFormater using the local Format-Symbols, if no formatter-locale was specified.
+	   * deprecated, disabled.
+	  private final String[] execFormatNum( String[] value, Vector params ) {
+	    // parm 1 : Format-String to be used
+	    int parmCount = params.size();
+	    String format = ".################";
+	    String v;
+
+	    if ( parmCount > 1 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in 'FORMATNUM'");
+	    try {
+	      if ( parmCount > 0 )
+		format = (String)params.elementAt(0);
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in 'FORMATNUM'", c );
+	    }
+	    try {
+	      v = removeEscapes( getString( value, 0, -1 ) ).trim();
+	      if (v.length() > 0) {
+		BigDecimalFormat bdf = new BigDecimalFormat( format );
+		if (formatterLocale != null)
+		  bdf.setDecimalFormatSymbols( new DecimalFormatSymbols( formatterLocale ) );
+		v = bdf.formatBD( new BigDecimal( v ) );
+	      }
+	    } catch (Exception e) {
+	      throw new TemplateSyntaxException( "Illegal number or format for 'FORMATNUM'", e );
+	    }
+	    return toStringArray( prepareForAtomicValue( v ) ); // FIXME!!! (no Replacer used!!!)
+	  }
+	  */
+	  
+	  /**
+	   * Execute a Function.
+	   */
+	  protected String[] execFunction( String templName, String[] value, String fktname, Vector params, Vector activeTs ) {
+
+	    // If Types don't match, throw TemplateSyntaxException.
+	    fktname = fktname.trim().toUpperCase();
+
+	    /* DEPRECATED	      
+	    if (         fktname.compareTo("COPY") == 0 ) {
+	      return execCopy( value, params );
+	    } else  if ( fktname.compareTo("NUM") == 0 ) {
+	      return execNum ( value, params );
+	    } else  if ( fktname.compareTo("PREC") == 0 ) {
+	      return execPrec ( value, params );
+	    } else  if ( fktname.compareTo("FORMAT") == 0 ) {
+	      return execFormat ( value, params );
+	    } else
+*/
+
+	    if ( fktname.compareTo("TRIM") == 0 ) {
+	      return execTrim ( value, params );
+	    } else  if ( fktname.compareTo("UPPER") == 0 ) {
+	      return execUpper ( value, params );
+	    } else  if ( fktname.compareTo("LOWER") == 0 ) {
+	      return execLower ( value, params );
+/* DEPRECATED
+	    } else  if ( fktname.compareTo("REPLACE") == 0 ) {
+	      return execReplace( value, params );
+*/
+/* temporary disabled - futire extension, requires a lot escapings from StringTool
+	    } else  if ( fktname.compareTo("ESCAPE") == 0 ) {
+	      return execEscape( value, params );
+*/
+	    } else  if ( fktname.compareTo("EMBED") == 0 ) {
+	      return execEmbed( value, params );
+	    } else  if ( fktname.compareTo("EMBEDT") == 0 ) {
+	      return execEmbedT( value, params );
+	    } else  if ( fktname.compareTo("DEFAULT") == 0 ) {
+	      return execDefault( value, params );
+	    } else  if ( fktname.compareTo("DEFAULTT") == 0 ) {
+	      return execDefaultT( value, params );
+	    } else  if ( fktname.compareTo("LPAD") == 0 ) {
+	      return execLPad( value, params );
+	    } else  if ( fktname.compareTo("RPAD") == 0 ) {
+	      return execRPad( value, params );
+//	    } else  if ( fktname.compareTo("FORMATNUM") == 0 ) {
+//	      return execFormatNum( value, params );
+	    } else  if ( fktname.compareTo("FORMATNUMBER") == 0 ) {
+	      return execFormatNumber( value, params );
+	    /*
+	    } else  if ( fktname.compareTo("FORMATRANGE") == 0 ) {
+	      return execFormatRange( value, params );
+	    */
+	    } else  if ( fktname.compareTo("CLEAR") == 0 ) {
+	      return execClear( value, params );
+	    } else  if ( fktname.compareTo("ASSIGN") == 0 ) {
+	      return execAssign( templName, value, params );
+	    } else  if ( fktname.compareTo("CASSIGN") == 0 ) {
+	      return execCAssign( templName, value, params );
+	    } else  if ( fktname.compareTo("SWITCH") == 0 ) {
+	      return execSwitch( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("SWITCHT") == 0 ) {
+	      return execSwitchT( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("REPLACESTR") == 0 ) {
+	      return execReplaceStr( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("REPLACESTRT") == 0 ) {
+	      return execReplaceStrT( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("COPYSTR") == 0 ) {
+	        return execCopyStr( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("SUBSTR") == 0 ) {
+	        return execCopyStr( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("KEEP") == 0 ) {
+	      return execKeep( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("KEEPT") == 0 ) {
+	      return execKeepT( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("FILTER") == 0 ) {
+	      return execFilter( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("FILTERT") == 0 ) {
+	      return execFilterT( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("CALC") == 0 ) {
+	        return execCalc( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("MULTIEXPAND") == 0 ) {
+	      return execMultiExpand( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("EXPAND") == 0 ) {
+	      return execExpand( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("LOOKUP") == 0 ) {
+	      return execLookUp( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("SPLIT") == 0 ) {
+	      return execSplit( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("SPLITT") == 0 ) {
+	      return execSplitT( templName, value, params, activeTs );
+/* FIXME, use new encryption
+	    } else  if ( fktname.compareTo("ENCRYPT") == 0 ) {
+	      return execEncrypt( value, params );
+	    } else  if ( fktname.compareTo("CODE") == 0 ) {
+	      return execCode( value, params );
+*/
+	    } else  if ( fktname.compareTo("ENCODEBASE64") == 0 ) {
+	      return execEncodeBase64( value, params );
+	    } else  if ( fktname.compareTo("DECODEBASE64") == 0 ) {
+	      return execDecodeBase64( value, params );
+	    } else  if ( fktname.compareTo("INC") == 0 ) {
+	      return execInc( templName, value, params );
+	    } else  if ( fktname.compareTo("DEC") == 0 ) {
+	      return execDec( templName, value, params );
+	    } else  if ( fktname.compareTo("FORMATDATE") == 0 ) {
+	      return execFormatDate( value, params );
+	    } else  if ( fktname.compareTo("CHECK") == 0 ) {
+	      return execCheck( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("AND") == 0 ) {
+	      return execAnd( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("OR") == 0 ) {
+	      return execOr( templName, value, params, activeTs );
+	    } else  if ( fktname.compareTo("NOT") == 0 ) {
+	      return execNot( templName, value, params, activeTs );
+	    }
+	    throw new TemplateSyntaxException ("Illegal function name: "+fktname);
+	  }
+	  /**
+	   * Execute the functions/methods on a Template-Value.
+	   */
+	  protected String[] execFunctions( String[] expDef, int point, int nextClose, String[] value, String templName, Vector activeTs ) {
+	    int    nextPoint;
+	    int    parmStart;
+	    String functionCall;
+	    String functionName;
+	    Vector functionArgs;
+
+	    while (point != -1) {
+	      nextPoint    = locateNextFunction( expDef, point+1, nextClose );
+	      functionCall = getString( expDef, point+1, (nextPoint == -1) ? nextClose : nextPoint ).trim();
+	      parmStart    = functionCall.indexOf(fpo);
+	      if ( (parmStart == -1) || (functionCall.charAt(functionCall.length()-1) != fpc) )
+		throw new TemplateSyntaxException( "Incomplete parameterlist: "+functionCall.replace('\n','^').replace('\r','^') ); 
+	      functionName = removeEscapes( functionCall.substring(0,parmStart).trim() );
+	      functionArgs = getFunctionArguments( functionCall.substring( parmStart+1, functionCall.length()-1 ), value.length-1 );
+	      //Dbg.println( Dbg.BIGINFO, this, null,"getFunctionArguments VECTOR "+ functionArgs);
+	      //VectorEIterator it = new VectorEIterator ( functionArgs );
+	      //while ( it.next () )
+	      //Dbg.get().println(Dbg.INFO, this, null, "getFunctionArguments vectorTYPE: "+it.getObject().getClass().getName());
+	    //Dbg.println( Dbg.BIGINFO, this, null, "FKT: "+functionName+", Args: "+functionArgs );
+	    //Dbg.print( Dbg.BIGINFO, this, null, value );
+	    //Dbg.print( Dbg.BIGINFO, this, null, " => " );
+	      value = execFunction( templName, value, functionName, functionArgs, activeTs );
+	    //Dbg.println( Dbg.BIGINFO, this, null, value );
+	      point = nextPoint;
+	    }
+	    return value;
+	  }
+	  /** 
+	   * call INC-Method on template
+	   * INC increments a numeric value of a Template.
+	   */
+	  private final String[] execInc( String templName, String[] value, Vector params ) {
+	    return execIncDec( "INC", true, templName, value, params );
+	  }
+	  /** 
+	   * call INC/DEC-Method on template
+	   * increments/decrements a numeric value of a Template.
+	   */
+	  private final String[] execIncDec( String fkt, boolean doAdd, String templName, String[] value, Vector params ) {
+	    // parm 1 : Increment/Decrement to be used.
+	    // parm 2 : Template to increment/decrement.
+	    int parmCount = params.size();
+	    RNumber v = new RNumber( null, 1 );
+	    Object  tv;
+	    String  sv, tl = templName; // no problem, cause already defined, but only required for request-callbacks
+	    long    lv;
+
+	    if ( parmCount > 2 )
+	      throw new TemplateSyntaxException("Illegal number of parameters("
+						+parmCount+") in '"+fkt+"'");
+	    try {
+	      if ( parmCount > 0 )
+		v = (RNumber)params.elementAt(0);
+	      if ( parmCount > 1 ) {
+		tl = (String)params.elementAt(1);
+		templName = tl.toUpperCase();
+	      }
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal argument in '"+fkt+"'", c );
+	    }
+	    tv = getTemplate( templName, tl );
+	    if (tv != null)
+	      if (tv instanceof Number)
+		lv = ((Number)tv).longValue();
+	      else {
+		try {
+		  sv = tv.toString().trim();
+		  lv = (sv.length() == 0) ? 0 : Long.parseLong( sv );
+		} catch( NumberFormatException n ) {
+		  throw new TemplateSyntaxException( "Illegal value in '"+templName+"' for '"+fkt+"'!", n );
+		}
+	      }
+	    else
+	      lv = 0;
+	    templates.put( templName, new Long( doAdd ? (lv + v.value) : (lv - v.value) ) );
+	    return new String[] { "" };
+	  }
+	  /** formating function.*/
+	  private final String[] execLower( String[] value, Vector params ) {
+	    // no parms
+	    //Dbg.println(Dbg.INFO,this,null,"LOWER start...");
+	    int parm_count = params.size();
+	    int pos;
+	    String[] result; 
+	    if ( parm_count > 0 )
+	      throw new TemplateSyntaxException ("No arguments allowed for function 'LOWER' !"); 
+	    pos = 0;
+	    result = new String[value.length];
+	    while ( pos < value.length ) {
+	      result[pos] = value[pos].toLowerCase();
+	      pos++;
+	    }
+	    //Dbg.println(Dbg.INFO,this,null,"LOWER done.");
+	    return result;
+	  }
+	  /** formating function. */
+	  /* deprecated
+	  private final String[] execNum( String[] value, Vector params ) {
+	    //Dbg.println(Dbg.INFO,this,null,"NUM  start...");
+	    // parm 1 : rnum
+	    // parm 2 : string ( opt )
+	    String[] result;
+
+	    int parm_count = params.size();
+	    
+	    RNumber p1 = null;
+	    String  p2 = null;     
+
+	    String replacement;
+	    int width_index; // desired width of pre-seperator part
+	    int pos;
+	    int from,to;
+	    int comma_index;
+	    int result_length;
+//	    boolean noComma = false;
+	    String _dSep = ""+dSep;
+
+	    if ( ( parm_count == 0 ) || ( parm_count > 3 ) )
+	      throw new TemplateSyntaxException( "Illegal number of parameters in 'NUM': "+parm_count );
+	    try {
+	      p1 = (RNumber)params.elementAt(0);
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal first argument in 'NUM'", c );
+	    }
+	    if ( parm_count > 1 ) {
+	      try {
+		p2 = extendEscSequence( (String)params.elementAt(1) );
+	      } catch (ClassCastException c) {
+		throw new TemplateSyntaxException( "Illegal second argument in 'NUM'", c );
+	      }
+	    }
+	    if ( parm_count > 2 ) {
+	      try {
+		_dSep = extendEscSequence( (String)params.elementAt(2) );
+		if (_dSep == null)
+		  _dSep = ""+dSep;
+	      } catch (ClassCastException c) {
+		throw new TemplateSyntaxException( "Illegal third argument in 'NUM'", c );
+	      }
+	    }
+	    pos = 0;
+	    comma_index = -1;
+	    while ( ( pos < value.length - 1) ||
+		    ( comma_index != -1 ) ) {
+	      if ( value[pos].equals(_dSep) ) {
+		comma_index = pos;
+		break;
+	      }
+	      pos++;
+	    }
+
+	    if ( comma_index == -1 ) {
+	// Fixed: -2 -> -1
+	      comma_index = value.length - 1; // extra string at the end && is index
+//	      noComma = true;
+	    }
+	    replacement = ( p2 == null ) ? "0" : p2;
+	    if ( p1.minmax != null ) {
+	      if ( p1.minmax.booleanValue() == false ) { // desired width at least width
+		width_index = ( comma_index + 1 < p1.value ) ? p1.value : comma_index;
+	      }
+	      else { // desired width at maximum 
+		width_index = ( comma_index + 1 < p1.value ) ? comma_index : p1.value;
+	      }
+	    }
+	    else 
+	      width_index = p1.value;
+
+	// Fixed: result_length = width_index + ( noComma ? 0 : 1 ) + value.length - ( comma_index + 1 ); 
+	   result_length = width_index + value.length - comma_index;
+	   result = new String [result_length];
+
+	   int offset = comma_index - width_index;
+
+	   to = 0;
+	   from = to + offset;
+
+	   while ( to < result.length - 1) { // copy additonal empty string
+	     if ( from < 0 ) 
+	       result[to] = new String ( replacement );
+	     else
+	       result[to] = value[from];
+	     to++;
+	     from++;
+	   }
+	   //Dbg.println(Dbg.INFO,this,null,"NUM done.");
+	   return result;
+	  }
+	  */
+	  
+	  /** formating function.*/
+	  /* deprecated:
+	  private final String[] execPrec( String[] value, Vector params ) {
+	    //Dbg.println(Dbg.INFO,this,null,"PREC start...");
+	      // parm 1 : rnum
+	      // parm 2 : String ( opt )
+	    int parm_count = params.size();
+	    int comma_index;
+	    int pos;
+	    RNumber p1 = null;
+	    String p2 = null;
+	    int result_length;
+	    String replacement;
+	    String[] result;
+	    boolean addComma = false;
+	    String _dSep = ""+dSep;
+
+
+	    if ( ( parm_count == 0 ) || ( parm_count > 3 ) )
+	      throw new TemplateSyntaxException( "Illegal number of parameters in 'PREC': "+ parm_count );
+	    try {
+	      p1 = (RNumber)params.elementAt(0);
+	    } catch (ClassCastException c) {
+	      throw new TemplateSyntaxException( "Illegal first argument in 'PREC'", c );
+	    }
+	    if ( parm_count > 1 ) {
+	      try {
+		p2 = extendEscSequence( (String)params.elementAt(1) );
+	      } catch (ClassCastException c) {
+		throw new TemplateSyntaxException( "Illegal second argument in 'PREC'", c );
+	      }
+	    }
+	    if ( parm_count > 2 ) {
+	      try {
+		_dSep = extendEscSequence( (String)params.elementAt(2) );
+		if (_dSep == null)
+		  _dSep = ""+dSep;
+	      } catch (ClassCastException c) {
+		throw new TemplateSyntaxException( "Illegal third argument in 'PREC'", c );
+	      }
+	    }
+	    pos = 0;
+	    comma_index = -1;
+	    while ( ( pos < value.length - 1 ) || // omit emty last string
+		    ( comma_index != -1 ) ) {
+	      if ( value[pos].equals( _dSep ) ) {
+		comma_index = pos;
+		break;
+	      }
+	      pos++;
+	    }
+	    if ( comma_index == -1 ) { // no comma
+//	      if ( p1.value > 0 ) {
+		addComma = true;
+		comma_index = value.length - 1;
+//	      }
+//	      else {
+//		addComma = false;
+//		comma_index = value.length - 2;
+//	      }
+	    }
+
+	    replacement = ( p2 == null ) ? " " : p2;
+	    if ( p1.minmax != null ) {
+	      //  result_length includes the last empty-String-element !
+	      if ( p1.minmax.booleanValue() == false ) { // desired width at least width
+		result_length = ( value.length - 2 - comma_index  < p1.value ) ? comma_index + 2 + p1.value : value.length;  
+	      }
+	      else { // desired width at maximum 
+		result_length = ( value.length - 2 - comma_index  < p1.value ) ? value.length :  comma_index + 2 + p1.value;
+	      }
+	    }
+	    else
+	      result_length = comma_index + 2 + p1.value ;
+
+	// 4x New:
+	    if (comma_index == (result_length-2)) {
+	      result_length--;
+	      addComma = false;
+	    }
+
+	    result = new String[result_length];
+	    pos = 0;
+	    while ( pos < result.length - 1) {
+	      if ( pos < value.length - 1 )
+		result [pos] = value [pos];
+	      else 
+		if ( ! addComma )
+		  result [pos] = new String ( replacement );
+		else {
+		  result [pos] = _dSep;
+		  addComma = false;
+		}
+	      pos++;
+	    }
+	    result[result.length - 1] = new String("");
+	    //Dbg.println(Dbg.INFO,this,null,"PREC done.");
+	    return result;
+	  }
+	  */
+	  
+	  /** 
+	   * replaces a String (expanded token) with another String.
+	   */
+/*
+	  private final String[] execReplace( String[] value, Vector params ) {
+	    // parm 1 : String to Replace
+	    // parm 2 : Replacement ( opt )
+	    int parm_count = params.size();
+	    int pos = 0;
+	    String replacement;
+	    String toReplace;
+
+	    if ( ( parm_count == 0 ) || 
+		 ( parm_count > 2 ) )
+	      throw new TemplateSyntaxException("Illegal number of parameters in 'REPLACE':"+parm_count);
+	    try {
+	      replacement = ( parm_count == 2 ) ? extendEscSequence( (String)params.elementAt(1) ) : ""; // ?
+	      toReplace = extendEscSequence( (String)params.elementAt(0) );
+	      if ( toReplace.length() <= 0 )
+	        throw new TemplateSyntaxException("Empty argument in 'REPLACE'! "+ parm_count );
+	    } catch ( ClassCastException e ) {
+	      throw new TemplateSyntaxException("Wrong argument type in 'REPLACE'!", e);
+	    }
+	    
+	    for ( pos = value.length-1; pos >= 0; pos-- )
+	      if ( value[pos].equals(toReplace) )
+		value[pos] = replacement;
+
+	    return value;
+	  }
+*/
+	  
+	  /** 
+	   * replaces a String (expanded token) with another String.
+	   *
+	   * FIXME: advanced (requires all escape methodes of StringTool)
+	   * 
+	  private final String[] execEscape( String[] value, Vector params ) {
+	    // parm 1 : encoding to escape for
+	    int parm_count = params.size();
+	    String type = null;
+	    String v = null;
+
+	    if ( parm_count != 1 )
+	      throw new TemplateSyntaxException("Illegal number of parameters in 'ESCAPE':"+parm_count);
+	    try {
+	      type = StringTool.nullToEmpty( (String)params.elementAt(0) ).toUpperCase();
+	    } catch (ClassCastException c){
+	      throw new TemplateSyntaxException( "Illegal parameter in 'ESCAPE': ", c );
+	    }
+	    v = removeEscapes( getString( value, 0, -1 ) );
+	    try {
+	        v = StringTool.escape( v, type );
+	    } catch ( NotSupportedException mNSEx ) {
+	      throw new TemplateSyntaxException( "Unsupported type of escape in 'ESCAPE'!", mNSEx );
+	    }
+	    return new String[] { extendEscSequence( v ), "" };
+	  }
+	   */
+	  
+	  /** formating function.*/
+	  private final String[] execTrim( String[] value, Vector params ) {
+	   // parm 1 : dir ( char "L" || "R" ) ( opt )
+	    int parm_count = params.size();
+	    int start, end;
+	    Character p1 = null;     
+	    boolean trim_left,trim_right;
+	    int result_length;
+	    String[] result;
+
+	    //Dbg.println(Dbg.INFO,this,null,"TRIM start....");
+	    if ( parm_count > 1 )
+	      throw new TemplateSyntaxException( "Illegal number of parameters in 'TRIM': "+ parm_count );
+	    if ( parm_count == 1 ) {
+	      try {
+		p1 = (Character)params.elementAt(0);
+	      }
+	      catch (ClassCastException c){
+		throw new TemplateSyntaxException( "Illegal parameter in 'TRIM': ", c );
+	      }
+	      if ( ! ( ( p1.charValue() == 'L' ) ||
+		       ( p1.charValue() == 'R' ) ) )
+		throw new TemplateSyntaxException( "Unkown option in 'TRIM': "+p1 );
+	    }
+	    trim_left  = ( p1 == null ) ? true : p1.charValue() == 'L';
+	    trim_right = ( p1 == null ) ? true : p1.charValue() == 'R';
+
+	    start = 0;
+	    end = value.length - 2;
+
+	    if ( trim_left ) {  
+	      while ( start < value.length - 1 ) {
+		if ( value[start].trim().length() != 0 ) //.charAt(0) != ' ' )
+		  break;
+		start++;
+	      }
+	      if ( start == value.length - 1 ) { // no need to go through it again... only spaces
+		trim_right = false;
+	      }
+	    }
+	    if ( trim_right ) 
+	      while ( end >= start ) {
+		if ( value[end].trim().length() != 0 ) //.charAt(0) != ' ' )
+		  break;
+		end--;
+	    }
+	    
+	    result_length = ( end - start < 0 ) ? 1 :  end - start + 2;
+	    result = new String[result_length];
+	    System.arraycopy( value, start, result, 0, result_length - 1 );
+	    result[ result.length - 1] = new String("");
+	    //Dbg.println(Dbg.INFO,this,null,"TRIM done.");
+	    return result;
+	  }
+
+	  /** formating function.*/
+	  private final String[] execUpper( String[] value, Vector params ) {
+	    // no parms
+	    //Dbg.println(Dbg.INFO,this,null,"UPPER start...");
+	    int parm_count = params.size();
+	    int pos;
+	    String[] result; 
+	    if ( parm_count > 0 )
+	      throw new TemplateSyntaxException ("No arguments allowed for function 'UPPER' !"); 
+	    pos = 0;
+	    result = new String[value.length];
+	    while ( pos < value.length ) {
+	      result[pos] = value[pos].toUpperCase();
+	      pos++;
+	    }
+	    //Dbg.println(Dbg.INFO,this,null,"UPPER done.");
+	    return result;
+	  }
+
+	  /**
+	   * internal: Expand the Definition.
+	   * @param expEmptyTemplates : if true,empty Templates are replaced with String("").
+	   */
+	  protected String[] expandAsArrayN( String[] expDef, boolean expEmptyTemplates ) {
+	  	try {
+	  		return expandAsArrayN( expDef, expEmptyTemplates, null, null );
+	  	} catch ( Exception t ) {
+	  		throw new TemplateSyntaxException( "Failed to expand!", getString( expDef, 0, -1 ), t );
+	  	}
+	  }
+	  /**
+	   * internal: Expand the Definition.
+	   * @param expEmptyTemplates : if true,empty Templates are replaced with String("").
+	   */
+	  protected String[] expandAsArrayN( String[] expDef, boolean expEmptyTemplates, Vector activeTs, String newActive ) {
+	    try {
+	    int            nextOpen = 0;
+	    int            startTS;
+	    int            nextClose;
+	    int            nextPoint;
+	    boolean        synchMT;
+	    String         templName;
+//	    String         templFunc;
+	    String[]       templResArr;
+//	    Object         templValue;
+//	    String[]       templValueArr;
+//	    String         st;
+//	    Template       templTValue;
+//	    MultiTemplate  templMTValue;
+	    int            itMaxSize = 0; // largest size of iterator
+	    int            syncSize  = 0;
+	    String[]       syncRes;
+	    Vector         syncVect;
+	    int            result_index;
+	    int            tmp_length;
+	    int            mtHashSize;
+	    Hashtable      mtHashtable; // contains values for Multitemplates
+//	    Hashtable      tmpTemplates = null; // the original template hashtable is temporary stored here
+	    Vector         syncMTs     = new Vector(20, 100);
+	    Vector         syncMTNames = new Vector(20, 100);
+	    RememberExpand remForExpand = new RememberExpand( expDef );
+
+	    //countExpansions();
+	    if (newActive != null) {
+	      if (activeTs == null)
+		activeTs = new Vector(10,10);
+	      activeTs.addElement( removeEscapes(newActive).toUpperCase() );
+	    }
+	    do {
+	      nextOpen = locateNextStartOfTemplateSpec( expDef, nextOpen );
+	      if (nextOpen != -1) {
+		startTS    = nextOpen+1;
+		nextClose  = locateNextEndOfTemplateSpec( expDef, startTS );
+		if (nextClose == -1)
+		  throw new TemplateSyntaxException( "missing Bracket behind index " + nextOpen + ": " + "..." + StringTool.subString( StringTool.list(expDef, "", false), nextOpen - 1, -1 ).replace('\r','^').replace('\n','^') + "..." );
+		nextPoint  = locateNextFunction( expDef, startTS, nextClose );
+		templName  = getString( expDef, startTS, (nextPoint == -1) ? nextClose : nextPoint );
+		synchMT    = isSyncMT( templName );
+		if (synchMT)
+		  templName = templName.substring(1);
+//		templValue = getTemplateValue( templName, activeTs ); // get value of key in hashtable
+//		if (templValue == null)
+//		  templValueArr = (expEmptyTemplates || (templName.length() == 0)) ? ( new String[] {""} ) : null;
+//		else {
+//		  try { // The fast way, reduces casts from 3 to 1...
+//		    templMTValue = (MultiTemplate)templValue;
+//		  } catch (ClassCastException c) {
+//		    templMTValue = null;
+//		  }
+//		  templValueArr = null;
+//		  if (templMTValue != null)
+//		    if (templMTValue.isDefaultSynch() != synchMT) {
+//		      syncMTNames.addElement( templName );
+//		      syncMTs.addElement( templMTValue );
+//		    } else 
+//		      templValueArr = templMTValue.expandForTemplate();
+//		  else {
+//	 	    try {
+//		      templTValue = ((Template)templValue);
+//		    } catch (ClassCastException c) {
+//		      templTValue = null;
+//		    }
+//		    if (templTValue == null) {
+//	 	      try {
+//		        templValueArr = ((String[])templValue);
+//		      } catch (ClassCastException c) {
+//			st = templValue.toString();
+//	                templValueArr = toStringArray( st );
+//			if (htreplacer != null)
+//	                  templValueArr = htreplacer.replace( st, templValueArr );
+//		      }
+//	            } else
+//		      templValueArr = templTValue.expandForTemplate();
+//		  }
+//		}
+		templResArr = expandTemplateSpec( expDef, nextPoint, nextClose, templName, activeTs, expEmptyTemplates, synchMT, syncMTs, syncMTNames );
+		if (templResArr != null)
+		  remForExpand.remember( templResArr, nextOpen, nextClose );
+//		if (templValueArr != null)
+//		  remForExpand.remember( new Template( execFunctions( nextPoint, nextClose, templValueArr, templName ),
+//						       templates, htreplacer )
+//		                         .expandForTemplate( expEmptyTemplates, activeTs, templName ),
+//					 nextOpen, nextClose );
+		nextOpen = nextClose+1;
+	      }
+	    } while (nextOpen != -1);
+	    expDef = remForExpand.merge();
+	    remForExpand.clear();
+	    remForExpand = null;
+
+	    /////////////////////////////////////////////////////
+	    // Second Phase: Loop on the max. avail. Values of a synch. MT, for each loop
+	    //               define a Template with the name and current value of each MT, expand, append
+	    // Think about Caching of the expansions (two results for each Template) - Flag telling about changed Hashtables
+	    /* no more static MultiTemplates (replaced by new dynamic multiExpand() function)
+	    if ( !syncMTs.isEmpty() ) {
+	      vi = new VectorEIterator( syncMTs );
+	      mtHashSize = vi.size();
+	      mtHashtable = new Hashtable( mtHashSize+1, 1.0f );
+	      //Dbg.get().println(Dbg.INFO, this, null, "Generating syncMulti...");
+	      while( vi.next() ) { // get the size of the "greatest" iterator
+	    	int sz = ((MultiTemplate)vi.getObject()).size();
+	    	if ( sz > itMaxSize )
+	    	  itMaxSize = sz;
+	      }
+	      
+	      syncVect = new Vector( itMaxSize );
+	      for ( int itPos = 0; itPos < itMaxSize; itPos++ ) { // get the MT-values
+	    	vi.setToStart();
+	    	while( vi.next() ) {
+	    	  templName = (String)syncMTNames.elementAt( vi.position() );
+	    	  mtHashtable.put( templName,
+				   new Template( ((MultiTemplate)vi.getObject()).expandForTemplate( itPos ), templates, htreplacer )
+				   .setRequestServer( requestServer, requestData )
+				   .expandForTemplate( expEmptyTemplates, activeTs, templName ) );
+	    	}
+	    	syncRes = new Template( expDef, mtHashtable, htreplacer )
+					.setRequestServer( requestServer, requestData )
+					.expandForTemplate(); // unkown keys are deleted
+	    	mtHashtable.clear();
+	    	syncSize += (syncRes == null) ? 0 : ( (syncRes.length > 0) ? (syncRes.length - 1) : 0 );
+	    	syncVect.addElement( syncRes );
+	      }
+	      if ( syncSize > 0 ) { // something to do ?
+	    	vi = new VectorEIterator ( syncVect );
+	    	result_index = 0;
+	    	syncRes = new String[ syncSize + 1 ];
+	    	while ( vi.next() ) {
+	    	  String[] tmp_result = (String[])vi.getObject();
+	    	  tmp_length = ( tmp_result.length > 0 ) ? tmp_result.length - 1 : 0;
+	    	  System.arraycopy( tmp_result , 0, syncRes, result_index, tmp_length );
+	    	  result_index += tmp_length;
+	    	}
+	    	syncRes[ syncRes.length-1 ] = "";
+	    	expDef = syncRes;
+	    	syncVect.removeAllElements();
+//		Dbg.get().println(Dbg.INFO, this, null, "Generating syncMulti done");
+	      }
+	    }
+	    */
+	    if (activeTs != null)
+	      activeTs.removeElementAt( activeTs.size()-1 );
+	    } catch ( RuntimeException r ) {
+	      //if (RUNTIMEEX == null)
+	      throw r;
+	      //Dbg.get().printException( this, null, r );
+	      //expDef = new String[] { RUNTIMEEX, "" };
+	    }
+	    return expDef;
+	  }
+
+
+	  /**
+	   * Expand a template name and spec for further processing.
+	   */
+	  protected String[] expandTemplateSpec(
+	    String[] expDef,
+	    int    nextPoint,
+	    int    nextClose,
+	  	String templName,
+	  	Vector activeTs,
+	  	boolean expEmptyTemplates,
+	  	boolean synchMT, // if syncMT is false, syncMTs & syncMTNames are not required and can be null
+	  	Vector syncMTs,
+	  	Vector syncMTNames
+	  ) {
+	    Object         templValue;
+	    String[]       templValueArr;
+	    String         st;
+	    Template       templTValue;
+	    //MultiTemplate  templMTValue;
+	  	
+		templValue = getTemplateValue( templName, activeTs ); // get value of key in hashtable
+		if (templValue == null)
+		  templValueArr = (expEmptyTemplates || (templName.length() == 0)) ? ( new String[] {""} ) : null;
+		else {
+		  /*
+		  try { // The fast way, reduces casts from 3 to 1...
+		    templMTValue = (MultiTemplate)templValue;
+		  } catch (ClassCastException c) {
+		    templMTValue = null;
+		  }
+		  */
+		  templValueArr = null;
+		  /*
+		  if (templMTValue != null)
+		    if (templMTValue.isDefaultSynch() != synchMT) {
+		      syncMTNames.addElement( templName );
+		      syncMTs.addElement( templMTValue );
+		    } else 
+		      templValueArr = templMTValue.expandForTemplate();
+		  else {
+		  */
+	 	    try {
+		      templTValue = ((Template)templValue);
+		    } catch (ClassCastException c) {
+		      templTValue = null;
+		    }
+		    if (templTValue == null) {
+	 	      try {
+		        templValueArr = ((String[])templValue);
+		      } catch (ClassCastException c) {
+	            st = toString(templValue);
+	            templValueArr = toStringArray( st );
+//	            if (htreplacer != null)
+//	              templValueArr = htreplacer.replace( st, templValueArr );
+	          }
+	        } else
+		      templValueArr = templTValue.expandForTemplate();
+		  //} // no more MultiTemplate
+		}
+		return (templValueArr == null)
+		  ? null
+		  : new Template(
+		      execFunctions( expDef, nextPoint, nextClose, templValueArr, templName, activeTs ),
+			  templates
+			)
+			.setRequestServer( requestServer, requestData )
+			.expandForTemplate(expEmptyTemplates, activeTs, templName );
+	  }
+
+	  /**
+	   * Expand for another Template.
+	   * Empty Templates and escaped Characters aren't expanded.
+	   */
+	  public String[] expandForTemplate() { // synchronized
+	    return expandForTemplate( false );
+	  }
+	  /**
+	   * Expand for another Template, normaly called by expandForTemplate().
+	   * Empty Templates and escaped Characters are deleted if deleteUnkown is
+	   * true. (Internal use only for Multitemplates).
+	   */
+	  protected String[] expandForTemplate ( boolean deleteUnknown ) {
+	    return expandForTemplate( deleteUnknown, null, null );
+	  }
+	  /**
+	   * Expand for another Template, normaly called by expandForTemplate().
+	   * Empty Templates and escaped Characters are deleted if deleteUnkown is
+	   * true. (Internal use only for Multitemplates).
+	   */
+
+	  protected String[] expandForTemplate ( boolean deleteUnknown, Vector activeTs, String newActive ) {
+	    String[] def;
+	    
+	    String[] expDef = new String[ definition.length ];
+	    System.arraycopy( definition, 0, expDef, 0, definition.length );
+	    expDef = expandAsArrayN( expDef, deleteUnknown || (expandDirty && !thisNotDirty), activeTs, newActive ); // FIXME: workaround
+	    //def = new String[ expDef.length ];
+	    //System.arraycopy( expDef, 0, def, 0, expDef.length );
+	    def = (expandDirty && !thisNotDirty) ? new String[] { extendEscSequence( replaceEscapes( expDef ) ), "" } : expDef; // FIXME: workaround
+	    expDef = null;
+	    return def;
+	  }
+	  /**
+	   * Extend a pure Sequence of Esc-Characters by one Esc-Character.
+	   * Handling of late-replacing: Extending Sequences of non-functional Esc-Chars to +1-Sequences of Esc-Chars
+	   * for later correctly identifying functional Esc-Chars, i.e.: \ -> \\, \\->\\\
+	   * (FIXME: It's a workaraund - Esc-Char-Handling should be changed, but would affect several methods!)
+	   */
+	  public static String extendEscSequence( String s ) {
+//		return StringTool.replace( s, esc, ""+esc+esc );
+		return StringTool.replace( s, ""+esc+tsc+tso, new String [] { ""+esc+esc, ""+esc+tsc, ""+esc+tso } );
+	/*    int l;
+	    if (s == null)
+	      return null;
+	    l = s.length()-1;
+	    for (int i = l; i >= 0; i--)
+	      if ( ! ( (s.charAt(i) == esc) || ((i == l) && ((s.charAt(i) == tso) || (s.charAt(i) == tsc))) ) )
+		return s;
+	    return (s.length() == 0) ? s : (esc+s);
+	*/
+	  }
+
+	/**
+	 * Some clean-up for better garbage-collection...
+	 */
+	@Override
+	public void finalize() throws Throwable {
+	    //expDef	= null;
+	    definition	= null;
+	   	templates	= null;
+	   	super.finalize();
+	}
+
+	  /**
+	   * Get a definition from a Vector of conditioned Definitions.
+	   * @returns the matching definition, returns the nullDefaultDefinition, if no Condition matches and the Default is undefined.
+	   */
+	/* deprecated, no more used
+	  public static String getDefinition( Vector compDef, Hashtable condValues, String nullDefaultDefinition ) {
+	    VectorEIterator vi = new VectorEIterator( compDef );
+	    CondDef c;
+	    while (vi.next()) {
+	      c = (CondDef)vi.getObject();
+	      if ( c.name == null )
+		return (c.def == null) ? nullDefaultDefinition : c.def;
+	      else  if (c.checkCondition( condValues ))
+		return c.def;
+	    }
+	    return nullDefaultDefinition; // Should not occur...
+	  }
+	  */
+	
+	  /** 
+	   * internal: returns the stringindex of a given unescaped char.
+	   */
+	  private final int getFirstUnescaped ( String to_search, int start_at, char sym ) {
+	    boolean escaped = false;
+	    int mLen = to_search.length();
+	    while ( start_at < mLen ) {
+	      if ( !escaped ) {
+		if ( to_search.charAt( start_at ) == sym )
+		  return start_at;
+		if ( to_search.charAt( start_at ) == esc )
+		  escaped = true;
+	      } else
+		escaped = false;
+	      start_at++;
+	    }
+	    /* Remove this when the code above has been proven to be stable       do {
+	      start_at = to_search.indexOf ( sym , start_at );
+	      if ( start_at > -1 ) {
+		if ( start_at > 0 ) {
+		  if ( to_search.charAt ( start_at - 1 ) == esc ) {
+		    start_at = start_at + 1;// search next unescaped
+		    continue;
+		  }
+		}
+		return start_at;
+	      }
+	      } while ( start_at != -1 );*/
+	    return -1;
+	  }
+	  /**
+	   * internal Get the Argument-List for a Function/Method on a Template-Value.
+	   */
+	  protected Vector getFunctionArguments( String parmList, int vlength ) {
+	    // Parameter-List: Seperated by 'fps', Strings enclosed by 'sec', Escape-Character: 'esc'
+	    // Examples (assume:  'fps'=','   'sec'='"'   'esc'='\'):
+	    // ...,  " xxx, yyy \" " ,...   ==> String(  xxx,yyy " )
+	    // ...,  +LEN-3 ,...            ==> RNumber( Boolean(true), vlength-3 )
+	    // ...,LEN+3,...                ==> RNumber( null, vlength+3 )
+	    // ..., -5 ,...                 ==> RNumber( Boolean(false), 5 )
+	    // ..., X ,...                  ==> Character(X)
+	    // ...,,...                     ==> Character( )
+	    //
+	    // How to:
+	    // - first Check next index of   unescaped   ',' and '"'  (No ',' => until String)
+	    // - '"' < ',': String, search for second, unescaped '"', cut-out, removeEscapes(...), store as String, check if remaining Stuff are only Spaces
+	    // - else: trim()
+	    // Len=1: Digit->RNumber, else Character
+	    // Len=2: Starts with 'esc'->Character else RNumber
+	    // Len>2: RNumber
+	    // RNumber: SignPrefix->new Boolean(true/false) else 'null'
+	    //          remaining.toUpper().startsWith("LEN")->v=vlength
+	    //          if started with LEN: check sign, add/subtr remainig to/from v ELSE v=remaining
+	    // - if removeEscape(...).length>1 || a Digit: RNumber
+	    // - else Character
+	    // If Types don't work, throw TemplateSyntaxException.
+	 
+	    int start_pos = ( parmList.length() > 0 ) ? 0 : 1 ; // see while condition
+	    int end_pos;
+	    int seperator;
+	    int string_enc;
+	    int string_enc_2;
+//	    int val;
+	    int v = 0;
+	    String s;
+	    Vector result = new Vector(5);
+	    Boolean signPrefix = null;
+
+	    
+	    while ( start_pos < parmList.length() ) {
+	      //Dbg.println(Dbg.INFO,this,null,"getFunctionArguments:parmList:"+parmList);
+	      //Dbg.println(Dbg.INFO,this,null,"start_pos: "+start_pos+" fps: '"+fps+"'" );
+	      seperator  = parmList.indexOf( fps, start_pos );
+	      string_enc = getFirstUnescaped( parmList, start_pos, sec );
+	      //Dbg.println(Dbg.INFO,this,null,"stringenc ::"+string_enc+" seperator "+seperator);
+	      if ( string_enc >= 0 ) {
+		if ( seperator > string_enc )   { // string, maybe followed by other args...
+		  string_enc_2 = getFirstUnescaped( parmList, string_enc + 1 , sec );
+		  if ( string_enc_2 > seperator ) // is it part of the string ?
+		    seperator = parmList.indexOf ( fps, string_enc_2 + 1  );
+		  s = parmList.substring( string_enc + 1 , string_enc_2 );
+		  s = removeEscapes( s );
+		  result.addElement((Object) new String(s) );
+		  //Dbg.println(Dbg.INFO,this,null,"getFunctionArguments:String:"+s);
+		  start_pos = ( seperator > 0 ) ? seperator + 1 : parmList.length();
+		  continue;
+		} else if ( seperator == -1 ) { // string, no seperator at all -> last arg
+		  string_enc_2 = getFirstUnescaped ( parmList, string_enc + 1 , sec );
+		  s = parmList.substring( string_enc + 1 , string_enc_2 );
+		  s = removeEscapes( s );
+		  result.addElement( new String(s) );
+		  start_pos = ( seperator > 0 ) ? seperator + 1 : parmList.length();
+		  continue;
+		}
+	      } // ok, no string !
+
+	      end_pos = ( seperator == -1 ) ? parmList.length() : seperator;
+	      s = parmList.substring( start_pos, end_pos );
+	      start_pos = end_pos + 1; 
+	      s = s.trim ();
+	      try {
+		if ( s.length() == 0 )
+		  result.addElement( null );
+		else  
+		  if ( s.length() == 1 ) 
+		    if ( Character.isDigit ( s.charAt ( 0 ))) 
+		      result.addElement ( new RNumber( null, Integer.parseInt( s ) ) );
+		    else
+		      result.addElement ( new Character ( s.charAt ( 0 ) ) );
+		  else  
+		    if ( ( s.length() == 2 ) && ( s.charAt ( 0 ) == esc ) )
+		      result.addElement ( new Character ( s.charAt ( 1 ) ) );
+		    else { // length > 2 OR length = 2 (unescaped)
+		      if ( ( s.charAt(0) == '+' ) || ( s.charAt(0) == '-' ) ) {
+		    	signPrefix = new Boolean(s.charAt ( 0 ) == '+');
+		    	s = s.substring(1).trim(); // drop sign
+		      }
+		      if ( s.toUpperCase().startsWith( len ) ) {
+		    	  s = s.substring( len.length () ).trim();
+		    	  if (  s.charAt ( 0 ) == '+' ) { 
+		    		  v = vlength + Integer.parseInt( s.substring ( 1 ).trim() );
+		    	  } else {
+		    		  if (  s.charAt ( 0 ) == '-' ) { 
+		    			  v = vlength - Integer.parseInt( s.substring ( 1 ).trim() );
+		    		  } else {
+		    			  throw new TemplateSyntaxException("Expecting '+' or '-' after "+len+" Keyword !");
+		    		  }
+		    	  }
+		      } else {
+		    	  v = Integer.parseInt( s.trim() );
+		    	  result.addElement( new RNumber( signPrefix, v ) );
+		      }
+		    }
+	      } catch (NumberFormatException e) {
+		throw new TemplateSyntaxException ( "Unable to parse String to Integer !", e );
+	      }
+	    }
+	    return result;
+	  }
+	  /**
+	   * Get the specified area of the Definition-Array as String.
+	   */
+	  protected static final String getString(String[] buf, int start, int end) {
+	    StringBuffer sb;
+	    int i;
+
+	    if (end == -1)
+	      end = buf.length-1;
+	    if (start >= end)
+	      return "";
+	    sb = new StringBuffer( end-start );
+	    for ( i=start; i<end; i++ )
+	      sb.append(buf[i]);
+	    return sb.toString();
+	  }
+	  /**
+	   * Get the specified area of the Definition-Array as String.
+	   */
+	//  protected final String getString(int start, int end) {
+//	    return getString( expDef, start, end );
+	//  }
+
+	  /**
+	   * Get a Template-Value from the templates-table.
+	   */
+	  public Object getTemplate( String name, String orgName ) {
+		  Object o = templates.get( name );
+		  if ((o == null) && (cContext != null) && (!orgName.startsWith("@")) && (!orgName.startsWith("$"))) {
+			  o = cContext.getProperty(orgName);
+			  if (o != null) {
+				  templates.put( name, prepareForAtomicValue(o) );
+			  }
+		  }
+		  if ((o == null) && (cGloVars != null) && (orgName.startsWith("$"))) {
+			  o = cGloVars.get(orgName.substring(1));
+			  if (o != null) {
+				  templates.put( name, prepareForAtomicValue(StringTool.toString(o)) );
+			  }
+		  }
+		  if ( ((o == null) && orgName.startsWith("@")) || orgName.startsWith("@[]")) { // gets NOT reflected to the MAP!!! Ech call needs to REEXPAND, INPUT may CHANGE!!!
+			  int idxO = orgName.indexOf("("); // supporting MACRO parameters, e.g. [@buildEqualOrInStr("MYCOL").embed("  ( myDBCol "," ) AND")]
+			  boolean endsC = orgName.endsWith(")");
+			  if ( ((idxO == -1) && endsC) || ((idxO > -1) && !endsC) )
+				  throw new TemplateSyntaxException("Template-Expand - Macro Config Include with incomplete parameter list: " + "...[" + orgName + "..." );
+			  boolean hasP = (endsC && (idxO > -1));
+			  String lookup = hasP ? orgName.substring(1, idxO) : orgName.substring(1);
+
+			  String cfgVal = (o != null) ? o.toString() : StringTool.toString(templates.get("@[]" + lookup.toUpperCase()));
+
+			  if (cfgVal == null) {
+            	  if (cContext == null) {
+            		  throw new TemplateSyntaxException("Requested macro lookup to context: '" + orgName + "', but context not passed to template.");
+            	  }
+				  cfgVal = StringTool.nullToEmpty( cContext.getProperty(lookup) );
+				  templates.put( "@[]" + lookup.toUpperCase(), cfgVal);
+			  }
+			  if (hasP) {
+				  // allow optional parameters - enforce any further, unspec param up to #9 to be added empty to enforce expansion of {0} ... {9}
+				  // Arrays.copyOf(...) may work too...
+				  String[] mParams = StringTool.splitString(orgName.substring(idxO + 1, orgName.length() - 1).trim(), ',', '"');
+				  if ((mParams == null) || (mParams.length < 10)) {
+					  String[] mTemp = new String[] { "", "","","","","","","","","" }; // initialize at least 10 params
+					  System.arraycopy(mParams, 0, mTemp, 0, mParams.length);
+					  mParams = mTemp;
+				  }
+				  cfgVal = new MessageFormat( cfgVal ).format(mParams);
+			  }
+			  o = expandAsArrayN( toStringArray( cfgVal ), true );
+		  } else if ( (o == null) && "*".equals(name) ) {
+			  String[] keys = new ArrayList<String>(templates.keySet()).toArray(new String[0]);
+			  Arrays.sort(keys);
+			  String mList = StringTool.embed(StringTool.list(keys, "]\n[", false ), "[", "]");
+			  o = prepareForAtomicValue( mList );
+		  }
+		  if ((o == null) && (requestServer != null)) {
+			  boolean isCallbackVersion = (requestServer instanceof TemplateElementRequestWithExpandAccess);
+			  if ( isCallbackVersion )
+				  ((TemplateElementRequestWithExpandAccess)requestServer).setTemplate(this);
+			  o = requestServer.getTemplateValue( this, requestData, name, orgName );
+			  if ( isCallbackVersion )
+				  ((TemplateElementRequestWithExpandAccess)requestServer).setTemplate(null);
+			  if (o instanceof TransientTERResult)
+				  o = ((TransientTERResult) o).getValue();
+			  else if ((o != null) && (name.length() > 0))
+				  templates.put( name, o ); // FIXME (prepAtomicVal???)
+		  }
+		  return o;
+	  }
+	  
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (20.09.2001 11:22:53)
+	 * @return java.util.Hashtable
+	 */
+	public java.util.Hashtable getTemplates() {
+		return templates;
+	}
+	  /**
+	   * Get the Template-Value.
+	   * (replace escaped *;[;];. by the single Characters inside the TemplateName,
+	   * then access the Hashtable.
+	   */
+	  protected final Object getTemplateValue( String name, Vector activeTs ) {
+	    String no = removeEscapes(name);
+	    String n  = no.toUpperCase();
+	    Object v  = getTemplate( n, no );
+	    int idx;
+	    int cnt = 0;
+	    String lp = null;
+
+	    if ((v != null) && (activeTs != null)) {
+	      idx = activeTs.indexOf(n);
+	      if (idx >= 0 ) {
+	      	for ( idx=0; idx<activeTs.size(); idx++ )
+	      	  if ( n.equals( activeTs.elementAt( idx ) ) )
+	      	    cnt++;
+	      }
+	      if ( cnt > MAXLP ) {
+	        for ( idx=0; idx<activeTs.size(); idx++ )
+	          lp = ((lp == null) ? "" : (lp+"->")) + (String)activeTs.elementAt(idx);
+	        throw new TemplateSyntaxException("Loop at Template-Expansion detected: "+lp+"->"+n );
+	        //return new String[] {""};
+	      }
+	    }
+	    return v;
+	  }
+	  /**
+	   * Odd prefix of Esc-Chars before the current pos?
+	   */
+	  public static boolean isEscaped( String s, int p, int f, char e ) {
+	    boolean odd = false;
+	    for ( p--; p >= f; p-- )
+	      if (s.charAt(p) == e)
+		odd = !odd;
+	      else
+		return odd;
+	    return odd;
+	  }
+	  /**
+	   * Has the Name a Synch.-MultiTemplate-Prefix?.
+	   */
+	  protected final boolean isSyncMT( String name ) {
+	    return (name != null) && (name.length() > 1) && (name.charAt(0) == smt);
+	  }
+	  /**
+	   * Locate the end of the next Template-Reference (unescaped closing Bracket).
+	   * (starts with checking nextPos).
+	   */
+	  protected final int locateNextEndOfTemplateSpec( String[] expDef, int nextPos ) {
+	    return locateNextSymbol( expDef, nextPos, -1, tsc, true );
+	  }
+	  /**
+	   * Check for the first/next unescaped '.', end not checked.
+	   */
+	  protected final int locateNextFunction( String[] expDef, int start, int end ) {
+	    return locateNextSymbol( expDef, start, end, tsf, true );
+	  }
+	  /**
+	   * Locate the start of the next Template-Reference (unescaped opening Bracket).
+	   * (starts with checking nextPos).
+	   */
+	  protected final int locateNextStartOfTemplateSpec( String[] expDef, int nextPos ) {
+	    return locateNextSymbol( expDef, nextPos, -1, tso, false );
+	  }
+	  /**
+	   * Locate a symbol within a range of the definition, escaped symbol ignored.
+	   * If searching for esc-Character, the first (even escaped) esc-Character is found;
+	   * starts with checking nextPos;
+	   * lastPos isn't checked, lastPos=-1: up to the end.
+	   * if ignoreBetweenQuotes: ignore everything between quotes ('sec'='"')
+	   */
+	  protected final int locateNextSymbol( String[] expDef, int nextPos, int lastPos, char sym, boolean ignoreBetweenQuotes ) {
+	     String s = "";
+	     boolean foundEscape = false;
+	     boolean betweenQuotes = false;
+
+	     lastPos = ( lastPos == -1 ) ? ( lastPos=expDef.length-1 ) : lastPos;
+
+	     ignoreBetweenQuotes &= (sym != sec); // sensless to ignore '"' between quotes ('"'), cause you would never find it...
+	     while ( nextPos < lastPos ) {
+	       s = expDef[nextPos];
+	       if ( s.length () == 1 ) {
+		 if ( !foundEscape )
+		   if (ignoreBetweenQuotes && (s.charAt(0) == sec))
+		     betweenQuotes = !betweenQuotes;
+		   else {
+		     if ( (s.charAt(0) == sym) && !betweenQuotes )
+		       return nextPos;
+		     foundEscape = (s.charAt(0) == esc);
+		   }
+		 else
+		   foundEscape = false;
+	       }
+	       nextPos++;
+	     }
+	     return -1;
+	  }
+	  /**
+	   * Locate the next unescaped Character (note: c != e).
+	   */
+	  protected static int locateNextUnescaped( String s, int p, char c, char e ) {
+	    int l = s.length();
+	    int f = p;
+	    for ( ; p<l; p++ )
+	      if ( (s.charAt(p) == c) && !isEscaped(s, p, f, e) )
+		return p;
+	    return -1;
+	  }
+	/**
+	 * Method for modifying a date (should be exported to an new
+	 * service class DateTool later).
+	 * Accepts date-modifications of the format "+1y-3M+5w+2d-3H+4m+3s-200S".
+	 * (+|-)<number>(y|M|w|d|H|m|s|S).
+	 * Creation date: (21.03.2002 14:03:06)
+	 * @return java.util.Date
+	 * @param pDate java.util.Date
+	 * @param pModifier java.lang.String
+	 */
+	public final Date modifyDate(Date pDate, String pModifier)
+		throws DateToolException
+	{
+		try {
+			return DateTool.modifyDate( pDate, pModifier );
+		} catch (DateToolException e) {
+			throw new DateToolException( "Failed to modify date: '"+pModifier+"'!", e );
+		}
+	/*	
+		int      i    = 0;
+		int      j    = 0;
+		Calendar mCal = null;
+		
+		if ( (pDate != null) && (pModifier != null) && (pModifier.length() > 0) )
+		{
+			mCal = new GregorianCalendar();
+			mCal.setTime( pDate );
+			while (pModifier != null)
+			{
+				i = pModifier.indexOf('+', 1);
+				j = pModifier.indexOf('-', 1);
+				if ( (i == -1) || ((j != -1) && (j < i)) )
+				{
+					i = j;
+				}
+				modifyDateAtom( mCal, (i == -1) ? pModifier : pModifier.substring(0, i) );
+				pModifier = (i == -1) ? null : pModifier.substring(i);
+			}
+			pDate = mCal.getTime();
+		}
+		return pDate;
+	*/
+	}
+	/**
+	 * Method for modifying a date by a modifier atom (should be exported to an new
+	 * service class DateTool later).
+	 * A modifier atom: (+|-)<number>(y|M|w|d|H|m|s|S).
+	 * Creation date: (21.03.2002 14:03:06)
+	 * @param pCal java.util.Calendar
+	 * @param pModifier java.lang.String
+	 */
+	/*
+	public final void modifyDateAtom(Calendar pCal, String pModifier)
+		throws IllegalDateTimeException
+	{
+		boolean mAdd       = false;
+		boolean mSub       = false;
+		int     mNum       = 0;
+		String  mModifiers = "yYMwWDdHhmsS";
+		int[]   mCalMods   = new int[] {	Calendar.YEAR, Calendar.YEAR, Calendar.MONTH,
+											Calendar.WEEK_OF_YEAR, Calendar.WEEK_OF_YEAR,
+											Calendar.DAY_OF_YEAR, Calendar.DAY_OF_YEAR,
+											Calendar.HOUR, Calendar.HOUR, Calendar.MINUTE,
+											Calendar.SECOND, Calendar.MILLISECOND };
+		int     mModIdx    = 0;
+		
+		if ( (pCal != null) && (pModifier != null) && (pModifier.length() > 0) )
+		{
+			if (pModifier.length() < 3)
+			{
+				throw new IllegalDateTimeException( "Bad date modifier: "+pModifier );
+			}
+			mAdd    = pModifier.startsWith("+");
+			mSub    = pModifier.startsWith("-");
+			mModIdx = mModifiers.indexOf( pModifier.charAt( pModifier.length() - 1 ) );
+			try
+			{
+				mNum = Integer.parseInt( pModifier.substring( 1, pModifier.length() - 1 ) );
+			}
+			catch (NumberFormatException mNFE)
+			{
+				Dbg.get().printException( this, null, mNFE );
+				throw new IllegalDateTimeException( "Bad date modifier: "+pModifier );
+			}
+			if ( (mModIdx == -1) || !(mAdd || mSub) )
+			{
+				throw new IllegalDateTimeException( "Bad date modifier: "+pModifier );
+			}
+			if ( mSub )
+			{
+				mNum = -mNum;
+			}
+			pCal.add( mCalMods[mModIdx], mNum );
+		}
+	}
+	*/
+	  /**
+	   * Pase a conditioned Template-Definition.
+	   * @return a Vector of conditioned definitions.
+	   */
+	/* deprecated, not used anymore
+	  public static Vector parseConditionedDefinition( String definition ) {
+	    definition = (definition == null) ? "" : definition.trim();
+	    String  def  = definition.trim();
+	    String  defU = def.toUpperCase().replace( '\n', ' ' ).replace( '\r', ' ' );
+	    String  name, comp, value;
+	    int     p;
+	    CondDef otherwise = null;
+	    CondDef current   = null;
+	    Vector  compDefs  = new Vector();
+
+	    while (defU.length() > 0) {
+	      if (defU.startsWith(D_IF)) {
+		if (otherwise != null)
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, "+D_IF+" after "+D_OW+"-Definition at Offset: "+(definition.length()-defU.length()));
+		defU = StringTool.cutTrimed(defU, L_IF, -1);
+		if (!defU.startsWith( "(" ))
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, ( expected, "+StringTool.cutTrimed(defU,0,1)+" found at Offset: "+(definition.length()-defU.length()));
+		defU = StringTool.cutTrimed(defU, 1, -1);
+		if (!defU.startsWith( ""+tso ))
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, [ expected, "+StringTool.cutTrimed(defU,0,1)+" found at Offset: "+(definition.length()-defU.length()));
+		p = locateNextUnescaped( defU, 1, tsc, '\\' );
+		if (p == -1)
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, ] expected behind Offset: "+(definition.length()-defU.length()+1));
+		name = removeEscapes(defU.substring( 1, p ));
+		defU = StringTool.cutTrimed(defU, p+1, -1);
+		p = defU.indexOf( '\"' );
+		if (p == -1)
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, \" expected behind Offset: "+(definition.length()-defU.length()));
+		comp = StringTool.cutTrimed( defU, 0,  p ).toUpperCase();
+		if ( (comp.indexOf( '$' ) > -1) || (KNOWNCOMP.indexOf( "$"+comp+"$" ) == -1) )
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, unknown Operator "+comp+" at Offset: "+(definition.length()-defU.length()));
+		defU = StringTool.cutTrimed( defU, p, -1 );
+		p = locateNextUnescaped( defU, 1, '\"', '\\' );
+		if (p == -1)
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, \" expected behind Offset: "+(definition.length()-defU.length()+1));
+		def = def.substring( def.length()-defU.length(), def.length() );
+		value = removeEscapes(def.substring(1,p));
+		defU = StringTool.cutTrimed( defU, p+1, -1 );
+		current = new CondDef( name, comp, value );
+		compDefs.addElement( current );
+		if (!defU.startsWith( ")" ))
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, ) expected, "+StringTool.cutTrimed(defU,0,1)+" found at Offset: "+(definition.length()-defU.length()));
+		defU = StringTool.cutTrimed(defU, 1, -1);
+		if (defU.startsWith( D_TH ))
+		  defU = StringTool.cutTrimed(defU, L_TH, -1);
+	      } else {
+		if (otherwise != null)
+		  throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, duplicate "+D_OW+"-Definition at Offset: "+(definition.length()-defU.length()));
+		if (defU.startsWith( D_OW ))
+		  defU = StringTool.cutTrimed(defU, L_OW, -1);
+		current = new CondDef();
+		otherwise = current;
+	      }
+	      if (!defU.startsWith( "{" ))
+		throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, { expected, "+StringTool.cutTrimed(defU,0,1)+" found at Offset: "+(definition.length()-defU.length()));
+	      def = def.substring( def.length()-defU.length(), def.length() );
+	      p = locateNextUnescaped( defU, 1, '}', '\\' );
+	      if (p == -1)
+		throw new TemplateSyntaxException( "Illegal conditioned Template-Definition, } expected behind Offset: "+(definition.length()-defU.length()+1));
+	      current.def = def.substring( 1, p );
+	      defU = StringTool.cutTrimed(defU, p+1, -1);
+
+	    /* do the parsing:  if ( [UNIT]=="km" ) {[VALUE] Kilometers" otherwise "[UNIT.toUpper()]: [VALUE.tsep()]} * /
+	    /* the return Definition: {[VALUE] Kilometers} * /
+	    }
+	    compDefs.addElement( (otherwise == null) ? new CondDef() : otherwise );
+	    /* DEBUGGING
+	      VectorEIterator vi = new VectorEIterator( compDefs );
+	      while (vi.next())
+	      System.out.println( vi.getObject().toString() );
+	    * /
+	    return compDefs;
+	  }
+	  */
+	
+	  /**
+	   * Internal methode to check an Object to a String conversion.
+	   * This will detect, if a known bug is "used" and WARN the application to use this bug as feature,
+	   * because we will fix it soon (missing escape bug.
+	   */
+	  protected String checkObjectToString( String mStr) {
+		  if (mStr == null)
+			  return null;
+/* bug fix enforced
+		  int idxO = mStr.indexOf(tso);
+		  int idxC = mStr.indexOf(tsc);
+		  
+		  if (idxO > -1) {
+			  if (idxC > idxO) {
+				  Dbg.get().dbgLogMessageOnce(Dbg.WARNING, Dbg.BIGINFO, this, null, null, "", "Your application may use a escape bug AS feature - this bug is know for a long time but will be FIXED soon!!! Take care...\nvalue: \"" + mStr + "\"" , "");
+				  return mStr;
+			  } else {
+
+				  // the string is definitly no template using the bug as feature but will cause definitly an TemplateException!!! Escape enforced!!!
+				  Dbg.get().dbgLogMessageOnce(Dbg.WARNING, Dbg.BIGINFO, this, null, null, "", "preenforcing a bugfix on an escape bug of the Template class..." , "");
+				  return prepareForAtomicValue(mStr);
+			  }
+		  }
+*/
+		  return prepareForAtomicValue(mStr);
+	  }
+	  
+	  /**
+	   * Internal method to convert a parameter object to a String representtion - should enforce an AtomicValue representation for NON-Templates. 
+	   * 
+	   * @param o
+	   * @return
+	   */
+	  private static String toString( Object o ) {
+	  	return
+	  		( (o instanceof String)
+	  				? (String)o
+	  				: ( (o instanceof Date)
+	  						? DateTool.convertSQL( (Date)o ).toString()
+	  						: ( (o instanceof ArrayList)
+	  								? prepareForAtomicValue( StringTool.list((ArrayList)o, "|", false) )
+	  								: ( (o instanceof Object[])
+	  										? prepareForAtomicValue( StringTool.list((Object[])o, "|", false) )
+	  										: o.toString() // TODO: BUGFIX, should use prepareForAtomicValue(...) too!!! Not impossible, that developers found and use this bug... 
+	  										// methode prepared, not yet activated: String checkObjectToString( Object o ) // soft change
+	  						          )
+	  					      )
+	  			      )
+	  		)
+	  	;
+	  }  
+	  /**
+	   *  " *dö\d.[ 2 ]  " => " *dö\\d.\[ 2 \]  "
+	   */
+	  public static String prepareForAtomicValue( Object valueObj ) {
+	    int  i;
+	    char c=' ';
+	    String value = (valueObj == null) ? null : toString(valueObj);
+
+	    if (value != null)
+	      for (i=value.length()-1; i>=0; i--) {
+		c = value.charAt(i);
+		if (c == tso)
+		  value = value.substring(0,i)+esc+tso+value.substring(i+1);
+		else  if (c == tsc)
+		  value = value.substring(0,i)+esc+tsc+value.substring(i+1);
+		else  if (c == esc)
+		  value = value.substring(0,i)+esc+esc+value.substring(i+1);
+	      }
+	    return value;
+	  }
+	  /**
+	   *  " *dö\d.[ 2 ]  " => "_d__d___2__"
+	   */
+	  public static String prepareForFilenameValue( String valueObj ) {
+	    int i;
+	    String value = (valueObj == null) ? null : toString(valueObj);
+
+	    if (value == null)
+	      return null;
+	    value=value.trim();
+	    for (i=value.length()-1; i>=0; i--)
+	      if (legalFilenameChars.indexOf(value.charAt(i)) == -1)
+		value = value.substring(0,i)+filenameReplaceChar+value.substring(i+1);
+	    return prepareForAtomicValue( value );
+	  }
+	  /**
+	   * Add an Object to a Hashtable (if the Object isn't null, otherwise remove it).
+	   */
+	  public static void putHT( Hashtable ht, Object key, Object obj ) {
+	    if (key != null)
+	      if (obj == null)
+		ht.remove( key );
+	      else
+		ht.put( key, obj );
+	  }
+	  /**
+	   * Reduce a pure Sequence of Esc-Characters by one Esc-Character.
+	   * Reverting of 'extendEscSequence(...)', used after identifying all functional Esc-Chars,
+	   * i.e.: \\ -> \, \\\ -> \\  ( \ ->   is illegal!)
+	   */
+	  public static String reduceEscSequence( String s ) {
+	/*
+	    int l = s.length()-1;
+	    for (int i = l; i >= 0; i--)
+	      if ( ! ( (s.charAt(i) == esc) || ((i == l) && ((s.charAt(i) == tso) || (s.charAt(i) == tsc))) ) )
+	        return s;
+	    return (s.length() <= 1) ? s : s.substring(1);
+	*/
+	/*
+		return ( (s.length() == 1) || (s.indexOf( esc ) == -1) )
+			? s
+			: StringTool.replace( StringTool.replace( StringTool.replace( s, ""+esc+esc, ""+esc ), ""+esc+tso, ""+tso ), ""+esc+tsc, ""+tsc );
+	*/
+		if ( (s.length() == 1) || (s.indexOf( esc ) == -1) ) {
+			return s;
+		}
+		StringBuffer res = new StringBuffer( s.length() );
+		int lastPos = -1;
+		int curPos = s.indexOf( esc );
+		while ( curPos != -1 ) {
+			res.append( s.substring( lastPos+1, curPos ) );
+			lastPos = curPos;
+			if ( ( lastPos == (s.length() - 1) ) || ( (""+esc+tsc+tso).indexOf( s.charAt(lastPos + 1) ) == -1 ) ) {
+				lastPos--; // esc at end of String OR not followed by esc/tsc/tso => keep esc (don't replace)
+			}
+			curPos = s.indexOf( esc, lastPos+2 );
+		}
+		res.append( s.substring( lastPos+1 ) );
+		return res.toString();
+	  }
+	  /**
+	   * Remove all Escape-Characters.
+	   */
+	  protected static final String removeEscapes( String s ) {
+	    int l = s.length();
+	    int i;
+
+	    for ( i=0; i<l; i++ ) {
+	      if (s.charAt(i) == esc) {
+		s = s.substring(0,i)+s.substring(i+1);
+		l--;
+	      }
+	    }
+	    return s;
+	  }
+
+	  /**
+	   * Replace the Escape-Characters (esc, tso, tsc).
+	   */
+	  public String replaceEscapes( String[] def ) {
+	    int          l  = def.length-1;
+	    int          i;
+	    StringBuffer sb = new StringBuffer( l );
+	    String       s;
+	    char         c;
+
+	    //Dbg.get().print( Dbg.ERROR, this, null, Debug.toString( def ) );
+	    for ( i=0; i<l; i++ ) {
+	      s = def[i];
+	      if ( (s.length() == 1) && (s.charAt(0) == Template.esc) ) {
+	    	i++;
+	    	if (i<l) {
+	    	  s = def[i];
+	    	  if (s.length() == 1) {
+	    		c = s.charAt(0);
+	    		if (c == tso)
+	    	      s = ""+tso;
+	    		else  if (c == tsc)
+	    		  s = ""+tsc;
+	    		else  if (c == esc)
+	    		  s = ""+esc;
+	    	  }
+	    	} else {
+		      s = "";
+	    	}
+	      }
+	      sb.append( Template.reduceEscSequence( s ) );
+	    }
+	    //Dbg.get().println( Dbg.ERROR, this, null, " => '"+sb.toString()+"'" );
+	    return sb.toString();
+	  }
+
+	  /**
+	   * Set the Locale to be used on formatting values (null = Default-Locale.
+	   */
+	  public Template setFormatterLocale( Locale l ) {
+		// FIXME: possibly we need LocaleValidation on Talend, too (for detecting injections)
+//	    formatterLocale = LocaleTool.validateLocale( l );
+	    return this;
+	  }
+	  /**
+	   * Set the TemplateElementRequest-Server.
+	   * @param reqServ the class returning the Hashtables for the Rows (implementing the MultiTemplateRowRequest-Interface).
+	   * @param data the general data required for resolving the requests.
+	   */
+	  public Template setRequestServer( TemplateElementRequest reqServ, Object data ) {
+	    requestServer = reqServ;
+	    requestData   = data;
+	    return this;
+	  }
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (20.09.2001 11:22:53)
+	 * @param newTemplates java.util.Hashtable
+	 */
+	public void setTemplates(java.util.Hashtable newTemplates) {
+		templates = (newTemplates == null) ? new Hashtable(10) : newTemplates;
+	}
+	  public Template thisNotDirty( boolean nd ) { thisNotDirty = nd; return this; }
+	  /**
+	   * Convert a String into an Array(Length+1) of Strings.
+	   */
+	  public static String[] toStringArray( String def ) {
+	    int i;
+
+	/*
+	    if ((def != null) && (def.length() > 1)) {
+	      StringBuffer sb = new StringBuffer(def.length());
+	      i = 0;
+	      while (i != -1) {
+		li = i;
+	        i = def.indexOf('\\', i);
+		sb.append( (i == -1) ? def.substring(li) : def.substring(li,i) );
+		if (i != -1) {
+		  if (i < def.length()-1 )
+		    switch(def.charAt(i+1)) {
+		      case '\\' : sb.append("\\\\"); break;
+		      case '['  : sb.append("\\[" ); break;
+		      case ']'  : sb.append("\\]" ); break;
+		      case '_'	: sb.append(' '   ); break;
+		      case ';'	: sb.append(','   ); break;
+		      case 'n'  :
+		      case 'N'  : sb.append('\n'  ); break;
+		      case 'r'  :
+		      case 'R'  : sb.append('\r'  ); break;
+		      case 't'  :
+		      case 'T'  : sb.append('\t'  ); break;
+		      case 'b'  :
+		      case 'B'  : sb.append('\b'  ); break;
+		      case 'f'  :
+		      case 'F'  : sb.append('\f'  ); break;
+		      default   : sb.append(def.charAt(i+1));
+		    }
+		  i = (i < def.length()-2) ? (i+2) : -1;
+		}
+	      }
+	      def = sb.toString();
+	    }
+	*/
+	    String[] r = new String[ (def == null) ? 1 : (def.length()+1) ];
+	    for (i=def.length()-1; i>=0; i--)
+	      r[i]=String.valueOf(def.charAt(i));
+	    r[r.length-1]="";
+	    return r;
+	  }
+	  
+	  /**
+	   * Create a capsulation for a TERlookup making it not buffered (transient).
+	   * @param pVal
+	   * @return
+	   */
+	  public static TransientTERResult createTransientTERResult(Object pVal) {
+		  return new TransientTERResult(pVal);
+	  }
+	  
+	  public static void main( String[] argc ) {
+	  	//System.out.println( "\\x\\\\[\\\\]\\[\\]\\ => "+reduceEscSequence("\\x\\\\[\\\\]\\[\\]\\") ); // \x\\[\\]\[\]\
+		//System.out.println( "\\[\\]\\x\\\\ => "+reduceEscSequence("\\[\\]\\x\\\\") ); // \[\]\x\\
+		//System.out.println( "x\\[y\\]z[]a => "+reduceEscSequence("x\\[y\\]z[]a") ); // x\[y\]z[]a
+	  }
+
+
+	    /**
+	     * Utility class to keeping transient values. 
+	     */
+		private static class TransientTERResult {
+			private Object	cVal;
+
+			/**
+			 * Constructor
+			 * 
+			 * @param pVal transient value
+			 */
+			TransientTERResult(Object pVal) {
+				cVal = pVal;
+			}
+
+			/**
+			 * Returns kept transient value.
+			 * 
+			 * @return the transient value
+			 */
+			Object getValue() {
+				return cVal;
+			}
+
+			/**
+			 * Returns the string representation of the kept transient value.
+			 * 
+			 * @return the string representation of the kept transient value
+			 */
+			@Override
+			public String toString() {
+				return "" + cVal;
+			}
+		}
+
+		class RNumber {
+
+			  public RNumber( Boolean mm, int val ) {
+			    minmax = mm;
+			    value  = val;
+			    if ( value < 0 ) 
+			      value = 0;
+			  }
+
+			  @Override
+			  public String toString() {
+			    return ((minmax == null) ? "" : (minmax.booleanValue() ? "+" : "-"))+value;
+			  }
+
+			  public Boolean minmax;
+			  public int     value;
+
+			}
+
+		/**
+		 * internal helper class for temporary store replacements
+		 * @author IMWIF
+		 *
+		 */
+		class Replacement {
+			  protected String[] value;
+			  int start;
+			  int stop;
+			  
+			  public Replacement ( String[] newValue, int newStart, int newStop ) {
+			    start = newStart;
+			    stop = newStop;
+			    value = newValue;
+			  }
+			}
+
+		
+		/** 
+		 * Internal helper class for late expansion of templates.
+		 */
+		class RememberExpand {
+
+
+		  /**
+		   * constructor.
+		   * @param eD is the string-array that contains the templates to be expanded.
+		   */
+		  public RememberExpand( String[] eD ) {
+		    resultSizeDifference = 0;
+		    replacements = new Vector<Replacement> ( 20, 100 );
+		    expDef = eD;
+		    length = eD.length; 
+		  }
+
+
+		  /**
+		   * remember the new replacement.
+		   * @param newReplacement is the new string-array to replace the old key.
+		   * @param start the old key/template started here.
+		   * @param stop the old key/template ended at index stop-1.
+		   */
+		  public void remember( String[] replacement, int start, int stop) {
+		    int oldLength = ( stop - start ) + 1;
+
+		    resultSizeDifference += ( replacement.length - 1 ) - oldLength;
+		    if (replacement.length < 2) {
+		      replacement = null; // don't copy "empty" replacements
+		    }
+		    Replacement tmpReplacement = new Replacement( replacement, start, stop);
+		    replacements.addElement( tmpReplacement );
+		  }
+
+
+		  /**
+		   * Merge the remembered templates into the string-array.
+		   */
+		  public String[] merge() {
+		    int            resultSize = length + resultSizeDifference;
+		    String         result[] = new String[ resultSize ];
+		    int            expDefIndex = 0;
+		    int            resultIndex = 0;
+		    int            copyLength;
+		    
+		    for ( Replacement repl : replacements ) {
+		      if ( expDefIndex < repl.start ) { // no replacement, copy from oldExpdef
+		    	copyLength = repl.start - expDefIndex;
+		    	System.arraycopy( expDef, expDefIndex, result, resultIndex, copyLength ); 
+		    	resultIndex += copyLength;
+		    	expDefIndex = repl.start;
+		      } 
+		      if ( repl.value != null ) { // insert the replacement
+		    	copyLength = repl.value.length - 1; 
+		    	System.arraycopy( repl.value, 0, result, resultIndex, copyLength );
+		    	resultIndex += copyLength;
+		    	expDefIndex = repl.stop + 1; // step over closing ']'
+		      } else {
+		    	expDefIndex = repl.stop + 1; // step over closing ']'
+		      }
+		    }
+		    if ( expDefIndex < expDef.length - 1 ) { // copy the rest after the last replacement,
+		      copyLength = ( expDef.length - 1 ) - expDefIndex;
+		      System.arraycopy( expDef, expDefIndex, result, resultIndex, copyLength );
+		    }
+		    result[ result.length - 1] = new String("");
+		    return result;
+		  }
+
+
+		  /**
+		   * Clear all data for faster garbage-collection.
+		   */
+		  public void clear() {
+		    replacements.removeAllElements();
+		    replacements = null;
+		    expDef = null;
+		  }
+
+
+		  /** Contains the replacements. */
+		  Vector<Replacement> replacements;
+
+		  /** difference of length original / new string-array. */
+		  int resultSizeDifference;
+
+		  /** original string-array.*/
+		  String[] expDef; 
+
+		  /** Length of original string-array.*/
+		  int length;
+
+		}
+
+
+		/**
+		 * Create the Header for a configurable Test-Report-Table.
+		 * @param tNoW Widht of column for TestNo
+		 * @param tNaW Widht of column for TestNo
+		 * @param tTpW Widht of column for TestTemplate.
+		 * @param tRsW Widht of column for Result expected.
+		 * @param tStW Widht of column for Status OK/FAIL.
+		 * @param cDelim Column delimiter character.
+		 * @param rDelim Row delimiter character.
+		 */
+		public static void testHeader(int tNoW, int tNaW, int tTpW, int tRsW, int tStW, char cDelim, char rDelim ) {
+			System.out.println( "\n"+
+					" " + StringTool.minRString("TstNo", 			tNoW, ' ') + " " + cDelim +
+					" " + StringTool.minRString("Description", 		tNoW, ' ') + " " + cDelim +
+					" " + StringTool.minRString("Template", 		tTpW, ' ') + " " + cDelim +
+					" " + StringTool.minRString("Expected Result", 	tRsW, ' ') + " " + cDelim +
+					" " + StringTool.minRString("Status", 			tStW, ' ') + " "
+			);
+		}
+
+		/**
+		 * Create a TestReport delimiter line.
+		 * @param tNoW Widht of column for TestNo
+		 * @param tNaW Widht of column for TestNo
+		 * @param tTpW Widht of column for TestTemplate.
+		 * @param tRsW Widht of column for Result expected.
+		 * @param tStW Widht of column for Status OK/FAIL.
+		 * @param cDelim Column delimiter character.
+		 * @param rDelim Row delimiter character.
+		 */
+		public static void testDelimit(int tNoW, int tNaW, int tTpW, int tRsW, int tStW, char cDelim, char rDelim ) {
+			System.out.println( StringTool.repeat(""+rDelim, tNoW + tNaW + tTpW + tRsW + tStW + (5*3)-1 ) );
+		}
+
+		/**
+		 * Create a Test Reporting Row for a configurable Test-Report-Table.
+		 * @param tNoW Widht of column for TestNo
+		 * @param tNaW Widht of column for TestNo
+		 * @param tTpW Widht of column for TestTemplate.
+		 * @param tRsW Widht of column for Result expected.
+		 * @param tStW Widht of column for Status OK/FAIL.
+		 * @param cDelim Column delimiter character.
+		 * @param rDelim Row delimiter character.
+		 * @param context Talend context
+		 * @param gloVars Talend gloVars
+		 * @param testNo number of the test
+		 * @param testName name/descriptin of the test
+		 * @param testTempl template to expand
+		 * @param testRes expected result (take care, depends on context and gloVar values)
+		 */
+		public static void testRow(int tNoW, int tNaW, int tTpW, int tRsW, int tStW, char cDelim, char rDelim,
+				Properties context, Map<String, Object> gloVars,
+				String testNo, String testName, String testTempl, String testRes) {
+			String testExp = null;
+			String status = null;
+			try {
+				testExp = Template.expand(testTempl, null, context, gloVars, null, null);
+				status = testExp.equals(testRes) ? "ok" : "FAIL: " + testExp;
+			} catch (Exception e) {
+				status = "EX: " + e.getClass().getName() + " - " + e.getMessage().replace('\n',  '|').replace('\r', ' ');
+			}
+			System.out.println(
+					" " + StringTool.minRString(testNo, 	tNoW, ' ') + " " + cDelim +
+					" " + StringTool.minRString(testName, 	tNaW, ' ') + " " + cDelim +
+					" " + StringTool.minRString(testTempl,  tTpW, ' ') + " " + cDelim +
+					" " + StringTool.minRString(testRes, 	tRsW, ' ') + " " + cDelim +
+					" " + StringTool.minRString(status, 	tStW, ' ') + " "
+			);
+		}
+}

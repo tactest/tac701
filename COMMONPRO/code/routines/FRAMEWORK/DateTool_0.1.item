@@ -1,0 +1,318 @@
+package routines;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+import java.util.TimeZone;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class DateTool {
+
+	static final String  cDateModifiers = "yYMwWDdHhmsS";
+	static final int[]   cDateCalMods   = new int[] {
+		Calendar.YEAR,			// y
+		Calendar.YEAR,			// Y
+		Calendar.MONTH,			// M
+		Calendar.WEEK_OF_YEAR,	// w
+		Calendar.WEEK_OF_YEAR,	// W
+		Calendar.DATE,			// D	// FIXME: Test DATE or DAY_OF_YEAR
+		Calendar.DATE,			// d	// FIXME: Test DATE or DAY_OF_YEAR
+		Calendar.HOUR_OF_DAY,	// H	// FIXME: Test HOUR or HOUR_OF_DAY
+		Calendar.HOUR_OF_DAY,	// h	// FIXME: Test HOUR or HOUR_OF_DAY
+		Calendar.MINUTE,		// m
+		Calendar.SECOND,		// s
+		Calendar.MILLISECOND	// S
+	};
+
+	
+
+	/**
+	 * Convert the instance of a Date subclass to a java.util.Date.
+	 * @param pDate java.util.Date The pate to convert.
+	 * @return java.util.Date The converted instance.
+	 */
+	public static final java.util.Date convertDate(java.util.Date pDate) {
+		return (pDate == null) ? null : new Date(pDate.getTime());
+	}
+
+	/**
+	 * Convert the instance of a Date subclass to a java.sql.Timestamp.
+	 * @param pDate java.util.Date The date to convert.
+	 * @return java.sql.Timestamp The converted instance.
+	 */
+	public static final java.sql.Timestamp convertSQLTimestamp(java.util.Date pDate) {
+		return (pDate == null) ? null : new java.sql.Timestamp(pDate.getTime());
+	}
+
+	/**
+	 * Convert the instance of a Date subclass to a java.sql.Date.
+	 * @param pDate java.util.Date The date to convert.
+	 * @return java.util.Date The converted instance.
+	 */
+	public static final java.sql.Date convertSQLDate(java.util.Date pDate) {
+		return (pDate == null) ? null : new java.sql.Date(pDate.getTime());
+	}
+
+	/**
+	 * Convert the instance of a Date subclass to a java.sql.Timestamp, if not already java.sql.Date or java.sql.Timestamp.
+	 * @param pDate java.util.Date The date to convert.
+	 * @return java.sql.Timestamp The converted instance.
+	 */
+	public static final java.util.Date convertSQL(java.util.Date pDate) {
+		return ((pDate == null) || (pDate instanceof java.sql.Date) || (pDate instanceof java.sql.Timestamp)) ? pDate : convertSQLTimestamp( pDate );
+	}
+
+	
+	/**
+	 * Method modifyDate. Modify a date by an expression (only, if date is not null). Syntax:
+	 * 
+	 * 		<expression>: 	(+#|-#|<|>)(Y|M|D|H|m|s|w)
+	 *               		<expression>||<expression>
+	 * 
+	 * 			Examples:
+	 * 			"<D"				=> TS reduzieren auf Datum (abrunden)
+	 * 			"+7D"				=> 1 Woche später
+	 * 			"+1Y-2M+3D-H+m<H"	=> ...
+	 * 
+	 * Rundungen auf Wochenbasis werden (noch) nicht unterstützt, also z.B. >w oder <w.
+	 * siehe auch "dateOffset"
+	 *
+	 * @param pDate 
+	 * @param s
+	 * @return Date
+	 * @throws DateToolException
+	 */
+	public static Date modifyDate( java.util.Date pDate, String s) throws DateToolException {
+
+		String delta = StringTool.nullToEmpty( s ).trim();
+		GregorianCalendar gc = new GregorianCalendar();
+
+		if ( (pDate == null) || (delta.length() == 0) ) {
+			return null; 
+		}
+		gc.setTime( pDate );
+		gc = modifyCalendar( gc, delta );
+		return ( gc != null ) ? gc.getTime() : null; // should not occur, just paranoya...
+	}
+	
+	
+	/**
+	 * Method modifyCalendar. Modify a Calendar by an expression (only, if date is not null). Syntax:
+	 * 
+	 * 		<expression>: 	(+#|-#|<|>)(Y|M|D|H|m|s|w)
+	 *               		<expression>||<expression>
+	 * 
+	 * 			Examples:
+	 * 			"<D"				=> TS reduzieren auf Datum (abrunden)
+	 * 			"+7D"				=> 1 Woche später
+	 * 			"+1Y-2M+3D-H+m<H"	=> ...
+	 *          "<{@CET}"
+	 *          ">{CET}"
+	 *          "<{-01:00}>{GMT+01:00}
+	 * 
+	 * Rundungen auf Wochenbasis werden (noch) nicht unterstützt, also z.B. >w oder <w.
+	 * siehe auch "dateOffset/modifyDate"
+	 *
+     * TESTCODE for TemplateTest-Page:
+     * ===============================
+     *
+            - [$]
+         <Y - [$.formatDate(,,"<Y")]
+         >Y - [$.formatDate(,,">Y")]
+         <y - [$.formatDate(,,"<y")]
+         >y - [$.formatDate(,,">y")]
+         <M - [$.formatDate(,,"<M")]
+         >M - [$.formatDate(,,">M")]
+         <d - [$.formatDate(,,"<d")]
+         >d - [$.formatDate(,,">d")]
+         <h - [$.formatDate(,,"<h")]
+         >h - [$.formatDate(,,">h")]
+         <m - [$.formatDate(,,"<m")]
+         >m - [$.formatDate(,,">m")]
+         <s - [$.formatDate(,,"<s")]
+         >s - [$.formatDate(,,">s")]
+         <S - [$.formatDate(,,"<S")]
+         >S - [$.formatDate(,,">S")]
+
+
+        <Y+1Y - [$.formatDate(,,"<Y+1Y")]
+        >Y-1Y - [$.formatDate(,,">Y-1Y")]
+        <y+1y - [$.formatDate(,,"<y+1y")]
+        >y-1y - [$.formatDate(,,">y-1Y")]
+        <M+1M - [$.formatDate(,,"<M+1M")]
+        >M-1M - [$.formatDate(,,">M-1M")]
+        <d+1d - [$.formatDate(,,"<d+1d")]
+        >d-1d - [$.formatDate(,,">d-1d")]
+        <h+1h - [$.formatDate(,,"<h+1h")]
+        >h-1h - [$.formatDate(,,">h-1h")]
+        <m+1m - [$.formatDate(,,"<m+1m")]
+        >m-1m - [$.formatDate(,,">m-1m")]
+        <s+1s - [$.formatDate(,,"<s+1s")]
+        >s-1s - [$.formatDate(,,">s-1s")]
+        <S+1S - [$.formatDate(,,"<S+1S")]
+        >S-1S - [$.formatDate(,,">S-1S")]
+        
+        
+     * EXAMPLES for TemplateTest-Page:
+     * ===============================
+
+		[I_CHANGED.  formatDate(,"yyyy-MM-dd HH:mm:ss",).     embed("  ( changed >= TO_DATE('","','YYYY-MM-DD HH24:MI:SS' ) ) AND ")]
+		[I_CHANGED:2.formatDate(,"yyyy-MM-dd HH:mm:ss","+1D").embed("  ( changed <  TO_DATE('","','YYYY-MM-DD HH24:MI:SS' ) ) AND ")]
+
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Etc/GMT-8}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Etc/Greenwich}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Etc/UCT}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Europe/Berlin}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Europe/Paris}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Europe/London}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{Asia/Tokyo}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{America/New_York}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{CET}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss",">{@CET}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{UTC}>{[TZ]}").embedT("[TZ] ","")]
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss","<{UTC}>{@[TZ]}").embedT("[TZ] ","")]        
+		[$] als [$.formatDate(,"yyyy-MM-dd HH:mm:ss",">{@[TZ]}").embedT("[TZ] ","")]
+        
+     *
+	 * @param gc 
+	 * @param s
+	 * @return Date
+	 * @throws DateToolException
+	 */
+	public static GregorianCalendar modifyCalendar( GregorianCalendar gc, String s) throws DateToolException {
+		String delta = StringTool.nullToEmpty( s ).trim();
+		char interval;
+		int idx;
+		int modType;
+        //final TimeZone utc = TimeZone.getTimeZone( "+00:00" );
+
+		if ( (gc == null) || (delta.length() == 0) ) {
+			return null; 
+		}
+		try {
+			StringTokenizer st = new StringTokenizer(delta, "+-<>", true);
+			while (st.hasMoreTokens()) {
+				String op = st.nextToken();
+				String remain = st.nextToken();
+                if ( (op.equals("<") || op.equals(">")) && remain.startsWith("{") ) {
+                    while (!remain.endsWith("}") && st.hasMoreTokens())
+                        remain += st.nextToken();
+                    remain = remain.substring( 1, remain.length() - ((remain.endsWith("}")) ? 1 : 0) );
+                    boolean mWithDSTe = remain.endsWith("@");
+                    boolean mWithDSTs = remain.startsWith("@");
+                    boolean mWithDST  = mWithDSTe || mWithDSTs;
+                    if ( mWithDST )
+                        remain = remain.substring( mWithDSTs ? 1 : 0, remain.length() - ( mWithDSTe ? 1 : 0 ) );
+                    if ( remain.startsWith("+") || remain.startsWith( "-" ) )
+                        remain = "GMT" + remain;
+                    TimeZone tz = gc.getTimeZone();
+                    TimeZone otz = TimeZone.getTimeZone(remain);
+                    if ( "GMT".equals( otz.getID()) && !"GMT".equalsIgnoreCase( remain ) ) {
+                    	throw new DateToolException("GMT-Timezone returned, requesting Timezone '" + remain +"', possibly specified illegal Timezone (causing Timezone to return GMT instead)!!!" );
+                    }
+                    gc.setTimeZone( otz );
+                    int ofs = gc.get(Calendar.ZONE_OFFSET) + (mWithDST ? gc.get(Calendar.DST_OFFSET) : 0);
+                    if ( "<".equals( op ) ) {
+                        gc.add( Calendar.MILLISECOND, -ofs );
+                    } else {
+                        gc.add( Calendar.MILLISECOND, ofs );
+                    }
+                    gc.setTimeZone( tz );
+                } else {
+                    int count = 0;
+                    boolean mHasNum = false;
+                    for (int i = 0; i < remain.length(); i++) {
+                        char c = remain.charAt(i);
+                        if (Character.isDigit(c)) {
+                        	mHasNum = true;
+                            count *= 10;
+                            count += new Integer("" + c).intValue();
+                        } else
+                            break;
+                    }
+                    if ((count == 0) && !mHasNum)
+                        count = 1;
+
+                    interval = remain.charAt(remain.length() - 1);
+                    idx = cDateModifiers.indexOf( interval );
+                    if (idx == -1) {
+                        throw new DateToolException( "Illegal date modifier: '"+interval+"', allowed only: '"+cDateModifiers+"'!", null );  
+                    }
+                    modType = cDateCalMods[ idx ];
+
+                    if ("-".equals(op) || "+".equals(op)) {
+                        int sign = 1;
+                        if ("-".equals(op))
+                            sign = -1;
+                        //calcOffset(gc, interval, sign * count);
+                        if (count != 0) {
+                        	gc.add(modType, sign * count);
+                        }
+                    } else if (">".equals(op) || "<".equals(op)) {
+                        if ( modType == Calendar.WEEK_OF_YEAR ) {
+                            throw new DateToolException( "Illegal date modifier: '"+interval+"', rounding of weeks not (yet) supported!", null );  
+                        }
+                        if (">".equals(op)) {
+                            //calcOffset(gc, interval, 1);
+                            gc.add(modType, 1);
+    						////calcOffset(gc, 'S', -1); // millisecond
+    						gc.add(Calendar.MILLISECOND, 999);	// FIXME: Wieso war das auskommentiert. Dann ist es doch kein korrektes aufrunden mehr!!!
+    						gc.add(Calendar.SECOND, -1);	// FIXME: Wieso war das auskommentiert. Dann ist es doch kein korrektes aufrunden mehr!!!
+    					}
+    					int cY = gc.get(Calendar.YEAR);
+    					int cM = gc.get(Calendar.MONTH);
+    					int cD = gc.get(Calendar.DATE);
+    					int cH = gc.get(Calendar.HOUR_OF_DAY);
+    					int cm = gc.get(Calendar.MINUTE);
+    					int cs = gc.get(Calendar.SECOND);
+    					switch (modType) {
+    						case Calendar.YEAR :
+    							gc.set(cY, 0, 1, 0, 0, 0);
+    							break;
+    						case Calendar.MONTH :
+    							gc.set(cY, cM, 1, 0, 0, 0);
+    							break;
+    						case Calendar.DATE :				// FIXME: Test DATE or DAY_OF_YEAR
+    							gc.set(cY, cM, cD, 0, 0, 0);
+    							break;
+    						case Calendar.HOUR_OF_DAY :			// FIXME: Test HOUR or HOUR_OF_DAY
+    							gc.set(cY, cM, cD, cH, 0, 0);
+    							break;
+    						case Calendar.MINUTE :
+    							gc.set(cY, cM, cD, cH, cm, 0);
+    							break;
+    						case Calendar.SECOND:
+    							gc.set(cY, cM, cD, cH, cm, cs);
+    							break;
+    					}
+    					if ( modType != Calendar.MILLISECOND )
+                            gc.add( Calendar.MILLISECOND, -gc.get( Calendar.MILLISECOND ) );
+                    }
+                }
+			}
+		} catch (NoSuchElementException e) {
+			throw new DateToolException("cannot parse specification: not valid '" + delta + "'.", e);
+		}
+		return gc;
+	}
+
+}

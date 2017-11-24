@@ -1,0 +1,227 @@
+package routines;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+
+import routines.system.Hex;
+import sun.security.krb5.Checksum;
+import sun.security.krb5.KrbCryptoException;
+import sun.security.krb5.internal.crypto.RsaMd5CksumType;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class SecTools {
+
+	/** cache for instanciated security objects. */
+	private static final HashMap<String, Object>objCache = new HashMap<String, Object>();
+	
+    /**
+     * decrypt: decrypt Talend standard or advanced encrypted values.
+     * 
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} User Defined
+     * 
+     * {param} string("@1@019201923193291") pValue: The value to decrypt (prefix: @1@: Talend Std., @2@: Talend with project specific key, @3@: Talend with job & project specific key, @4@: Talend with project&mandant specific key, @...@ >4 for future extensions like password container.)
+     * {param} string(projectName) pProjectName: The current projectName.
+     * {param} string(jobName) pJobName: The current jobName.
+     * {param} string(context.GLO_All_Mandant) pMandantKey: The current MandantKey.
+     * {param} string(context.GLO_Init_MandantKey) pMandantKey: The current MandantKey.
+     * {param} string(context.GLO_Init_ProjectKey) pProjectKey: The current ProjectKey.
+     * 
+     * {example} decrypt("@1@203029830894209", projectName, jobName, context.GLO_All_Mandant, context.GLO_Init_MandantKey, context.GLO_Init_ProjectKey) # myPa55w0rd.
+     */
+    public static String decrypt(String pValue, String pProjectName, String pJobName, String pMandant, String pMandantKey, String pProjectKey)
+    	throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, KrbCryptoException
+    {
+    	if ((pValue == null) || (pValue.length() <= 3)) {
+    		return pValue;
+    	}
+
+    	String mEncCharSet = "UTF-8";
+    	String mEncCharSetKey = "UTF-8";
+    	int mDESMaxKeyLen = 8; // only used with MD5 hash
+		byte[] mEncRawKeyData = "Talend-Key".getBytes(mEncCharSetKey);
+    	String mValPrefix = pValue.substring(0,3);
+    	boolean mIsEncTal = mValPrefix.equals("@1@");
+    	boolean mIsEncNew = mValPrefix.equals("@2@");
+    	boolean mIsEncNew2 = mValPrefix.equals("@3@");
+    	boolean mIsEncNew3 = mValPrefix.equals("@4@");
+
+        if (mIsEncTal || mIsEncNew || mIsEncNew2 || mIsEncNew3) {
+        	String mEncVal = pValue.substring(3);
+        	String mEncGloMapKey1 = "Sec"+mValPrefix+"1";
+        	String mEncGloMapSR = "Sec"+mValPrefix+"R";
+
+    		if (mIsEncNew) {
+    		  if ((pProjectKey == null) || (pProjectKey.length() == 0)) {
+    			  throw new RuntimeException("Can not use " + mValPrefix + ", projectKey not yet defined!" );
+    		  }
+    		  mEncCharSet = "UTF-16";
+    		  mEncRawKeyData = (pProjectName + pProjectKey).getBytes(mEncCharSetKey);
+    		} else if (mIsEncNew2) {
+    		  if ((pProjectKey == null) || (pProjectKey.length() == 0)) {
+    			  throw new RuntimeException("Can not use " + mValPrefix + ", projectKey not yet defined!" );
+    		  }
+    		  mEncCharSet = "UTF-16";
+    		  mEncRawKeyData = (pJobName + pProjectKey).getBytes(mEncCharSetKey);
+    		} else if (mIsEncNew3) {
+      		  if ((pMandantKey == null) || (pMandantKey.length() == 0)) {
+      			  throw new RuntimeException("Can not use " + mValPrefix + ", mandantKey not yet defined!" );
+      		  }
+      		  mEncCharSet = "UTF-16";
+    		  mEncRawKeyData = (pProjectName + pMandantKey).getBytes(mEncCharSetKey);
+    		}
+
+    		// we can not increase the key length of max 8 byte = 64 bit, but we increase key
+    		// complexity and density to max possible!!! Get the max. from the limited encryption... Think this is because US limitations by law...
+    		if (mIsEncNew || mIsEncNew2 || mIsEncNew3) {
+//    			System.out.println("1>"+Hex.encodeHexString(mEncRawKeyData));
+//    			mEncRawKeyData = new RsaMd5CksumType().calculateChecksum(mEncRawKeyData, mDESMaxKeyLen);
+    			mEncRawKeyData = MessageDigest.getInstance("SHA-256").digest(mEncRawKeyData);
+//    			System.out.println("2>"+Hex.encodeHexString(mEncRawKeyData));
+    		}
+    		
+    		java.security.SecureRandom mEncSecureRandom = (java.security.SecureRandom)objCache.get(mEncGloMapSR);
+    		if (mEncSecureRandom == null) {
+    			mEncSecureRandom = new java.security.SecureRandom();
+    			objCache.put(mEncGloMapSR, mEncSecureRandom);
+    		}
+
+    		javax.crypto.SecretKey mEncKey1Inst = (javax.crypto.SecretKey)objCache.get(mEncGloMapKey1);
+    		if (mEncKey1Inst == null) {
+    			javax.crypto.spec.DESKeySpec mDks = new javax.crypto.spec.DESKeySpec(mEncRawKeyData);
+    			javax.crypto.SecretKeyFactory mEncKeyFactory = javax.crypto.SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
+    			mEncKey1Inst = mEncKeyFactory.generateSecret(mDks);
+    			objCache.put(mEncGloMapKey1, mEncKey1Inst);
+    		}
+
+    		byte[] mEncDec = Hex.decodeHex(mEncVal.toCharArray());
+    		javax.crypto.Cipher mEncC = javax.crypto.Cipher.getInstance("DES"); //$NON-NLS-1$
+    		mEncC.init(javax.crypto.Cipher.DECRYPT_MODE, mEncKey1Inst, mEncSecureRandom);
+    		byte[] mEncClearByte = mEncC.doFinal(mEncDec);
+    		return new String(mEncClearByte, mEncCharSet);
+        }
+        return pValue; 
+    }
+    
+    /**
+     * encrypt: encrypt Talend standard or advanced encrypted values.
+     * 
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} User Defined
+     * 
+     * {param} string("019201923193291") pValue: The value to encrypt
+     * {param} string("@1@")pValPrefix: the prefix/way of encryption to use (prefix: @1@: Talend Std., @2@: Talend with project specific key, @3@: Talend with job & project specific key, @4@: Talend with project&mandant specific key, @...@ >4 for future extensions like password container.)
+     * {param} string(projectName) pProjectName: The current projectName.
+     * {param} string(jobName) pJobName: The current jobName.
+     * {param} string(context.GLO_All_Mandant) pMandantKey: The current MandantKey.
+     * {param} string(context.GLO_Init_MandantKey) pMandantKey: The current MandantKey.
+     * {param} string(context.GLO_Init_ProjectKey) pProjectKey: The current ProjectKey.
+     * 
+     * {example} encrypt("203029830894209", "@1@", projectName, jobName, context.GLO_All_Mandant, context.GLO_Init_MandantKey, context.GLO_Init_ProjectKey) # myPa55w0rd.
+     */
+    public static String encrypt(String pValue, String pValPrefix, String pProjectName, String pJobName, String pMandant, String pMandantKey, String pProjectKey)
+    	throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, KrbCryptoException
+    {
+    	if ((pValue == null) || (pValue.length() <= 0)) {
+    		return pValue;
+    	}
+
+    	String mEncCharSet = "UTF-8";
+    	String mEncCharSetKey = "UTF-8";
+    	int mDESMaxKeyLen = 8; // only used with MD5 hash
+		byte[] mEncRawKeyData = "Talend-Key".getBytes(mEncCharSetKey);
+    	boolean mIsEncTal = pValPrefix.equals("@1@");
+    	boolean mIsEncNew = pValPrefix.equals("@2@");
+    	boolean mIsEncNew2 = pValPrefix.equals("@3@");
+    	boolean mIsEncNew3 = pValPrefix.equals("@4@");
+
+        if (mIsEncTal || mIsEncNew || mIsEncNew2 || mIsEncNew3) {
+        	String mEncVal = pValue;
+        	String mEncGloMapKey1 = "Sec"+pValPrefix+"1";
+        	String mEncGloMapSR = "Sec"+pValPrefix+"R";
+
+    		if (mIsEncNew) {
+    		  if ((pProjectKey == null) || (pProjectKey.length() == 0)) {
+    			  throw new RuntimeException("Can not use " + pValPrefix + ", projectKey not yet defined!" );
+    		  }
+    		  mEncCharSet = "UTF-16";
+    		  mEncRawKeyData = (pProjectName + pProjectKey).getBytes(mEncCharSetKey);
+    		} else if (mIsEncNew2) {
+      		  if ((pProjectKey == null) || (pProjectKey.length() == 0)) {
+      			  throw new RuntimeException("Can not use " + pValPrefix + ", projectKey not yet defined!" );
+      		  }
+      		  mEncCharSet = "UTF-16";
+    		  mEncRawKeyData = (pJobName + pProjectKey).getBytes(mEncCharSetKey);
+      		} else if (mIsEncNew3) {
+        		  if ((pMandantKey == null) || (pMandantKey.length() == 0)) {
+        			  throw new RuntimeException("Can not use " + pValPrefix + ", mandantKey not yet defined!" );
+        		  }
+        		  mEncCharSet = "UTF-16";
+        		  mEncRawKeyData = (pProjectName + pMandantKey).getBytes(mEncCharSetKey);
+    		}
+
+    		// we can not increase the key length of max 8 byte = 64 bit, but we increase key
+    		// complexity and density to max possible!!! Get the max. from the limited encryption... Think this is because US limitations by law...
+    		if (mIsEncNew || mIsEncNew2 || mIsEncNew3) {
+//    			System.out.println("1>"+Hex.encodeHexString(mEncRawKeyData));
+//    			mEncRawKeyData = new RsaMd5CksumType().calculateChecksum(mEncRawKeyData, mDESMaxKeyLen);
+    			mEncRawKeyData = MessageDigest.getInstance("SHA-256").digest(mEncRawKeyData);
+//    			System.out.println("2>"+Hex.encodeHexString(mEncRawKeyData));
+    		}
+
+    		java.security.SecureRandom mEncSecureRandom = (java.security.SecureRandom)objCache.get(mEncGloMapSR);
+    		if (mEncSecureRandom == null) {
+    			mEncSecureRandom = new java.security.SecureRandom();
+    			objCache.put(mEncGloMapSR, mEncSecureRandom);
+    		}
+
+    		javax.crypto.SecretKey mEncKey1Inst = (javax.crypto.SecretKey)objCache.get(mEncGloMapKey1);
+    		if (mEncKey1Inst == null) {
+    			javax.crypto.spec.DESKeySpec mDks = new javax.crypto.spec.DESKeySpec(mEncRawKeyData);
+    			javax.crypto.SecretKeyFactory mEncKeyFactory = javax.crypto.SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
+    			mEncKey1Inst = mEncKeyFactory.generateSecret(mDks);
+    			objCache.put(mEncGloMapKey1, mEncKey1Inst);
+    		}
+
+    		byte[] mEncDec = mEncVal.getBytes(mEncCharSet);
+    		javax.crypto.Cipher mEncC = javax.crypto.Cipher.getInstance("DES"); //$NON-NLS-1$
+    		mEncC.init(javax.crypto.Cipher.ENCRYPT_MODE, mEncKey1Inst, mEncSecureRandom);
+    		byte[] mEncCipherByte = mEncC.doFinal(mEncDec);
+    		return pValPrefix + Hex.encodeHexString(mEncCipherByte);
+        }
+        return pValue;
+    }
+    
+}
+

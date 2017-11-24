@@ -1,0 +1,26 @@
+package routines;
+
+public class Logger {
+
+    /**
+     * initLogger: not return value, set LOG_DIR and  LOG_PREFIX.
+     * 
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} User Defined
+     * 
+     * {param} string("config", "path", "prefix" ) input: The string need to be printed.
+     * 
+     * {example} helloExemple("C:\config.xml", "c:\", "Mandant1") # hello world !.
+     */
+    public static void initLogger(String logConfigFile, String logFolderPath,  String logPrefix)  {
+
+    		System.setProperty("LOG_DIR", logFolderPath);
+
+    		System.setProperty("LOG_PREFIX", logPrefix);
+
+    		org.apache.log4j.xml.DOMConfigurator.configure(logConfigFile);
+
+    		}
+}

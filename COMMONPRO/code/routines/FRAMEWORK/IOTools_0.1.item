@@ -1,0 +1,60 @@
+package routines;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class IOTools {
+
+    /**
+     * absRelPath: Check, if a specified pPath starts with a "." marking it as relative to a base path.
+     * if the specified path starts with a ".", extend it with the pOptBasePath as prefix (must end with a path delimiter).
+     * if not starting with ".", return pPath as is.
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} User Defined
+     * 
+     * {param} string("C:/Talend/workspace/") pOptBasePath: The base path to use as prefix, if specified path is relative (starting with ".").
+     * {param} string("./configuration/logger/log4j.xml") pPath: The path to be optionally extended by a base path.
+     * 
+     * {example} IOTools.absRelPath(context.GLO_Init_Log4jConfigPath, context.GLO_All_SysEnvInstPAth) # C:/Talend/workspace/./configuration/logger/log4j.xml .
+     */
+    public static String absRelPath(String pOptBasePath, String pPath) {
+    	return (pPath.startsWith(".") ? pOptBasePath + pPath : pPath);
+    }
+
+    /**
+     * absRelPath: Check, if a specified pPath starts with a "." marking it as relative to a base path.
+     * if the specified path starts with a ".", extend it with the pOptBasePath as prefix (must end with a path delimiter).
+     * if not starting with ".", return pPath as is.
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} User Defined
+     * 
+     * {param} string("C:/Talend/") pOptBasePath: The base path to use as prefix (typically autodetected install path), if specified path and subpath are relative (starting with ".").
+     * {param} string("./workspace/configuration") pPath: The subpath to be optionally extended by a base (install) path.
+     * {param} string("./logger/log4j.xml") pPath: The path to be optionally extended by a base path and sub path.
+     * 
+     * {example} IOTools.absRelPath(context.GLO_Init_Log4jConfigPath, context.GLO_All_SysEnvInstPAth) # C:/Talend/workspace/./configuration/logger/log4j.xml .
+     */
+    public static String absRelPath(String pOptBasePath, String pOptSubPath, String pPath) {
+    	return absRelPath(pOptBasePath, absRelPath(pOptSubPath, pPath));
+    }
+
+}

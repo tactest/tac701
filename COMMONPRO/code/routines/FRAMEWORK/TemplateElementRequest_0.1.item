@@ -1,0 +1,44 @@
+package routines;
+
+/**
+ * Interface defining a Method for requesting an unset Template-Value.<p>
+ */
+public interface TemplateElementRequest {
+
+
+  /**
+   * Get the Object for an unset Template.
+   * @param t the Template requesting the row.
+   * @param data data required for all requests.
+   * @param name the name of the unset template (in upper-case).
+   * @param orgName the name of the unset template (as specified, not converted to upper-case).
+   */
+  public Object getTemplateValue( Template t, Object data, String name, String orgName );
+
+}
+
+
+/*
+ * $Log$
+ * 
+ *    Rev 1.1   Apr 23 2003 08:13:48   IMWIF
+ * comments changed
+ * 
+ *    Rev 1.0   Feb 25 2003 16:29:58   IMWIF
+ * Initial revision.
+ * 
+ *    Rev 1.0   Feb 25 2003 11:00:30   IMWIF
+ * Initial revision.
+ * 
+ *    Rev 1.0   Aug 14 2001 10:34:42   IMWIF
+ * Initial revision.
+ * Revision 1.1.1.1  2001/07/17 07:25:52  fw
+ * initial
+ *
+ * Revision 1.2  1999/10/14 08:04:39  fw
+ * little extension for Template-Callbacks
+ *
+ * Revision 1.1  1999/07/26 16:46:39  fw
+ * added TemplateElementRequest-Interface for requesting undefined Template-Values
+ *
+ */

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TalendMetadata="http://www.talend.org/metadata/connection/2010">
+  <TalendMetadata:GenericSchemaConnection xmi:id="_PPqg4NeTEeSUwYCE4ZjR7g" comment="connectionComment" label="connectionLabel" dataPackage="_PPqg4deTEeSUwYCE4ZjR7g"/>
+  <TalendMetadata:GenericPackage xmi:id="_PPqg4deTEeSUwYCE4ZjR7g" dataManager="_PPqg4NeTEeSUwYCE4ZjR7g">
+    <ownedElement xsi:type="TalendMetadata:MetadataTable" xmi:id="_PPqg4teTEeSUwYCE4ZjR7g" label="metadata">
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM4N9aEeS2l4cIq2G1oQ" name="MARA_SYSTEM" label="MARA_SYSTEM" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BM4d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM4t9aEeS2l4cIq2G1oQ" name="MARA_REGION" label="MARA_REGION" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BM499aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM5N9aEeS2l4cIq2G1oQ" name="MARA_TYPE" label="MARA_TYPE" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BM5d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM5t9aEeS2l4cIq2G1oQ" name="MARA_FUNCTION" label="MARA_FUNCTION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM599aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM6N9aEeS2l4cIq2G1oQ" name="MARA_MATERIAL_NUMBER" label="MARA_MATERIAL_NUMBER" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BM6d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM6t9aEeS2l4cIq2G1oQ" name="MARA_BUSID" label="MARA_BUSID" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM699aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM7N9aEeS2l4cIq2G1oQ" name="MARA_INACTIVE" label="MARA_INACTIVE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM7d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM7t9aEeS2l4cIq2G1oQ" name="MARA_MATERIAL_TYPE" label="MARA_MATERIAL_TYPE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM799aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM8N9aEeS2l4cIq2G1oQ" name="MARA_INDUSTRY_KEY" label="MARA_INDUSTRY_KEY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM8d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM8t9aEeS2l4cIq2G1oQ" name="MARA_MATERIAL_GROUP" label="MARA_MATERIAL_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM899aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM9N9aEeS2l4cIq2G1oQ" name="MARA_OLD_MATERIAL_NUMBER" label="MARA_OLD_MATERIAL_NUMBER" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM9d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM9t9aEeS2l4cIq2G1oQ" name="MARA_BASE_UOM" label="MARA_BASE_UOM" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM999aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM-N9aEeS2l4cIq2G1oQ" name="MARA_ORDER_UNIT" label="MARA_ORDER_UNIT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM-d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM-t9aEeS2l4cIq2G1oQ" name="MARA_PROCURED_DUTY_STATUS" label="MARA_PROCURED_DUTY_STATUS" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM-99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM_N9aEeS2l4cIq2G1oQ" name="MARA_VINTAGE" label="MARA_VINTAGE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM_d9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BM_t9aEeS2l4cIq2G1oQ" name="MARA_SIZE_DIM" label="MARA_SIZE_DIM" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BM_99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNAN9aEeS2l4cIq2G1oQ" name="MARA_BASIC_MATERIAL" label="MARA_BASIC_MATERIAL" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNAd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNAt9aEeS2l4cIq2G1oQ" name="MARA_ISO_DESCRIPTION" label="MARA_ISO_DESCRIPTION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNA99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNBN9aEeS2l4cIq2G1oQ" name="MARA_PURCHASING_VALUE_KEY" label="MARA_PURCHASING_VALUE_KEY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNBd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNBt9aEeS2l4cIq2G1oQ" name="MARA_GROSS_WEIGHT" label="MARA_GROSS_WEIGHT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNB99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNCN9aEeS2l4cIq2G1oQ" name="MARA_NET_WEIGHT" label="MARA_NET_WEIGHT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNCd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNCt9aEeS2l4cIq2G1oQ" name="MARA_UNIT_OF_WEIGHT" label="MARA_UNIT_OF_WEIGHT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNC99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNDN9aEeS2l4cIq2G1oQ" name="MARA_VOLUME" label="MARA_VOLUME" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNDd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNDt9aEeS2l4cIq2G1oQ" name="MARA_UNIT_OF_VOLUME" label="MARA_UNIT_OF_VOLUME" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BND99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNEN9aEeS2l4cIq2G1oQ" name="MARA_STORAGE_CONDITIONS" label="MARA_STORAGE_CONDITIONS" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNEd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNEt9aEeS2l4cIq2G1oQ" name="MARA_TRANSPORT_GROUP" label="MARA_TRANSPORT_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNE99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNFN9aEeS2l4cIq2G1oQ" name="MARA_DIVISION" label="MARA_DIVISION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNFd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNFt9aEeS2l4cIq2G1oQ" name="MARA_EAN_NUMBER" label="MARA_EAN_NUMBER" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNF99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNGN9aEeS2l4cIq2G1oQ" name="MARA_EAN_CATEGORY" label="MARA_EAN_CATEGORY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNGd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNGt9aEeS2l4cIq2G1oQ" name="MARA_PRODUCT_HIERARCHY" label="MARA_PRODUCT_HIERARCHY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNG99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNHN9aEeS2l4cIq2G1oQ" name="MARA_BATCH_MANAGEMENT" label="MARA_BATCH_MANAGEMENT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNHd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNHt9aEeS2l4cIq2G1oQ" name="MARA_MIN_REM_SHELF_LIFE" label="MARA_MIN_REM_SHELF_LIFE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNH99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNIN9aEeS2l4cIq2G1oQ" name="MARA_TOTAL_SHELF_LIFE" label="MARA_TOTAL_SHELF_LIFE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNId9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNIt9aEeS2l4cIq2G1oQ" name="MARA_PRODUCT_ALLOCATION" label="MARA_PRODUCT_ALLOCATION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNI99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNJN9aEeS2l4cIq2G1oQ" name="MARA_PERIOD_FOR_SHELF_LIFE" label="MARA_PERIOD_FOR_SHELF_LIFE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNJd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNJt9aEeS2l4cIq2G1oQ" name="MARA_GENERAL_ITEM_CAT_GROUP" label="MARA_GENERAL_ITEM_CAT_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNJ99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNKN9aEeS2l4cIq2G1oQ" name="MARA_LANGUAGE_KEY" label="MARA_LANGUAGE_KEY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNKd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNKt9aEeS2l4cIq2G1oQ" name="MARA_MATERIAL_DESC" label="MARA_MATERIAL_DESC" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNK99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNLN9aEeS2l4cIq2G1oQ" name="MARA_LANGUAGE" label="MARA_LANGUAGE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNLd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNLt9aEeS2l4cIq2G1oQ" name="MARA_DESCRIPTION" label="MARA_DESCRIPTION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNL99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNMN9aEeS2l4cIq2G1oQ" name="MARA_DEO_BVG_TYPE" label="MARA_DEO_BVG_TYPE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNMd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNMt9aEeS2l4cIq2G1oQ" name="MARA_DEO_BRAND_DESC" label="MARA_DEO_BRAND_DESC" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNM99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNNN9aEeS2l4cIq2G1oQ" name="MARA_DEO_CLASS_DESC" label="MARA_DEO_CLASS_DESC" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNNd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNNt9aEeS2l4cIq2G1oQ" name="MARA_CLASSIFICATION" label="MARA_CLASSIFICATION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNN99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNON9aEeS2l4cIq2G1oQ" name="MARA_DEO_CLASS" label="MARA_DEO_CLASS" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNOd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNOt9aEeS2l4cIq2G1oQ" name="MARA_DEO_BRAND" label="MARA_DEO_BRAND" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNO99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNPN9aEeS2l4cIq2G1oQ" name="MARA_DOCUMENT" label="MARA_DOCUMENT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNPd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNPt9aEeS2l4cIq2G1oQ" name="MARA_PACKAGING_MATERIALS" label="MARA_PACKAGING_MATERIALS" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNP99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNQN9aEeS2l4cIq2G1oQ" name="MARA_OBJECT_CREATED_DATE" label="MARA_OBJECT_CREATED_DATE" sourceType="" talendType="id_Date">
+        <initialValue xmi:id="_8_BNQd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNQt9aEeS2l4cIq2G1oQ" name="MARA_OBJECT_CREATED_BY" label="MARA_OBJECT_CREATED_BY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNQ99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNRN9aEeS2l4cIq2G1oQ" name="MARA_HAZARDOUS_MATERIAL_NUMBER" label="MARA_HAZARDOUS_MATERIAL_NUMBER" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNRd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNRt9aEeS2l4cIq2G1oQ" name="MARA_BATCH_RECORD_REQUIRED" label="MARA_BATCH_RECORD_REQUIRED" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNR99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNSN9aEeS2l4cIq2G1oQ" name="MARA_CROSS_PLANT_MAT_STATUS" label="MARA_CROSS_PLANT_MAT_STATUS" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNSd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNSt9aEeS2l4cIq2G1oQ" name="MARA_DATE_AMENDED" label="MARA_DATE_AMENDED" sourceType="" talendType="id_Date">
+        <initialValue xmi:id="_8_BNS99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNTN9aEeS2l4cIq2G1oQ" name="MARA_AMENDED_BY" label="MARA_AMENDED_BY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNTd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNTt9aEeS2l4cIq2G1oQ" name="MARA_PACK_REF_MATERIAL_NUMBER" label="MARA_PACK_REF_MATERIAL_NUMBER" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNT99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNUN9aEeS2l4cIq2G1oQ" name="MARA_CROSS_DIST_CHAIN_MAT_STU" label="MARA_CROSS_DIST_CHAIN_MAT_STU" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNUd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNUt9aEeS2l4cIq2G1oQ" name="MARA_CROSS_PLANT_MAT_STAT_DATE" label="MARA_CROSS_PLANT_MAT_STAT_DATE" sourceType="" talendType="id_Date">
+        <initialValue xmi:id="_8_BNU99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNVN9aEeS2l4cIq2G1oQ" name="MARA_CROSS_DIST_CHAIN_STAT_DT" label="MARA_CROSS_DIST_CHAIN_STAT_DT" sourceType="" talendType="id_Date">
+        <initialValue xmi:id="_8_BNVd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNVt9aEeS2l4cIq2G1oQ" name="MARA_VARIABLE_ORDER_UNIT_ACT" label="MARA_VARIABLE_ORDER_UNIT_ACT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNV99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNWN9aEeS2l4cIq2G1oQ" name="MARA_OBSOLETE" label="MARA_OBSOLETE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNWd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNWt9aEeS2l4cIq2G1oQ" name="MARA_CLIENT_DELETE" label="MARA_CLIENT_DELETE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNW99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNXN9aEeS2l4cIq2G1oQ" name="MVKE_SYSTEM" label="MVKE_SYSTEM" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BNXd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNXt9aEeS2l4cIq2G1oQ" name="MVKE_REGION" label="MVKE_REGION" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BNX99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNYN9aEeS2l4cIq2G1oQ" name="MVKE_TYPE" label="MVKE_TYPE" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BNYd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNYt9aEeS2l4cIq2G1oQ" name="MVKE_FUNCTION" label="MVKE_FUNCTION" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BNY99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNZN9aEeS2l4cIq2G1oQ" name="MVKE_MATERIAL_NUMBER" label="MVKE_MATERIAL_NUMBER" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BNZd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNZt9aEeS2l4cIq2G1oQ" name="MVKE_SALES_ORG" label="MVKE_SALES_ORG" sourceType="" talendType="id_String" nullable="false">
+        <initialValue xmi:id="_8_BNZ99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNaN9aEeS2l4cIq2G1oQ" name="MVKE_DIST_CHANNEL" label="MVKE_DIST_CHANNEL" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNad9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNat9aEeS2l4cIq2G1oQ" name="MVKE_MAT_STAT_GROUP" label="MVKE_MAT_STAT_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNa99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNbN9aEeS2l4cIq2G1oQ" name="MVKE_CASH_DISCOUNT" label="MVKE_CASH_DISCOUNT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNbd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNbt9aEeS2l4cIq2G1oQ" name="MVKE_MIN_ORDER_QTY" label="MVKE_MIN_ORDER_QTY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNb99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNcN9aEeS2l4cIq2G1oQ" name="MVKE_MIN_DELIVER_QTY" label="MVKE_MIN_DELIVER_QTY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNcd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNct9aEeS2l4cIq2G1oQ" name="MVKE_DELIVERY_UNIT" label="MVKE_DELIVERY_UNIT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNc99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNdN9aEeS2l4cIq2G1oQ" name="MVKE_SALES_UNIT" label="MVKE_SALES_UNIT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNdd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNdt9aEeS2l4cIq2G1oQ" name="MVKE_ITEM_CAT_GROUP" label="MVKE_ITEM_CAT_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNd99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNeN9aEeS2l4cIq2G1oQ" name="MVKE_DELIVERING_PLANT" label="MVKE_DELIVERING_PLANT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNed9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNet9aEeS2l4cIq2G1oQ" name="MVKE_PRODUCT_HIERARCHY" label="MVKE_PRODUCT_HIERARCHY" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNe99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNfN9aEeS2l4cIq2G1oQ" name="MVKE_MATERIAL_PRICING_GROUP" label="MVKE_MATERIAL_PRICING_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNfd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNft9aEeS2l4cIq2G1oQ" name="MVKE_ACCOUNT_ASSIGNMENT_GROUP" label="MVKE_ACCOUNT_ASSIGNMENT_GROUP" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNf99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNgN9aEeS2l4cIq2G1oQ" name="MVKE_REASON_CODE" label="MVKE_REASON_CODE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNgd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNgt9aEeS2l4cIq2G1oQ" name="MVKE_FREE_ISSUE_REASON_CODE" label="MVKE_FREE_ISSUE_REASON_CODE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNg99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNhN9aEeS2l4cIq2G1oQ" name="MVKE_DUTY_BAND" label="MVKE_DUTY_BAND" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNhd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNht9aEeS2l4cIq2G1oQ" name="MVKE_MATERIAL_GROUP_4" label="MVKE_MATERIAL_GROUP_4" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNh99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNiN9aEeS2l4cIq2G1oQ" name="MVKE_SALES_ORDER_PROD_ALLOC" label="MVKE_SALES_ORDER_PROD_ALLOC" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNid9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNit9aEeS2l4cIq2G1oQ" name="MVKE_TAX_CLASSIFICATION" label="MVKE_TAX_CLASSIFICATION" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNi99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNjN9aEeS2l4cIq2G1oQ" name="MVKE_INACTIVE" label="MVKE_INACTIVE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNjd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNjt9aEeS2l4cIq2G1oQ" name="MVKE_VAR_SALES_NOT_ALLOWED" label="MVKE_VAR_SALES_NOT_ALLOWED" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNj99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNkN9aEeS2l4cIq2G1oQ" name="MVKE_DELIVERY_UNIT_UOM" label="MVKE_DELIVERY_UNIT_UOM" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNkd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNkt9aEeS2l4cIq2G1oQ" name="MVKE_DIST_CHAIN_SPEC_MAT_STAT" label="MVKE_DIST_CHAIN_SPEC_MAT_STAT" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNk99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNlN9aEeS2l4cIq2G1oQ" name="MVKE_DIST_CHAIN_MAT_STAT_DATE" label="MVKE_DIST_CHAIN_MAT_STAT_DATE" sourceType="" talendType="id_Date">
+        <initialValue xmi:id="_8_BNld9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNlt9aEeS2l4cIq2G1oQ" name="MVKE_OBSOLETE" label="MVKE_OBSOLETE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNl99aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNmN9aEeS2l4cIq2G1oQ" name="MVKE_CLIENT_DELETE" label="MVKE_CLIENT_DELETE" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNmd9aEeS2l4cIq2G1oQ"/>
+      </feature>
+      <feature xsi:type="TalendMetadata:MetadataColumn" xmi:id="_8_BNmt9aEeS2l4cIq2G1oQ" name="EHSBT_BNAME1" label="EHSBT_BNAME1" sourceType="" talendType="id_String">
+        <initialValue xmi:id="_8_BNm99aEeS2l4cIq2G1oQ"/>
+      </feature>
+    </ownedElement>
+  </TalendMetadata:GenericPackage>
+</xmi:XMI>

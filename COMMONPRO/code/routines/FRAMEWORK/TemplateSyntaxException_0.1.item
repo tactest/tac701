@@ -1,0 +1,71 @@
+package routines;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class TemplateSyntaxException extends RuntimeException {
+
+	private static final long serialVersionUID = 1482127790187690941L;
+
+	public TemplateSyntaxException (String msg) {
+		super(msg, null);
+	}
+
+	public TemplateSyntaxException (String msg, String templ) {
+		super(msg + " (Template: " + templ + ")", null);
+	}
+
+	public TemplateSyntaxException (String msg, Throwable t) {
+		super(msg, t);
+	}
+
+	public TemplateSyntaxException (String msg, String templ, Throwable t) {
+		super(msg + " (Template: " + templ + ")", t);
+	}
+}
+
+	/*
+	 * $Log$
+	 * Revision 1.4  2009/09/07 11:45:07  imwif
+	 * eliminated deprecations
+	 *
+	 * Revision 1.3  2006/07/27 16:35:13  imwif
+	 * extended debugging in case of exception
+	 *
+	 * 
+	 *    Rev 1.1   Apr 23 2003 08:13:50   IMWIF
+	 * comments changed
+	 * 
+	 *    Rev 1.0   Feb 25 2003 16:30:00   IMWIF
+	 * Initial revision.
+	 * 
+	 *    Rev 1.0   Feb 25 2003 11:00:30   IMWIF
+	 * Initial revision.
+	 * 
+	 *    Rev 1.0   Aug 14 2001 10:34:44   IMWIF
+	 * Initial revision.
+	 * Revision 1.1.1.1  2001/07/17 07:25:52  fw
+	 * initial
+	 *
+	 * Revision 1.2  1999/02/05 09:20:56  ck
+	 * ... (ck forgot to check-in (fw))
+	 *
+	 * Revision 1.1  1999/01/28 16:21:28  ck
+	 * *** empty log message ***
+	 *
+	 */

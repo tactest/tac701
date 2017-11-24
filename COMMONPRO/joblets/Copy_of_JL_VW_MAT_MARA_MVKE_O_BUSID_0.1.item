@@ -1,0 +1,1235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendProperties="http://www.talend.org/properties" xmlns:model="http://www.talend.com/joblet.ecore">
+  <model:JobletProcess defaultContext="UAT" jobType="Standard">
+    <context confirmationNeeded="false" name="DEV"/>
+    <context confirmationNeeded="false" name="UAT"/>
+    <context confirmationNeeded="false" name="PROD"/>
+    <parameters>
+      <elementParameter field="TEXT" name="SCREEN_OFFSET_X" value="0" show="false"/>
+      <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" value="0" show="false"/>
+      <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_HADOOP_DISTRIBUTION" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_HADOOP_VERSION" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_ENABLE_KERBEROS" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_NAME_NODE_PRINCIPAL" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_USERNAME" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_GROUP" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_USE_KEYTAB" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_KT_PRINCIPAL" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_KEY_TAB" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_ENABLE_OO_KERBEROS" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_NAME_NODE_END_POINT" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_JOB_TRACKER_ENDPOINT" value="" show="false"/>
+      <elementParameter field="TEXT" name="OOZIE_END_POINT" value="" show="false"/>
+      <elementParameter field="CHECK" name="IMPLICITCONTEXT_USE_PROJECT_SETTINGS" value="false" show="false"/>
+      <elementParameter field="CHECK" name="STATANDLOG_USE_PROJECT_SETTINGS" value="false" show="false"/>
+      <elementParameter field="CHECK" name="MULTI_THREAD_EXECATION" value="false" show="false"/>
+      <elementParameter field="TEXT" name="PARALLELIZE_UNIT_SIZE" value="25000" show="false"/>
+      <elementParameter field="CHECK" name="STARTABLE" value="true"/>
+      <elementParameter field="ICON_SELECTION" name="ICONSELECTION" value=""/>
+      <elementParameter field="CHECK" name="IMPLICIT_TCONTEXTLOAD" value="false" show="false"/>
+      <elementParameter field="RADIO" name="FROM_FILE_FLAG_IMPLICIT_CONTEXT" value="false" show="false"/>
+      <elementParameter field="RADIO" name="FROM_DATABASE_FLAG_IMPLICIT_CONTEXT" value="false" show="false"/>
+      <elementParameter field="FILE" name="IMPLICIT_TCONTEXTLOAD_FILE" value="&quot;D:/Talend/631/studio/workspace/in.csv&quot;" show="false"/>
+      <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;" show="false"/>
+      <elementParameter field="CLOSED_LIST" name="DB_TYPE_IMPLICIT_CONTEXT" value="" show="false"/>
+      <elementParameter field="CLOSED_LIST" name="DB_VERSION_IMPLICIT_CONTEXT" value="ORACLE_10" show="false"/>
+      <elementParameter field="TEXT" name="URL_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TABLE" name="DRIVER_JAR_IMPLICIT_CONTEXT" show="false"/>
+      <elementParameter field="TEXT" name="DRIVER_CLASS_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="HOST_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="PORT_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="DBNAME_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="PROPERTIES_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="SCHEMA_DB_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="USER_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="PASSWORD" name="PASS_IMPLICIT_CONTEXT" value="0RMsyjmybrE=" show="false"/>
+      <elementParameter field="FILE" name="DBFILE_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="DBTABLE" name="DBTABLE_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="TEXT" name="QUERY_CONDITION_IMPLICIT_CONTEXT" value="&quot;&quot;" show="false"/>
+      <elementParameter field="CLOSED_LIST" name="LOAD_NEW_VARIABLE" value="Warning" show="false"/>
+      <elementParameter field="CLOSED_LIST" name="NOT_LOAD_OLD_VARIABLE" value="Warning" show="false"/>
+      <elementParameter field="CHECK" name="PRINT_OPERATIONS" value="false" show="false"/>
+      <elementParameter field="CHECK" name="DISABLE_ERROR" value="false" show="false"/>
+      <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="true" show="false"/>
+      <elementParameter field="CHECK" name="DISABLE_INFO" value="true" show="false"/>
+      <elementParameter field="TEXT" name="HEADERFOOTER_HEADERID" value="" show="false"/>
+      <elementParameter field="CHECK" name="HEADER_ENABLED" value="false" show="false"/>
+      <elementParameter field="TEXT" name="HEADER_LIBRARY" value="" show="false"/>
+      <elementParameter field="TEXT" name="HEADER_CODE" value="" show="false"/>
+      <elementParameter field="TEXT" name="HEADER_IMPORT" value="" show="false"/>
+      <elementParameter field="TEXT" name="HEADERFOOTER_FOOTERID" value="" show="false"/>
+      <elementParameter field="CHECK" name="FOOTER_ENABLED" value="false" show="false"/>
+      <elementParameter field="TEXT" name="FOOTER_LIBRARY" value="" show="false"/>
+      <elementParameter field="TEXT" name="FOOTER_CODE" value="" show="false"/>
+      <elementParameter field="TEXT" name="FOOTER_IMPORT" value="" show="false"/>
+      <routinesParameter id="_2c8u4MVWEeOWh7bIgkidUw" name="DQTechnical"/>
+      <routinesParameter id="_2ZytMMVWEeOWh7bIgkidUw" name="DataOperation"/>
+      <routinesParameter id="_2cZVQMVWEeOWh7bIgkidUw" name="DataQuality"/>
+      <routinesParameter id="_2cuscMVWEeOWh7bIgkidUw" name="DqStringHandling"/>
+      <routinesParameter id="_2asFEMVWEeOWh7bIgkidUw" name="Mathematical"/>
+      <routinesParameter id="_2a5gcMVWEeOWh7bIgkidUw" name="Numeric"/>
+      <routinesParameter id="_2bG70MVWEeOWh7bIgkidUw" name="Relational"/>
+      <routinesParameter id="_2cL54MVWEeOWh7bIgkidUw" name="SQLike"/>
+      <routinesParameter id="_2bTwIMVWEeOWh7bIgkidUw" name="StringHandling"/>
+      <routinesParameter id="_2bhLgMVWEeOWh7bIgkidUw" name="TalendDataGenerator"/>
+      <routinesParameter id="_2bvN8MVWEeOWh7bIgkidUw" name="TalendDate"/>
+      <routinesParameter id="_2b9QYMVWEeOWh7bIgkidUw" name="TalendString"/>
+      <routinesParameter id="_RRDlwLvvEeOvruaR9gTlPQ" name="MyRoutine"/>
+      <routinesParameter id="_ac6jsOASEeOFvJjFSc91GA" name="DiageoRoutines"/>
+      <routinesParameter id="_BFn-4P9nEeaidLndU9CApQ" name="MDM"/>
+    </parameters>
+    <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="288" posY="192">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="tJavaRow_1" show="false"/>
+      <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#xD;&#xA;output_row.V_MATERIAL_TYPE = input_row.V_MATERIAL_TYPE;&#xA;&#xA;if (input_row.V_MATERIAL_TYPE== &quot;*&quot;)&#xA;{&#xA;  input_row.V_MATERIAL_TYPE = &quot; like '%%'&quot;;&#xA;}&#xA;else&#xA;{&#xA;  input_row.V_MATERIAL_TYPE = &quot; IN ('&quot; +input_row.V_MATERIAL_TYPE+ &quot;')&quot;;&#xA;}&#xA;&#xA;globalMap.put(&quot;V_MATERIAL_TYPE&quot;,input_row.V_MATERIAL_TYPE);&#xA;System.out.println(input_row.V_MATERIAL_TYPE);"/>
+      <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+      <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+      <metadata connector="FLOW" name="tJavaRow_1">
+        <column comment="" key="false" length="0" name="V_MATERIAL_TYPE" nullable="true" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      </metadata>
+    </node>
+    <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="288" posY="320">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="tLogRow_1" show="false"/>
+      <elementParameter field="RADIO" name="BASIC_MODE" value="true"/>
+      <elementParameter field="RADIO" name="TABLE_PRINT" value="false"/>
+      <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+      <elementParameter field="RADIO" name="PRINT_UNIQUE" value="true" show="false"/>
+      <elementParameter field="RADIO" name="PRINT_LABEL" value="false" show="false"/>
+      <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" value="false" show="false"/>
+      <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;|&quot;"/>
+      <elementParameter field="CHECK" name="PRINT_HEADER" value="false"/>
+      <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" value="false"/>
+      <elementParameter field="CHECK" name="PRINT_COLNAMES" value="false"/>
+      <elementParameter field="CHECK" name="USE_FIXED_LENGTH" value="false"/>
+      <elementParameter field="TABLE" name="LENGTHS" show="false">
+        <elementValue elementRef="SCHEMA_COLUMN" value="V_MATERIAL_TYPE"/>
+        <elementValue elementRef="LENGTH" value="10"/>
+      </elementParameter>
+      <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="false"/>
+      <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" value="100" show="false"/>
+      <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+      <metadata connector="FLOW" name="tLogRow_1">
+        <column comment="" key="false" length="0" name="V_MATERIAL_TYPE" nullable="true" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      </metadata>
+    </node>
+    <node componentName="tRowGenerator" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="352">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="tRowGenerator_1" show="false"/>
+      <elementParameter field="TEXT" name="NB_ROWS" value="42000" show="false"/>
+      <elementParameter field="TABLE" name="VALUES" show="false">
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_SYSTEM"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_REGION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_TYPE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_FUNCTION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_MATERIAL_NUMBER"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_BUSID"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_INACTIVE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_MATERIAL_TYPE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_INDUSTRY_KEY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_MATERIAL_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_OLD_MATERIAL_NUMBER"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_BASE_UOM"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_ORDER_UNIT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PROCURED_DUTY_STATUS"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_VINTAGE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_SIZE_DIM"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_BASIC_MATERIAL"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_ISO_DESCRIPTION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PURCHASING_VALUE_KEY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_GROSS_WEIGHT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_NET_WEIGHT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_UNIT_OF_WEIGHT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_VOLUME"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_UNIT_OF_VOLUME"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_STORAGE_CONDITIONS"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_TRANSPORT_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DIVISION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_EAN_NUMBER"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_EAN_CATEGORY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PRODUCT_HIERARCHY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_BATCH_MANAGEMENT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_MIN_REM_SHELF_LIFE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_TOTAL_SHELF_LIFE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PRODUCT_ALLOCATION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PERIOD_FOR_SHELF_LIFE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_GENERAL_ITEM_CAT_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_LANGUAGE_KEY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_MATERIAL_DESC"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_LANGUAGE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DESCRIPTION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DEO_BVG_TYPE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DEO_BRAND_DESC"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DEO_CLASS_DESC"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_CLASSIFICATION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DEO_CLASS"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DEO_BRAND"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DOCUMENT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PACKAGING_MATERIALS"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_OBJECT_CREATED_DATE"/>
+        <elementValue elementRef="ARRAY" value="TalendDate.getCurrentDate()"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_OBJECT_CREATED_BY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_HAZARDOUS_MATERIAL_NUMBER"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_BATCH_RECORD_REQUIRED"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_CROSS_PLANT_MAT_STATUS"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_DATE_AMENDED"/>
+        <elementValue elementRef="ARRAY" value="TalendDate.getCurrentDate()"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_AMENDED_BY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_PACK_REF_MATERIAL_NUMBER"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_CROSS_DIST_CHAIN_MAT_STU"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_CROSS_PLANT_MAT_STAT_DATE"/>
+        <elementValue elementRef="ARRAY" value="TalendDate.getCurrentDate()"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_CROSS_DIST_CHAIN_STAT_DT"/>
+        <elementValue elementRef="ARRAY" value="TalendDate.getCurrentDate()"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_VARIABLE_ORDER_UNIT_ACT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_OBSOLETE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MARA_CLIENT_DELETE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_SYSTEM"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_REGION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_TYPE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_FUNCTION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_MATERIAL_NUMBER"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_SALES_ORG"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DIST_CHANNEL"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_MAT_STAT_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_CASH_DISCOUNT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_MIN_ORDER_QTY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_MIN_DELIVER_QTY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DELIVERY_UNIT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_SALES_UNIT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_ITEM_CAT_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DELIVERING_PLANT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_PRODUCT_HIERARCHY"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_MATERIAL_PRICING_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_ACCOUNT_ASSIGNMENT_GROUP"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_REASON_CODE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_FREE_ISSUE_REASON_CODE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DUTY_BAND"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_MATERIAL_GROUP_4"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_SALES_ORDER_PROD_ALLOC"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_TAX_CLASSIFICATION"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_INACTIVE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_VAR_SALES_NOT_ALLOWED"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DELIVERY_UNIT_UOM"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DIST_CHAIN_SPEC_MAT_STAT"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_DIST_CHAIN_MAT_STAT_DATE"/>
+        <elementValue elementRef="ARRAY" value="TalendDate.getCurrentDate()"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_OBSOLETE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="MVKE_CLIENT_DELETE"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+        <elementValue elementRef="SCHEMA_COLUMN" value="EHSBT_BNAME1"/>
+        <elementValue elementRef="ARRAY" value="TalendString.getAsciiRandomString(6 )"/>
+      </elementParameter>
+      <elementParameter field="EXTERNAL" name="MAP" value=""/>
+      <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+      <metadata connector="FLOW" name="tRowGenerator_1">
+        <column comment="" key="false" length="-1" name="MARA_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_FUNCTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_BUSID" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_INDUSTRY_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_OLD_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_BASE_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_ORDER_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PROCURED_DUTY_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_VINTAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_SIZE_DIM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_BASIC_MATERIAL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_ISO_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PURCHASING_VALUE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_GROSS_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_NET_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_STORAGE_CONDITIONS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_TRANSPORT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DIVISION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_EAN_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_EAN_CATEGORY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_MANAGEMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_MIN_REM_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_TOTAL_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_ALLOCATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PERIOD_FOR_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_GENERAL_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BVG_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DOCUMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PACKAGING_MATERIALS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getCurrentDate&quot;,&quot;PARAMETERS&quot;:[],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendDate&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_HAZARDOUS_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_RECORD_REQUIRED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_DATE_AMENDED" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getCurrentDate&quot;,&quot;PARAMETERS&quot;:[],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendDate&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_AMENDED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_PACK_REF_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_MAT_STU" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getCurrentDate&quot;,&quot;PARAMETERS&quot;:[],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendDate&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_STAT_DT" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getCurrentDate&quot;,&quot;PARAMETERS&quot;:[],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendDate&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_VARIABLE_ORDER_UNIT_ACT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MARA_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_FUNCTION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORG" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHANNEL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_MAT_STAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_CASH_DISCOUNT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_ORDER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_DELIVER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERING_PLANT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_PRICING_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_ACCOUNT_ASSIGNMENT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_FREE_ISSUE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DUTY_BAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_GROUP_4" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORDER_PROD_ALLOC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_TAX_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_VAR_SALES_NOT_ALLOWED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_SPEC_MAT_STAT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getCurrentDate&quot;,&quot;PARAMETERS&quot;:[],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendDate&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="MVKE_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+        <column comment="" key="false" length="-1" name="EHSBT_BNAME1" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true">
+          <additionalField key="FUNCTION_INFO" value="{&quot;NAME&quot;:&quot;getAsciiRandomString&quot;,&quot;PARAMETERS&quot;:[{&quot;PARAMETER_NAME&quot;:&quot;length&quot;,&quot;PARAMETER_VALUE&quot;:&quot;6 &quot;}],&quot;PARAMETER_CLASS_NAME&quot;:&quot;TalendString&quot;}"/>
+        </column>
+      </metadata>
+    </node>
+    <node componentName="tConvertType" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="736" posY="192">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="tConvertType_1" show="false"/>
+      <elementParameter field="CHECK" name="AUTOCAST" value="true"/>
+      <elementParameter field="TABLE" name="MANUALTABLE" show="false"/>
+      <elementParameter field="CHECK" name="EMPTYTONULL" value="true"/>
+      <elementParameter field="CHECK" name="DIEONERROR" value="false"/>
+      <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+      <metadata connector="FLOW" name="tConvertType_1">
+        <column comment="" key="false" length="-1" name="MARA_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_FUNCTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BUSID" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_INDUSTRY_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OLD_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BASE_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_ORDER_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PROCURED_DUTY_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VINTAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_SIZE_DIM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BASIC_MATERIAL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_ISO_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PURCHASING_VALUE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_GROSS_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_NET_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_STORAGE_CONDITIONS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TRANSPORT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DIVISION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_EAN_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_EAN_CATEGORY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_MANAGEMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MIN_REM_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TOTAL_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_ALLOCATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PERIOD_FOR_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_GENERAL_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BVG_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DOCUMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PACKAGING_MATERIALS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_HAZARDOUS_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_RECORD_REQUIRED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DATE_AMENDED" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_AMENDED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PACK_REF_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_MAT_STU" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_STAT_DT" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VARIABLE_ORDER_UNIT_ACT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_FUNCTION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORG" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHANNEL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MAT_STAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_CASH_DISCOUNT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_ORDER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_DELIVER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERING_PLANT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_PRICING_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_ACCOUNT_ASSIGNMENT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_FREE_ISSUE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DUTY_BAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_GROUP_4" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORDER_PROD_ALLOC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_TAX_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_VAR_SALES_NOT_ALLOWED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_SPEC_MAT_STAT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="EHSBT_BNAME1" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      </metadata>
+      <metadata connector="REJECT" name="REJECT">
+        <column comment="" key="false" length="-1" name="MARA_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_FUNCTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BUSID" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_INDUSTRY_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OLD_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BASE_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_ORDER_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PROCURED_DUTY_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VINTAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_SIZE_DIM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BASIC_MATERIAL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_ISO_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PURCHASING_VALUE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_GROSS_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_NET_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_STORAGE_CONDITIONS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TRANSPORT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DIVISION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_EAN_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_EAN_CATEGORY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_MANAGEMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MIN_REM_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TOTAL_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_ALLOCATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PERIOD_FOR_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_GENERAL_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BVG_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DOCUMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PACKAGING_MATERIALS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_HAZARDOUS_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_RECORD_REQUIRED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DATE_AMENDED" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_AMENDED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PACK_REF_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_MAT_STU" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_STAT_DT" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VARIABLE_ORDER_UNIT_ACT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_FUNCTION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORG" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHANNEL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MAT_STAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_CASH_DISCOUNT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_ORDER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_DELIVER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERING_PLANT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_PRICING_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_ACCOUNT_ASSIGNMENT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_FREE_ISSUE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DUTY_BAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_GROUP_4" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORDER_PROD_ALLOC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_TAX_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_VAR_SALES_NOT_ALLOWED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_SPEC_MAT_STAT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="EHSBT_BNAME1" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+        <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      </metadata>
+    </node>
+    <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="INPUT_1" offsetLabelX="0" offsetLabelY="0" source="INPUT_1" target="tJavaRow_1">
+      <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_MATERIAL_TYPE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="V_DISTCHANNEL"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="V_MATERIAL_TYPE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      </elementParameter>
+      <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="row1" show="false"/>
+      <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value=""/>
+    </connection>
+    <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tLogRow_1">
+      <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+        <elementValue elementRef="TRACE_COLUMN" value="name"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      </elementParameter>
+      <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="row2" show="false"/>
+      <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value=""/>
+    </connection>
+    <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tRowGenerator_1">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="OnComponentOk1" show="false"/>
+      <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value=""/>
+    </connection>
+    <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tRowGenerator_1" offsetLabelX="0" offsetLabelY="0" source="tRowGenerator_1" target="tConvertType_1">
+      <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="row3" show="false"/>
+    </connection>
+    <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tConvertType_1" offsetLabelX="0" offsetLabelY="0" source="tConvertType_1" target="OUTPUT_1">
+      <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_MATERIAL_NUMBER"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_MATERIAL_DESC"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_MATERIAL_TYPE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_CROSS_PLANT_MAT_STATUS"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_CLIENT_DELETE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_NET_WEIGHT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_GROSS_WEIGHT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="EHSBT_BNAME1"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_PRODUCT_HIERARCHY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PRODUCT_HIERARCHY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DIST_CHANNEL"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DUTY_BAND"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DIST_CHAIN_SPEC_MAT_STAT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_CLIENT_DELETE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_SALES_ORG"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_LANGUAGE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DELIVERING_PLANT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PURCHASING_VALUE_KEY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_STORAGE_CONDITIONS"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_CLASSIFICATION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PACKAGING_MATERIALS"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_ACCOUNT_ASSIGNMENT_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_SALES_UNIT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DATE_AMENDED"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PROCURED_DUTY_STATUS"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PERIOD_FOR_SHELF_LIFE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DELIVERY_UNIT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PRODUCT_ALLOCATION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_MIN_DELIVER_QTY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_FUNCTION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_VINTAGE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_FUNCTION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_INACTIVE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_VAR_SALES_NOT_ALLOWED"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DEO_BRAND"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_ITEM_CAT_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_UNIT_OF_WEIGHT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DEO_CLASS_DESC"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_MATERIAL_GROUP_4"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_EAN_CATEGORY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_OLD_MATERIAL_NUMBER"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_VOLUME"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_BATCH_RECORD_REQUIRED"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_TAX_CLASSIFICATION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_MATERIAL_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DEO_CLASS"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_MIN_REM_SHELF_LIFE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_UNIT_OF_VOLUME"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_BATCH_MANAGEMENT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_CROSS_PLANT_MAT_STAT_DATE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_OBJECT_CREATED_DATE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_PACK_REF_MATERIAL_NUMBER"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DIVISION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_OBSOLETE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_INDUSTRY_KEY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DEO_BRAND_DESC"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_ORDER_UNIT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DIST_CHAIN_MAT_STAT_DATE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_MATERIAL_PRICING_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_INACTIVE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_EAN_NUMBER"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_AMENDED_BY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_LANGUAGE_KEY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_CASH_DISCOUNT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_TOTAL_SHELF_LIFE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_HAZARDOUS_MATERIAL_NUMBER"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_CROSS_DIST_CHAIN_MAT_STU"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_SIZE_DIM"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_OBSOLETE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_GENERAL_ITEM_CAT_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_MATERIAL_NUMBER"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_TRANSPORT_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_CROSS_DIST_CHAIN_STAT_DT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_SALES_ORDER_PROD_ALLOC"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_BASE_UOM"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DESCRIPTION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_OBJECT_CREATED_BY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_BASIC_MATERIAL"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_MAT_STAT_GROUP"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_FREE_ISSUE_REASON_CODE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_VARIABLE_ORDER_UNIT_ACT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_DELIVERY_UNIT_UOM"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_BUSID"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_ISO_DESCRIPTION"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DEO_BVG_TYPE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MARA_DOCUMENT"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_REASON_CODE"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+        <elementValue elementRef="TRACE_COLUMN" value="MVKE_MIN_ORDER_QTY"/>
+        <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+        <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      </elementParameter>
+      <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="row4" show="false"/>
+      <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value=""/>
+    </connection>
+    <subjob>
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="INPUT_1" show="false"/>
+      <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" show="false"/>
+      <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250"/>
+    </subjob>
+    <subjob>
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="tRowGenerator_1" show="false"/>
+      <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150" show="false"/>
+      <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+    </subjob>
+    <jobletNodes componentName="INPUT" componentVersion="0.1" offsetLabelX="0" offsetLabelY="0" posX="96" posY="192" input="true">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="INPUT_1"/>
+      <elementParameter field="CHECK" name="STARTABLE" value="true" show="false"/>
+      <elementParameter field="CHECK" name="START" value="true" show="false"/>
+      <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+      <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__"/>
+      <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+      <elementParameter field="CHECK" name="INFORMATION" value="false"/>
+      <elementParameter field="MEMO" name="COMMENT" value=""/>
+      <metadata connector="FLOW" name="INPUT_1">
+        <column comment="" key="false" length="0" name="V_MATERIAL_TYPE" nullable="true" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      </metadata>
+    </jobletNodes>
+    <jobletNodes componentName="OUTPUT" componentVersion="0.1" offsetLabelX="0" offsetLabelY="0" posX="864" posY="192">
+      <elementParameter field="TEXT" name="UNIQUE_NAME" value="OUTPUT_1"/>
+      <elementParameter field="CHECK" name="STARTABLE" value="false" show="false"/>
+      <elementParameter field="CHECK" name="START" value="false" show="false"/>
+      <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+      <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__"/>
+      <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+      <elementParameter field="CHECK" name="INFORMATION" value="false"/>
+      <elementParameter field="MEMO" name="COMMENT" value=""/>
+      <metadata connector="FLOW" name="OUTPUT_1">
+        <column comment="" key="false" length="-1" name="MARA_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_FUNCTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BUSID" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_INDUSTRY_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OLD_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BASE_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_ORDER_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PROCURED_DUTY_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VINTAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_SIZE_DIM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BASIC_MATERIAL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_ISO_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PURCHASING_VALUE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_GROSS_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_NET_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_WEIGHT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_UNIT_OF_VOLUME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_STORAGE_CONDITIONS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TRANSPORT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DIVISION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_EAN_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_EAN_CATEGORY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_MANAGEMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MIN_REM_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_TOTAL_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PRODUCT_ALLOCATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PERIOD_FOR_SHELF_LIFE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_GENERAL_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE_KEY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_MATERIAL_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_LANGUAGE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DESCRIPTION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BVG_TYPE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS_DESC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_CLASS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DEO_BRAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DOCUMENT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PACKAGING_MATERIALS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBJECT_CREATED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_HAZARDOUS_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_BATCH_RECORD_REQUIRED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STATUS" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_DATE_AMENDED" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_AMENDED_BY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_PACK_REF_MATERIAL_NUMBER" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_MAT_STU" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_PLANT_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CROSS_DIST_CHAIN_STAT_DT" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_VARIABLE_ORDER_UNIT_ACT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MARA_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SYSTEM" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_REGION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_TYPE" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_FUNCTION" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_NUMBER" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORG" nullable="false" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHANNEL" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MAT_STAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_CASH_DISCOUNT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_ORDER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MIN_DELIVER_QTY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_UNIT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_ITEM_CAT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERING_PLANT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_PRODUCT_HIERARCHY" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_PRICING_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_ACCOUNT_ASSIGNMENT_GROUP" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_FREE_ISSUE_REASON_CODE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DUTY_BAND" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_MATERIAL_GROUP_4" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_SALES_ORDER_PROD_ALLOC" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_TAX_CLASSIFICATION" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_INACTIVE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_VAR_SALES_NOT_ALLOWED" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DELIVERY_UNIT_UOM" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_SPEC_MAT_STAT" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_DIST_CHAIN_MAT_STAT_DATE" nullable="true" pattern="" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_OBSOLETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="MVKE_CLIENT_DELETE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+        <column comment="" key="false" length="-1" name="EHSBT_BNAME1" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      </metadata>
+    </jobletNodes>
+  </model:JobletProcess>
+  <TalendProperties:ByteArray innerContent="89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7AF40000032C49444154789CC5975B4853711CC7BF1114410F3D48F510D45BD09B19E483B76A1084D9249D9897D49A9754EAC9A07A28A3B7E84AE55113350DCD4B8E5444F38268B99CBD88D10531422B2B3412F421EADBEF781CD8B6B3EDCC5983CF7E3B3BDB7E9FF3FB7FCF390C24F13F597C0A0F0F7FAFE27CF35F6E07FC0311FBF6CCE554623E5B01A34CA18C34EDFE955C81F280048C905D8FED795598CFAF06CF7781975E8045FD604E23682D0553CAF0D6F0121821AF1AB367EAC13BAFC1AA0F60D9047875143CFB0CCC7A02669483490A4602CA8080E5B81D7D1D2CB915E0CD5760E334D839073EFE0A968CCB2446C0DCA760429D4C4296254E41845E53DD0CF814A8414F619DD6D0F60D1CFC09B6CE6853B8FC123CD50DC637C91444E0A8826623021E71FDA2B5121F0B44E0864CE0C124D8F405AC9D026FBD012F4816AC9DE0E1063055041215F41A5902BF0432ABD09B5B035E7480D7C6C0DBD2F8BAC814CBF84F4B10532403A65A30DDC70402CEC0B14A5CB1DE07F365D44512BA737609DF73B0B00F3CDE0EC63E0263CAB50C1C519018F40CC8634D6639E633E4144C6F93D477688D936CE0213933A224A0C9D23C45C1ACB7A30E3803F2D81893BDA5E6440998269330CB721C7C28475D051E28D5469FA6602156C136A3A7A15F02533F2698DA14C6B08490FD96BB78671591938A469682DF6605E37B15348429D810F4EB80B3B95A97A61122AC8F2B8165F97A4BF362A147D81AB40C389B378EDDA3AF2392C6EB8422A152D8B1E20C1869EE22922B3884CD016720D0E64B026B851C41F12B03A12633D58F7AC39FC60E07A32593D443F66FF2980155A05D6EA47D9231FB24393A4D8ECF909FE6C8EF0BC605A47A44DD171919FDD92D036A83D512181EFE1B75BF5B06822560B76B02523934E4194F02869740BD2C7B12181CD404A4BA3130A061D95944E9D962580072CBC5B0E0F08E2AD0DFAF8F9BC0E20BFF9620DAD712F4F4681390AA8BDB120453A0AB4B1390AACB4A32E053A0A3431390AA4BC019F047A0AD4D1390BA486BAB3BAB9A019B4D1390AACBAA66A0B9591390AA8B6E069CD7FC5DF1058BB86E3B05BCFDD56A6860B429D44C15E7F5DF75DB63065C7EB05BC5CBF64AFF9CB6B865E07FF1073F036B3DCBCB274D0000000049454E44AE426082"/>
+</xmi:XMI>

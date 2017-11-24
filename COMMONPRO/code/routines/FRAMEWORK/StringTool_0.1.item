@@ -1,0 +1,762 @@
+package routines;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class StringTool {
+
+	/**
+	 * Convert an object to a String null save (null stays null!).
+	 * Creation date: (08.05.2003 11:12:12)
+	 * @author Frank Wiesen
+	 * @param pObj java.lang.Object the object to convert to a string.
+	 * @return java.lang.String the result of toString() on the specified object (null, if object was null).
+	 */
+	public static final String toString( Object pObj ) {
+		return ( pObj != null ) ? pObj.toString() : null;
+	}
+
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (12.09.2002 18:08:49)
+	 * @return java.lang.String
+	 * @param msg java.lang.String
+	 * @param pre java.lang.String
+	 * @param post java.lang.String
+	 */
+	public static final String embed(String msg, String pre, String post) {
+		return ( (msg == null) || (msg.length() == 0) )
+			? ""
+			: ( StringTool.nullToEmpty( pre ) + msg + StringTool.nullToEmpty( post ) );
+	}
+
+	/**
+	 * Return the first value, if not null, the second value otherwise.
+	 * @param java.lang.String val1
+	 * @param java.lang.String val2
+	 * @return java.lang.String
+	 */
+	public static final String nvl( String val1, String val2 ) {
+		return ( val1 != null ) ? val1 : val2;
+	}
+
+	/**
+	 * checks if string is empty or null
+	 * @param java.lang.String val
+	 * @return boolean
+	 */
+	public static final boolean isTrimmedEmptyOrNull( String val ) {
+		return ( val == null || trim(val).length() == 0); 
+	}
+
+	/**
+	 * Convert an empty string or string containing whitespace only to a null-value (no trimming).
+	 */
+	public static final String trimmedEmptyToNull( String val ) {
+		return isTrimmedEmptyOrNull(val) ? null : val;
+	}
+	
+	/**
+	 * Trims and converts empty Strings to null values.
+	 */
+	public static final String trimEmptyToNull( String val ) {
+		if ( val != null ) {
+			val = trim( val );
+			if (val.length() > 0)
+				return val;
+		}
+		return null;
+	}
+
+	/**
+	 * Convert an empty string to a null-value (no trimming).
+	 */
+	public static final String emptyToNull( String val ) {
+		return ((val != null) && (val.length() == 0)) ? null : val;
+	}
+	
+	/**
+	 * Convert a null-value to an empty String.
+	 */
+	public static final String nullToEmpty( Object val ) {
+		if (  (val instanceof java.util.Date    ) &&
+		     !(val instanceof java.sql.Timestamp) &&
+		     !(val instanceof java.sql.Date     ) &&
+		      (val != null                      )    ) {
+			return new java.sql.Timestamp( ((java.util.Date)val).getTime() ).toString();
+		} else {
+			return (val == null) ? "" : val.toString();
+		}
+	}
+
+	/**
+	 * Convert a null-StringArray to an empty StringArray.
+	 */
+	public static final String[] nullToEmpty( String[] pVal ) {
+		return ( pVal == null ) ? new String[0] : pVal;
+	}
+
+	/**
+	 * Trim a String at the beginning by specified characters (null-save).
+	 * @author Frank Wiesen (IMWIF).
+	 * Creation date: (07.03.2002 14:59:02)
+	 * @return the trimmed String.
+	 * @param pToTrim  the String to trim (may be null).
+	 * @param pTrimChars the list of Characters to trim.
+	 */
+	public static final String ltrim(String pToTrim, String pTrimChars) {
+		int mFirst = 0;
+		int mLast  = 0;
+
+		if ( ( pToTrim != null ) && ( pTrimChars != null ) )
+		{
+			mLast = pToTrim.length()-1;
+			while ( ( mFirst <= mLast ) && ( pTrimChars.indexOf( pToTrim.charAt(mFirst) ) != -1 ) )
+			{
+				mFirst++;
+			}
+			pToTrim = pToTrim.substring( mFirst );
+		}
+		return pToTrim;
+	}
+
+	/**
+	 * Trim a String (null-save, trims also shift-pace).
+	 * @author Frank Wiesen (IMWIF).
+	 * Creation date: (19.03.2003 14:59:02)
+	 * @return the trimmed String.
+	 * @param pToTrim  the String to trim (may be null).
+	 */
+	public static final String trim(String pToTrim) {
+		return (pToTrim == null) ? null : pToTrim.replace((char)160,(char)32).trim();
+	}
+	
+	  /**
+	   * Concatenate <i>count</i> x the specified string.
+	   * @param v      The string to repeat.
+	   * @param count  Number of repeats.
+	   */
+	  public static final String repeat( String v, int count ) {
+	    StringBuffer sb = new StringBuffer( v.length()*count );
+	    while( count>0 ) {
+	      sb.append( v );
+				count--;
+			}
+	    return sb.toString();
+	  }
+
+	  /**
+	   * Replace any char of a String by the corresponding String of the Array.
+	   * @param st   Source string. All characters matching a characters from <code>src</code> with index <code>i</code>
+	   *             are replaced by the string <code>dest[i]</code>.
+	   * @param src  Characters to replace.
+	   * @param dest Replacements.
+	   */
+	  public static final String replace( String st, String src, String[] dest ) {
+	    int idx;
+	    if ( (st == null) || (src == null) || (src.length() == 0) || (dest == null) )
+	      return st;
+	    if (src.length() > dest.length)
+	      src = src.substring( 0, dest.length );
+
+	    int n = st.length();
+	    StringBuffer sb = new StringBuffer( n*2 );
+	    char ch;
+
+	    for (int i=0; i<n; i++) {
+	      idx = src.indexOf( ch = st.charAt(i) );
+	      if (idx > -1)
+		sb.append( dest[idx] );
+	      else
+		sb.append( ch );
+	    }
+	    return sb.toString();
+	  }
+
+	  /**
+	   * Replace a char by a String.
+	   * @param st   Source string. All characters matching <code>src</code> are replaced by <code>dest</code>.
+	   * @param src  Character to replace.
+	   * @param dest Replacement.
+	   */
+	  public static final String replace( String st, char src, String dest ) {
+	    if ((st == null) || (dest == null))
+	      return st;
+
+	    int n = st.length();
+	    StringBuffer sb = new StringBuffer( n*2 );
+	    int lastIdx = 0;
+	    int idx = 0;
+
+	    while( idx >= 0 ) {
+	      idx = st.indexOf( src, lastIdx = idx );
+	      if (idx >= 0) {
+			sb.append( st.substring(lastIdx, idx) );
+			sb.append( dest );
+			idx ++;
+	      }
+	    }
+	    sb.append( st.substring( lastIdx ) );
+	    return sb.toString();
+	  }
+
+	  /**
+	   * Replace a String by a String.
+	   * Matching substrings matching <code>src</code> are replaced by <code>dest</code>.
+	   * The string is parsed from start to end.<br>
+	   * <i>Example</i>:
+	   *  "abcDabc","abc", "X" result in "XDX",<br>
+	   *  "axaxa", "axa", "X" result in "Xxa".
+	   *
+	   * @param st   Source string.
+	   * @param src  String to replace.
+	   * @param dest Replacement.
+	   * @param null if <i>st</i> is null. <i>st</i> if <i>src</i> is null or empty or if <i>dest</i> is null.
+	   *             Otherwise the replaced string.
+	   */
+	  public static final String replace( String st, String src, String dest ) {
+	    if ((st == null) || (src == null) || (dest == null) || (src.length() == 0))
+	      return st;
+
+	    int n = st.length();
+	    StringBuffer sb = new StringBuffer( n*2 );
+
+	    int lastIdx = 0;
+	    int idx = 0;
+
+	    while( idx >= 0 ) {
+	      idx = st.indexOf( src, lastIdx = idx );
+	      if (idx >= 0) {
+		sb.append( st.substring(lastIdx, idx) );
+		sb.append( dest );
+		idx += src.length();
+	      }
+	    }
+	    sb.append( st.substring( lastIdx ) );
+	    return sb.toString();
+	 }
+
+	  /**
+	   * This is an index-out-of-bounds and <code>null</code> save substring 
+	   * which also can remove characters at the end when a negative pToIdx is used.
+	   * When toIndex is specified < 0, the the string is reduced by the number of these characters at the end.
+	   * Only if the source Sting is null, the destination String will be null too.
+	   * Otherwise empty Strings are returned, if the substring is empty.
+	   */
+	  public static final String subString( String pSrc, int pIdxFrom, int pIdxTo ) {
+	  	if ( pSrc == null ) {
+	  		return null;
+	  	}
+	  	pIdxFrom = Math.max( pIdxFrom, 0 );
+	  	pIdxTo   = Math.min( pIdxTo, pSrc.length() );
+	  	if ( pIdxTo < 0 ) {
+	  		pIdxTo =  Math.max(pSrc.length() + pIdxTo, 0);
+	  	}
+	  	pIdxFrom = Math.min( pIdxFrom, pIdxTo );
+	  	return pSrc.substring( pIdxFrom, pIdxTo );
+	  }
+
+	  /**
+	   * Remove all characters from a String except those listed in the String of allowed characters.
+	   * @param src String to remove all characters not allowed from.
+	   * @param allowed String of all allowed characters.
+	   * @return the String stripped by all characters not allowed.
+	   */
+	  public static final String keepAllowed( String src, String allowed ) {
+		  return keepAllowed(src, allowed, null);
+	  }
+
+	  /**
+	   * Remove all characters from a String except those listed in the String of allowed characters.
+	   * @param src String to remove all characters not allowed from.
+	   * @param allowed String of all allowed characters.
+	   * @param pReplacement String to replace each removed character by (null/empty, to remove only)
+	   * @return the String stripped by all characters not allowed.
+	   */
+	  public static final String keepAllowed( String src, String allowed, String pReplacement ) {
+	    StringBuffer res;
+	    
+	    pReplacement = emptyToNull( pReplacement );
+	    allowed = emptyToNull( allowed );
+	    if (src == null)
+	      return null;
+	    if (allowed == null)
+	      return (pReplacement == null) ? "" : repeat(pReplacement, src.length());
+	    res = new StringBuffer( src.length() );
+	    for (int i=0; i<src.length(); i++)
+	      if (allowed.indexOf(src.charAt(i)) >= 0)
+	        res.append( src.charAt(i) );
+	      else if ( pReplacement != null )
+	        res.append( pReplacement );
+	    return res.toString();
+	  }
+
+	  /**
+	   * Remove all characters from a String listed in the String of characters to filter.
+	   * @param src String to remove all listed characters from.
+	   * @param forbidden String of all characters to filter.
+	   * @return the String stripped by all characters listed.
+	   */
+	  public static final String filterForbidden( String src, String forbidden ) {
+	    return filterForbidden(src, forbidden, null);
+	  }
+
+	  /**
+	   * Remove all characters from a String listed in the String of characters to filter.
+	   * @param src String to remove all listed characters from.
+	   * @param forbidden String of all characters to filter.
+	   * @param pReplacement String to replace each removed character by (null/empty, to remove only)
+	   * @return the String stripped by all characters listed.
+	   */
+	  public static final String filterForbidden( String src, String forbidden, String pReplacement ) {
+	    StringBuffer res;
+	    
+	    pReplacement = emptyToNull( pReplacement );
+	    forbidden = emptyToNull( forbidden );
+	    if (src == null)
+	      return null;
+	    if (forbidden == null)
+	      return src;
+	    res = new StringBuffer( src.length() );
+	    for (int i=0; i<src.length(); i++)
+	      if (forbidden.indexOf(src.charAt(i)) < 0)
+	        res.append( src.charAt(i) );
+	      else if ( pReplacement != null )
+	        res.append( pReplacement );
+	    return res.toString();
+	  }
+
+	  /**
+	   * Create a String-List from an array of objects (adding only the not-null-objects).
+	   */
+	  public static final String list( Object[] o, String sep, boolean unique ) {
+		return (o == null) ? "" : list( Arrays.asList( o ), sep, unique );
+	  }
+	  
+	  /**
+	   * Create a String-List from a Collection/List of objects (adding only the not-null-objects).
+	   */
+	  public static final <T> String list( Collection<T> o, String sep, boolean unique ) {
+		return (o == null) ? "" : list( Collections.enumeration( o ), sep, unique );
+	  }
+	  
+	  /**
+	   * Create a String-List from an array of objects (adding only the not-null-objects).
+	   */
+	  public static final <T> String list( Enumeration<T> o, String sep, boolean unique ) {
+	  	ArrayList<T> a = new ArrayList<T>();
+	  	while ( o.hasMoreElements() ) {
+	  		a.add( o.nextElement() );
+	  	}
+	  	return list( a.iterator(), sep, unique );
+	  }
+	  
+	  /**
+	   * Create a String-List from an array of objects (adding only the not-null-objects).
+	   */
+	  public static final <T> String list( Iterator<T> o, String sep, boolean unique ) {
+		  return list( o, sep, unique, null, null );
+	  }
+
+	  /**
+	   * Create a String-List from an array of objects (adding only the not-null-objects).
+	   */
+	  public static final String list( Object[] o, String sep, boolean unique, String start, String end ) {
+		return (o == null) ? "" : list( Arrays.asList( o ), sep, unique, start, end );
+	  }
+	  
+	  /**
+	   * Create a String-List from a Collection/List of objects (adding only the not-null-objects) - support cascaded multidimensional list.
+	   */
+	  public static final <T> String list( Collection<T> o, String sep, boolean unique, String start, String end ) {
+		return (o == null) ? "" : list( Collections.enumeration( o ), sep, unique, start, end );
+	  }
+	  
+	  /**
+	   * Create a String-List from an array of objects (adding only the not-null-objects).
+	   */
+	  public static final <T> String list( Enumeration<T> o, String sep, boolean unique, String start, String end ) {
+	  	ArrayList<T> a = new ArrayList<T>();
+	  	while ( o.hasMoreElements() ) {
+	  		a.add( o.nextElement() );
+	  	}
+	  	return list( a.iterator(), sep, unique, start, end );
+	  }
+	  
+	  /**
+	   * Create a String-List from an array of objects (adding only the not-null-objects).
+	   */
+	  public static final <T> String list( Iterator<T> o, String sep, boolean unique, String start, String end ) {
+	    StringBuffer res = new StringBuffer();
+	    String s;
+	    HashSet<String> h = null;
+	    T obj = null;
+	    boolean doAdd = true;
+	    boolean cascaded = (start != null) || (end != null);
+
+	    start = nullToEmpty(start);
+	    end = nullToEmpty(end);
+	    if (sep == null)
+	      sep = "";
+	    if (o != null)
+	    {
+	      if (unique) {
+	        h = new HashSet<String>( 20, 1.0f );
+	      }
+	      while ( o.hasNext() ) {
+	      	obj = o.next();
+	        if (obj != null) {
+	          if (cascaded) {
+	        	  if ( obj instanceof Enumeration ) {
+	        		  s = list( (Enumeration<?>)obj, sep, unique, start, end );
+	        	  } else if ( obj instanceof Object[] ) {
+	        		  s = list( (Object[])obj, sep, unique, start, end );
+	        	  } else if ( obj instanceof Iterator ) {
+	        		  s = list( (Iterator<?>)obj, sep, unique, start, end );
+	        	  } else if ( obj instanceof Collection ) {
+	        	  	  s = list( (Collection<?>)obj, sep, unique, start, end );
+	        	  } else {
+	            	  s = obj.toString();
+	        	  }
+	          } else {
+	        	  s = obj.toString();
+	          }
+	          if (unique) {
+	            doAdd = !h.contains(s);
+	            if (doAdd) {
+	              h.add(s);
+	            }
+	          }
+	          if (doAdd)
+	            res.append( ((res.length() == 0) ? "" : sep)+s );
+	        }
+	      }
+	    }
+	    return start + res.toString() + end;
+	  }
+
+	  /**
+	   * Split a String by specified segment length.
+	   */
+	  public static final String[] splitString( String src, int pSegLen ) {
+		if ( (emptyToNull(src) == null) || (pSegLen <= 0) )
+			return null;
+		String[] mRes = new String[ Math.max( 1, ( (src.length() - 1) / pSegLen ) + 1 ) ];
+		for (int i = 0; i < mRes.length; i++)
+			mRes[i] = src.substring( i * pSegLen, (i + 1) * pSegLen );
+	    return mRes;
+	  }
+
+	  /**
+	   * Auto-delimited StringArray to be split to an Array of Strings. StringRep has to start AND end with the delimiter to be used. NULL and any String w/ length < 2 result in NULL returned.
+	   * @param src
+	   * @return
+	   */
+	  public final static String[] splitString( String src ) {
+		  char del = ' ';
+		  if ( src == null )
+			  return null;
+		  if ( src.length() < 2 )
+			  return null;
+		  del = src.charAt(0);
+		  if ( !src.endsWith( ""+del ) )
+			  throw new java.lang.StringIndexOutOfBoundsException( "Bad delimiter, auto-delimited String-Array does not end with same character, like it starts with: '" + src +"'" );
+		  return splitString(src.substring(1, src.length()-1), del);
+	  }
+	  
+	  /**
+	   * Split a String by a delimiter (fast).
+	   */
+	  public static final String[] splitString( String src, char del ) {
+	    int i1, i2, c=0, l;
+	    String[] res;
+
+	    if (src == null)
+	      return null;
+	    l = src.length();
+	    for (i1=l-1; i1>=0; i1--) // we prevent hidden n^2-costs, so we first only count...
+	      if (src.charAt(i1) == del)
+		c++;
+	    res = new String[c+1];
+	    i2 = l;
+	    for (i1=l-1; i1>=0; i1--)
+	      if (src.charAt(i1) == del) {
+		res[c--] = src.substring(i1+1,i2);
+		i2 = i1;
+	      }
+	    res[0]=src.substring(0,i2);
+	    return res;
+	  }
+
+	  /**
+	   * Split a String by a delimiter (fast).
+	   */
+	  public static final String[] splitString( String src, String del ) {
+	    int i1 = 0, i2;
+	    ArrayList<String> res = new ArrayList<String>(5);
+
+	    if (src == null)
+	      return null;
+	    del = StringTool.emptyToNull( del );
+	    if ( del == null )
+	      return new String[] { src };
+	    do {
+	        i2 = src.indexOf( del, i1 );
+	        res.add( (i2 == -1) ? src.substring( i1 ) : src.substring( i1, i2 ) );
+	        i1 = i2 + del.length();
+	    } while ( i2 != -1 );
+	    return res.toArray( new String[ res.size()] );
+	  }
+
+	  /**
+	   * Split a String by a delimiter (fast).
+	   */
+	  public static final String[] splitString( String src, char sep, char quot ) {
+	    int i, i1, i2, l;
+	    ArrayList<String> mRes = null;
+	    StringBuffer cellRes = new StringBuffer( 20 );    
+
+	    if (src == null)
+	    	return null;
+	    mRes = new ArrayList<String>( count( src, sep ) );
+
+	    i = 0;
+	    l = src.length();
+	    do {
+	        if ( ( l > i ) && ( src.charAt(i) == quot ) ) {
+	            i1 = i + 1;
+	            i2 = i1;
+	            do {
+	                i2 = src.indexOf( quot, i2 );
+	                cellRes.append( src.substring( i1, i2 ) );
+	                i1 = i2 + 1;
+	                i2 = i1 + 1;
+	            } while ( ( l > i1 ) && ( src.charAt(i1) == quot ) );
+	            mRes.add( cellRes.toString() );
+	            cellRes.delete( 0, cellRes.length() );
+	            i = src.indexOf( sep, i1 ) + 1; // i should be i1 + 1 (otherwise unquoted characters have been ignored) 
+	        } else {
+	            i1 = src.indexOf( sep, i );
+	            mRes.add( src.substring( i, (i1 == -1) ? src.length() : i1 ) );
+	            i = i1 + 1;
+	        }
+	    } while ( i > 0 );
+	    return mRes.toArray( new String[ mRes.size() ] );
+	  }
+
+	  /**
+	   * Count the number of occurences of a char inside a String.
+	   * @param s the String to count the char at.
+	   * @param c the char to count.
+	   * @return the number of occurences of the char.
+	   */
+	  public static final int count( String s, char c ) {
+	    int cc = 0;
+	    for (int i = (s == null) ? -1 : (s.length()-1); i >= 0; i--)
+	      if (s.charAt(i) == c)
+	        cc++;
+	    return cc;
+	  }
+
+	  /**
+	   * Get the length of a String (null-save, returns 0 if String is null).
+	   * @author Frank Wiesen (IMWIF).
+	   * Creation date: (07.03.2002 14:59:02)
+	   * @return the legth of the String.
+	   * @param pString the String to detect the length of (may be null).
+	   */
+	  public static final int length(String pString) {
+	      return (pString == null) ? 0 : pString.length();
+	  }
+
+	    /**
+	     * Truncation at the right, if the string-length is greater then maxLen.
+	     * @param v If null, an empty string is returned. Otherwise maximal <i>maxLen</i> chars are returned.
+	     */
+	    public static final String maxRString( String v, int maxLen ) {
+	        return maxRString( v, maxLen, "" );
+	    }
+
+	    /**
+	     * Truncation at the right, if the string-length is greater then maxLen (marking in case of cut).
+	     * @param v If null, an empty string is returned. Otherwise maximal <i>maxLen</i> chars are returned.
+	     */
+	    public static final String maxRString( String v, int maxLen, String pMarker ) {
+	    	v = nullToEmpty( v );
+	    	pMarker = nullToEmpty( pMarker );
+	    	return (v.length() > maxLen) ? v.substring(0, Math.max( maxLen - pMarker.length(), 0)) + pMarker : v;
+	    }
+
+	    /**
+	     * Truncation at the left, if the string-length is greater then maxLen.
+	     * @param v If null, an empty string is returned. Otherwise maximal <i>maxLen</i> chars are returned.
+	     */
+	    public static final String maxLString( String v, int maxLen ) {
+	  	v = nullToEmpty( v );
+	  	return (v.length() > maxLen) ? v.substring(v.length() - maxLen) : v;
+	    }
+
+	    /**
+	     * Truncation at the left, if the string-length is greater then maxLen.
+	     * @param v If null, an empty string is returned. Otherwise maximal <i>maxLen</i> chars are returned.
+	     */
+	    public static final String maxLString( String v, int maxLen, String pMarker ) {
+	  	v = nullToEmpty( v );
+	    	pMarker = nullToEmpty( pMarker );
+	  	return (v.length() > maxLen) ? pMarker + v.substring(v.length() - maxLen + pMarker.length()) : v;
+	    }
+
+	    /**
+	     * Fill up at the RIGHT, if the string-length is less than minLen.
+	     */
+	    public static final String minRString( String v, int minLen, char fillC ) {
+	      v = (v == null) ? "" : v ;
+	      return v + ( (v.length() < minLen) ? repeat( ""+fillC, minLen-v.length() ) : "" );
+	    }
+
+	    /**
+	     * Fill up at the left, if the string-length is less than minLen.
+	     */
+	    public static final String minLString( String v, int minLen, char fillC ) {
+	      v = (v == null) ? "" : v ;
+	      return ( (v.length() < minLen) ? repeat( ""+fillC, minLen-v.length() ) : "" ) + v;
+	    }
+
+	    /**
+	     * Normalize the lenth of a string to a specified length (cut or extend with filler at the RIGHT)
+	     * @param v
+	     * @param len
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normRString( String v, int len, char fillChar ) {
+	        return normRString( v, len, fillChar, "" );
+	    }
+	    
+	    /**
+	     * Normalize the lenth of a string to a specified length (cut or extend with filler at the RIGTH, mark shortening)
+	     * @param v
+	     * @param len
+	     * @param markerStr
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normRString( String v, int len, char fillChar, String markerStr ) {
+	        return maxRString( minRString( StringTool.nullToEmpty( v ), len, fillChar ), len, markerStr );
+	    }
+	    
+	    /**
+	     * Normalize the length of a string to a specified length (cut or extend with filler at the LEFT)
+	     * @param v
+	     * @param len
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normLString( String v, int len, char fillChar ) {
+	        return maxLString( minLString( StringTool.nullToEmpty( v ), len, fillChar ), len );
+	    }
+	    
+	    /**
+	     * Normalize the length of a string to a specified length (cut or extend with filler at the LEFT), mark shortening
+	     * @param v
+	     * @param len
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normLString( String v, int len, char fillChar, String pMarker ) {
+	        return maxLString( minLString( StringTool.nullToEmpty( v ), len, fillChar ), len, pMarker );
+	    }
+	    
+	    /**
+	     * Normalize the length of a string to a specified length (cut at RIGHT or extend with filler at the LEFT)
+	     * @param v
+	     * @param len
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normLRString( String v, int len, char fillChar ) {
+	        return normLRString( v, len, fillChar, "" );
+	    }
+
+	    /**
+	     * Normalize the length of a string to a specified length (cut at RIGTH or extend with filler at the LEFT, mark shortening)
+	     * @param v
+	     * @param len
+	     * @param markerStr
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normLRString( String v, int len, char fillChar, String markerStr ) {
+	        return maxRString( minLString( StringTool.nullToEmpty( v ), len, fillChar ), len, markerStr );
+	    }
+
+	    /**
+	     * Normalize the length of a string to a specified length (cut at RIGHT or extend with filler at the LEFT)
+	     * @param v
+	     * @param len
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normRLString( String v, int len, char fillChar ) {
+	        return normRLString( v, len, fillChar, "" );
+	    }
+
+	    /**
+	     * Normalize the length of a string to a specified length (cut at RIGTH or extend with filler at the LEFT, mark shortening)
+	     * @param v
+	     * @param len
+	     * @param markerStr
+	     * @return the adjusted String (null is autoconverted to "" and then extended to the spec. length)
+	     */
+	    public static String normRLString( String v, int len, char fillChar, String markerStr ) {
+	        return maxLString( minRString( StringTool.nullToEmpty( v ), len, fillChar ), len, markerStr );
+	    }
+
+	    /**
+		 * Decode a String using Base64 encoding. 
+		 * @param pStr the String to decode (null safe)
+		 * @return the decoded String (null, if decoding null).
+		 */
+		public static String decodeBase64( String pStr ) {
+		    return (pStr == null) ? null : new Base64( pStr ).decodeAsString();
+		}
+
+		
+		/**
+		 * Encode a String using Base64 encoding. 
+		 * @param pStr the String to encode (null safe)
+		 * @return the encoded String (null, if encoding null).
+		 */
+		public static String encodeBase64( String pStr ) {
+		    return encodeBase64( pStr, 0 );
+		}
+
+		
+		/**
+		 * Encode a String using Base64 encoding. 
+		 * @param pStr the String to encode (null safe)
+		 * @param lineSize the number of characters after which to insert a LF each.
+		 * @return the encoded String (null, if encoding null).
+		 */
+		public static String encodeBase64( String pStr, int lineSize ) {
+		    return (pStr == null) ? null : Base64.encode( pStr ).toString( lineSize );
+		}
+
+	  
+}
