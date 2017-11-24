@@ -340,3 +340,6 @@
  * Task [ChangeDBVersionValue4BonitaComponents] : Nothing to do
  * Task [AutoUpdateRelationsMigrationTask] : Nothing to do
  ---=== End of migration ===---
+ ---=== Start Migration of project commonpro ===---
+ * Task [Update Operator MigrationTask] : Applied successfully
+ * Task [ChangeMappingFileMigrationTask] : Applied successfully
