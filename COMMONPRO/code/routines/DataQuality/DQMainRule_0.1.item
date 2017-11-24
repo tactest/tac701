@@ -1,0 +1,215 @@
+package routines;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ *
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ *
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ *
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ *
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ *
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class DQMainRule {
+
+	public static Map<String, Object> localMap;
+
+	public static void passGlobalMap(Map<String, Object> globalMap) {
+		localMap = new HashMap<>();
+		for (Map.Entry<String, Object> entry : globalMap.entrySet()) {
+			if (entry.getKey().toString().startsWith("dq_")) {
+				localMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	public static List<String> customerNameOLD(String inStr,
+			String titlePrefix, String titleSuffix) {
+		List<String> outStr = new ArrayList<>();
+		String dq_result;
+
+		dq_result = DQ.removeTitle(inStr, titlePrefix, titleSuffix);
+		dq_result = DQ.removeTitleNCBS(dq_result);
+		dq_result = DQ.isBlank(dq_result);
+		dq_result = DQ.removeMultipleSpace(dq_result);
+
+		outStr.add(inStr);
+		outStr.add(dq_result);
+		// outStr.add(titlePrefix+" || "+titleSuffix);
+		if (dq_result.equals("(E)")) {
+			outStr.add("T");
+		} else {
+			outStr.add("F");
+		}
+
+		// new DQ.DQBuilder("").removeSomething("").build();
+
+		return outStr;
+	}
+
+	public static List<String> customerName(String inStr) {
+
+		// outStr = DQ.removeTitle(inStr, titlePrefix, titleSuffix);
+		// outStr = (new DQ.
+		// DQBuilder(inStr).
+		// isBlank().
+		// removeTitle(titlePrefix, titleSuffix).
+		// removeTitleNCBS().
+		// removeTitleNCBS().
+		// build()).
+		// GetResultString();
+		return new DQ.DQBuilder(inStr).trim().isBlank().removeTitleNCBS()
+				.isContainNumeric()
+				.removeTitle(localMap.get("dq_name_titles").toString())
+				.removeExcessSpace().minLength(3).build().GetResultMap();
+	}
+
+	public static List<String> ktp(String inStr) {
+
+		// matchPattern("(?i) [^\\d]+", "NON-NUMERIC").
+		// Match non numeric
+
+		return new DQ.DQBuilder(inStr.toString()).trim().isBlank()
+				.replaceAll("[\\W_]", "")
+				.matchPattern("(?i).*[A-Z]+.*", "ALPHABET").minLength(16)
+				.maxLength(16)
+				.ktpCheckAreaCode(localMap.get("dq_ref_area_code").toString())
+				.build().GetResultMap();
+	}
+
+	public static List<String> npwp(String inStr) {
+
+		return new DQ.DQBuilder(inStr.toString()).trim().isBlank()
+				.matchPattern("(?i).*[0-9.]+.*", "NON-NUMERIC", false)
+				.replaceAll("[.]", "").npwpNormalize().build().GetResultMap();
+	}
+
+	public static List<String> areaName(String inStr) {
+
+		return new DQ.DQBuilder(inStr.toString())
+				.trim()
+				.isBlank()
+				.matchPattern("(?i).*[0-9]+.*", "INVALID")
+				.replaceAll("(?i)[^A-Z ]", "")
+				.replaceAll(
+						"(?i)\\b(?:"
+						+ localMap.get("dq_area_prefix").toString()
+						+ ")\\b", " ").removeExcessSpace().build()
+						.GetResultMap();
+	}
+
+	public static List<String> postal(String inStr) {
+
+		return new DQ.DQBuilder(inStr.toString()).trim().isBlank()
+				.replaceAll("[\\W_]", "")
+				.matchPattern("(?i)[0-9]{5,5}", "INVALID", false).build()
+				.GetResultMap();
+	}
+
+	public static List<String> address(String inStr) {
+
+		return new DQ.DQBuilder(inStr.toString()).trim().isBlank()
+				.matchPattern("(?i)\\W+|N.?A", "INVALID").removeExcessSpace()
+				.build().GetResultMap();
+	}
+
+	public static List<String> date(Date inStr, String format) {
+		return new DQ.DQBuilder(inStr, format).trim().isBlank()
+				.dateSanityCheck().build().GetResultMap();
+	}
+
+	public static List<String> date(Date inStr) {
+		return date(inStr, localMap.get("dq_date_format").toString());
+	}
+
+	public static List<String> date(String inStr) {
+		return new DQ.DQBuilder(inStr).trim().isBlank().dateSanityCheck()
+				.build().GetResultMap();
+	}
+
+	public static List<String> dob(Date inStr, String format) {
+		return new DQ.DQBuilder(inStr, format).trim().isBlank()
+				.dateSanityCheck()
+				.dateMin(localMap.get("dq_date_min").toString()).build()
+				.GetResultMap();
+	}
+
+	public static List<String> dob(Date inStr) {
+		return dob(inStr, localMap.get("dq_date_format").toString());
+	}
+
+	public static List<String> dob(String inStr) {
+		return new DQ.DQBuilder(inStr).trim().isBlank().dateSanityCheck()
+				.dobLegalAge().dateMin(localMap.get("dq_date_min").toString())
+				.build().GetResultMap();
+	}
+
+	public static List<String> custMarriage(String inStr) {
+		return new DQ.DQBuilder(inStr)
+		.trim()
+		.isBlank()
+		.findInReference(
+				localMap.get("dq_ref_cust_marriage").toString(),
+				"INV_CODE").build().GetResultMap();
+	}
+
+	public static List<String> custMarriage(int value) {
+		return custMarriage(Integer.toString(value));
+	}
+
+	public static List<String> companyName(String inStr) {
+		return new DQ.DQBuilder(inStr)
+				.trim()
+				.isBlank()
+				.removeTitleNCBS()
+				.replaceAll(
+						"(?i)\\b(?:"
+								+ localMap.get("dq_company_name_prefix")
+						.toString() + ")\\b\\.?", " ")
+				.matchPattern("(?i).*[^A-Z ]+.*", "NON WORD")
+				.removeExcessSpace().build().GetResultMap();
+	}
+
+	public static List<String> categorical(String inStr, String categories) {
+		return new DQ.DQBuilder(inStr.toString()).trim().isBlank()
+				.matchPattern("(?i)" + categories, "INVALID", false).build()
+				.GetResultMap();
+	}
+
+	public static List<String> categorical(String inStr) {
+		return categorical(inStr, localMap.get("dq_cat_yt").toString());
+	}
+
+	public static List<String> gender(String inStr) {
+		return gender(inStr, localMap.get("dq_cat_mf").toString());
+	}
+
+	public static List<String> gender(String inStr, String cat) {
+		return categorical(inStr, cat);
+	}
+
+	public static List<String> occupationCode(String inStr, Boolean isIndividual) {
+
+		return new DQ.DQBuilder(inStr)
+		.trim()
+		.isBlank(isIndividual)
+		.ignoreWhen(!isIndividual)
+				.matchPattern(
+				"(?i)" + localMap.get("dq_ref_occ_code").toString(),
+				"INVALID", false).build().GetResultMap();
+	}
+}
